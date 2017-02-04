@@ -1,43 +1,40 @@
-@title Introduction
+@title 介绍
 @group intro
 
-This document provides a high-level overview of the Phabricator project.
+本文档提供了 Phabricator 项目的整体概述。
 
-= What is Phabricator? =
+= Phabricator 是什么? =
 
-**Phabricator** (pronounced like the word //fabricator//) is a suite of web
-applications which make it easier to build software, particularly when working
-with teams. Phabricator is largely based on Facebook's internal tools.
+**Phabricator**（发音像单词 //fabricator//）是一套网络应用程序，
+目的在于使人们更容易构建软件，特别是在与团队一起工作时。 
+Phabricator 主要基于 Facebook 的内部工具。
 
-The major components of Phabricator are:
+Phabricator 主要组件:
 
-  - **Differential**, a code review tool; and
-  - **Diffusion**, a repository browser; and
-  - **Maniphest**, a bug tracker; and
-  - **Phriction**, a wiki.
+  - **Differential**, 代码审查工具 
+  - **Diffusion**, 代码仓库浏览器 
+  - **Maniphest**, bug 追踪工具 
+  - **Phriction**, wiki 文档管理
 
-Phabricator also includes a number of smaller tools.
+同时，Phabricator 还包括一些较小的工具。
 
-= Why use Phabricator? =
+= 为什么使用 Phabricator? =
 
-Phabricator gives you a box of solid tools for a comparatively small setup cost.
-The tools all work together and are richly integrated. The whole thing is free
-and open source. You own all your data. Phabricator is extremely fast and proven
-to scale both to large datasets (Facebook has 500,000+ commits across many
-repositories) and large organizations (Facebook has 500+ fulltime engineers).
-Phabricator's tools are easy to learn, understand, and use.
+Phabricator 以相对较小的设置成本，为你提供一个可靠的工具集。
+这些工具集成在一起相互协作，并且都是免费和开源的。 
+您能够控制您的所有数据。 Phabricator 非常快速，
+同时被证明在大数据量（ Facebook 有超过 500,000 个提交
+代码库）和 大型组织（Facebook 拥有 500 多名全职工程师）下具有良好的扩展性。
+Phabricator 易于学习，理解和使用。
 
-However, Phabricator may also not be a good solution for you:
+然而，Phabricator 也可能不是一个很好的解决方案:
 
-  - If you develop primarily on Windows, you are likely to find integration
-    with the toolsets you use lacking.
-  - If you don't use SVN, Git or Mercurial, you'll have to add support for your
-    VCS before you can get anywhere.
-  - If you loathe PHP, well, it's written in PHP. Sorry. It is a victim of
-    circumstances. We assert it is well-written PHP, at least.
+  - 如果您主要在 Windows 上开发，您可能会发现它不能很好的和您使用的工具集成。
+  - 如果你不使用 SVN，Git 或 Mercurial，你必须在您的 VCS 中添加支持。
+  - 抱歉，它是用你可能不喜欢的PHP编写的，它也是一个受害者 。 但是我们相信我们写的很好。
 
-= Next Steps =
+= 下一步 =
 
-Continue by:
+接下来:
 
-  - installing Phabricator with the @{article:Installation Guide}.
+  - 参照 @{article:安装向导} 安装 Phabricator 。

@@ -1,179 +1,146 @@
-@title Installation Guide
+@title 安装向导
 @group intro
 
-This document contains basic install instructions to get Phabricator up and
-running.
+本文档包含 Phabricator 启动和运行的基本安装说明。
 
-Overview
+概览
 ========
 
-Phabricator is a LAMP (Linux, Apache, MySQL, PHP) application. To install
-Phabricator, you will need:
+Phabricator 是一个 LAMP (Linux, Apache, MySQL, PHP) 软件。 
+安装 Phabricator 您需要:
 
-  - a normal computer to install it on (shared hosts and unusual environments
-    are not supported) running some flavor of Linux or a similar OS;
-  - a domain name (like `phabricator.mycompany.com`);
-  - basic sysadmin skills;
-  - Apache, nginx, or another webserver;
-  - PHP, MySQL, and Git.
+  - 一台运行 Linux 或类似的操作系统的普通计算机（共享主机和特殊环境不支持）
+  - 域名 (例如 `phabricator.mycompany.com`);
+  - 基本系统管理技能;
+  - Apache, nginx, 或其他服务器;
+  - PHP, MySQL, 和 Git.
 
-The remainder of this document details these requirements.
+本文档的其余部分详细说明了这些要求。
 
-Installation Requirements
+安装要求
 =========================
 
-You will need **a computer**. Options include:
+您需要 **一台计算机**， 可能的选项:
 
-  - **A Normal Computer**: This is strongly recommended. Many installs use a VM
-    in EC2. Phabricator installs properly and works well on a normal computer.
-  - **A Shared Host**: This may work, but is not recommended. Many shared
-    hosting environments have restrictions which prevent some of Phabricator's
-    features from working. Consider using a normal computer instead. We do not
-    support shared hosts.
-  - **A SAN Appliance, Network Router, Gaming Console, Raspberry Pi, etc.**:
-    Although you may be able to install Phabricator on specialized hardware, it
-    is unlikely to work well and will be difficult for us to support. Strongly
-    consider using a normal computer instead. We do not support specialized
-    hardware.
-  - **A Toaster, Car, Firearm, Thermostat, etc.**: Yes, many modern devices now
-    have embedded computing capability. We live in interesting times. However,
-    you should not install Phabricator on these devices. Instead, install it on
-    a normal computer. We do not support installing on noncomputing devices.
+  - **普通计算机**: 强力推荐。 
+  	许多人将 Phabricator 安装在 EC2 的虚拟机上， 但是它也可以在普通计算机上安装和运行.
+  - **共享主机**: 也许可行，但是不推荐。 
+    有些共享主机有很多限制，导致 Phabricator 无法运行。考虑使用普通计算机替代吧，我们并不支持共享主机。
+  - **SAN设备，网络路由器，游戏控制台，树莓派等**。虽然你可以在特殊的硬件上安装 Phabricator，
+     但它可能不会工作，我们也很难提供支持。强烈建议您使用普通计算机，我们不支持专业化硬件。
+  - **烤面包机，汽车，火器，温控器等**。现在很多现代设备具有嵌入式计算能力。我们生活的时代很有趣， 
+     但您不应在这些设备上安装 Phabricator。相反，请选择普通计算机， 我们不支持在非计算设备上安装。
 
-To install the Phabricator server software, you will need an **operating
-system** on your normal computer which is **not Windows**. Note that the
-command line interface //does// work on Windows, and you can //use//
-Phabricator from any operating system with a web browser. However, the server
-software does not run on Windows. It does run on most other operating systems,
-so choose one of these instead:
+要安装 Phabricator 服务器软件，在你的计算机上需要装有**非Windows操作系统**。
+虽然命令行接口可以在Windows上工作，也可以在任何有网络浏览器的系统中使用 Phabricator。 
+但是，服务器软件不能在 Windows 上运行。 它可以在大多数其他操作系统上运行，从中选择一个:
 
-  - **Linux**: Most installs use Linux.
-  - **Mac OS X**: Mac OS X is an acceptable flavor of Linux.
-  - **FreeBSD**: While FreeBSD is certainly not a flavor of Linux, it is a fine
-    operating system possessed of many desirable qualities, and Phabricator will
-    install and run properly on FreeBSD.
-  - **Solaris, etc.**: Other systems which look like Linux and quack like Linux
-    will generally work fine, although we may suffer a reduced ability to
-    support and resolve issues on unusual operating systems.
+  - **Linux**: 大部分安装在 Linux
+  - **Mac OS X**: Mac OS X 受欢迎的 Linux 变体。
+  - **FreeBSD**:  虽然 FreeBSD 不是类 Linux 系统，但它是拥有许多理想品质的操作系统，
+     Phabricator 可以在 FreeBSD 上正确安装和运行。
+  - **Solaris, 等.**: 其他看起来像 Linux 的系统一般也能正常工作，
+     但我们可能没有足够的能力提供支持和解决异常。
 
-Beyond an operating system, you will need **a webserver**.
+除了操作系统, 你还需要 **一个网络服务器**.
 
-  - **Apache**: Many installs use Apache + `mod_php`.
-  - **nginx**: Many installs use nginx + `php-fpm`.
-  - **lighttpd**: `lighttpd` is less popular than Apache or nginx, but it
-    works fine.
-  - **Other**: Other webservers which can run PHP are also likely to work fine,
-    although these installation instructions will not cover how to set them up.
-  - **PHP Builtin Server**: You can use the builtin PHP webserver for
-    development or testing, although it should not be used in production.
+  - **Apache**: 大部分使用 Apache 和 `mod_php`.
+  - **nginx**: 很多使用 nginx 和 `php-fpm`.
+  - **lighttpd**: `lighttpd` 不如 Apache 和 nginx 流行, 当它运行很好。
+  - **其他**: 虽然我们在这里没有说明如何在其他能运行 PHP 的服务器上安装，但是它们也是可以的。
+  - **PHP 内置服务器**: 你可以使用 PHP 内置服务器进行开发和测试，但不要在生产环境中使用。
 
-You will also need:
+你还需要:
 
-  - **MySQL**: You need MySQL. We strongly recommend MySQL 5.5 or newer.
-  - **PHP**: You need PHP 5.2 or newer.
+  - **MySQL**: 强烈推荐使用 MySQL 5.5 或更新版本
+  - **PHP**: PHP 5.2 或更新版本
 
-You'll probably also need a **domain name**. In particular, you should read this
-note:
+您可能还需要一个**域名**。 请阅读下面注意事项：
 
-NOTE: Phabricator must be installed on an entire domain. You can not install it
-to a path on an existing domain, like `example.com/phabricator/`. Instead,
-install it to an entire domain or subdomain, like `phabricator.example.com`.
+注意: Phabricator 必须要安装在域名根路径下。不能安装在域名的某个路径下， 如 `example.com/phabricator/`，
+应该安装在完整域名下或子域名下，如 `phabricator.example.com`。
 
-Level Requirements
+能力要求
 ==================
 
-To install and administrate Phabricator, you'll need to be comfortable with
-common system administration skills. For example, you should be familiar with
-using the command line, installing software on your operating system of choice,
-working with the filesystem, managing processes, dealing with permissions,
-editing configuration files, and setting environment variables.
+要安装和管理 Phabricator，你需要具有熟练的系统管理技能。 
+例如，您应该熟悉使用命令行在您选择的操作系统上安装软件，
+使用文件系统，管理进程，处理权限，编辑配置文件和设置环境变量。
 
-If you aren't comfortable with these skills, you can still try to perform an
-install. The install documentation will attempt to guide you through what you
-need to know. However, if you aren't very familiar or comfortable with using
-this set of skills to troubleshoot and resolve problems, you may encounter
-issues which you have substantial difficulty working through.
+如果你不具备这些技能，仍然可以尝试进行安装。 
+此安装文档会提供一些必要的介绍， 但安装过程中仍然可能会遇到棘手的问题
 
-We assume users installing and administrating Phabricator are comfortable with
-common system administration skills and concepts. If you aren't, proceed at
-your own risk and expect that your skills may be tested.
+不具有相关技能进行安装时，自行承担风险。
 
-Installing Required Components
+安装必需组件
 ==============================
 
-If you are installing on Ubuntu or an RedHat derivative, there are install
-scripts available which should handle most of the things discussed in this
-document for you:
+这里提供了可以在 Ubuntu 或 RedHat衍生产品上使用的安装脚本，
+它会处理此文档中提到的大部分问题:
 
-  - **RedHat Derivatives**:
+  - **RedHat 衍生产品**:
     [[ https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_rhel-derivs.sh
      | install_rhel-derivs.sh ]]
   - **Ubuntu**:
     [[ https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh
      | install_ubuntu.sh ]]
+这些脚本也存放在项目的 `scripts/install` 目录中。
 
-If those work for you, you can skip directly to the
-@{article:Configuration Guide}. These scripts are also available in the
-`scripts/install` directory in the project itself.
+如果一切安装顺利，可以直接去查看@{article:配置向导}。
 
-Otherwise, here's a general description of what you need to install:
+否则，以下是您需要安装的软件说明:
 
-  - git (usually called "git" in package management systems)
-  - Apache (usually "httpd" or "apache2") (or nginx)
-  - MySQL Server (usually "mysqld" or "mysql-server")
-  - PHP (usually "php")
-  - Required PHP extensions: mbstring, iconv, mysql (or mysqli), curl, pcntl
+  - git (通常在包管理系统中称为“git”)
+  - Apache (通常是 "httpd" 或 "apache2") (或 nginx)
+  - MySQL 服务器 (一般是 "mysqld" 或 "mysql-server")
+  - PHP (一般是 "php")
+  - PHP 必要扩展: mbstring, iconv, mysql (or mysqli), curl, pcntl
     (these might be something like "php-mysql" or "php5-mysql")
-  - Optional PHP extensions: gd, apc (special instructions for APC are available
-    below if you have difficulty installing it), xhprof (instructions below,
-    you only need this if you are developing Phabricator)
+  - PHP 可选扩展: gd, apc (安装中遇到问题，可以查看下文的说明), 
+     xhprof (只有开发 Phabricator 时才需要， 下文有说明)
 
-If you already have LAMP setup, you've probably already got everything you need.
-It may also be helpful to refer to the install scripts above, even if they don't
-work for your system.
+如果你已经安装了 LAMP 套件, 大部分工作可能已经完成。
+参考上文提到的安装脚本也是很有帮助的，即使他们不能在您的系统中运行。
 
-Now that you have all that stuff installed, grab Phabricator and its
-dependencies:
+现在你已经安装了所有的东西，下载 Phabricator 及其依赖：
 
   $ cd somewhere/ # pick some install directory
   somewhere/ $ git clone https://github.com/phacility/libphutil.git
   somewhere/ $ git clone https://github.com/phacility/arcanist.git
   somewhere/ $ git clone https://github.com/phacility/phabricator.git
 
-= Installing APC (Optional) =
+= 安装 APC (可选) =
 
-Like everything else written in PHP, Phabricator will run much faster with APC
-installed. You likely need to install "pcre-devel" first:
+和其他用 PHP 开发的软件一样，安装 APC 将提高 Phabricator 的运行速度。
+你应该首先安装 "pcre-devel":
 
   sudo yum install pcre-devel
 
-Then you have two options. Either install via PECL (try this first):
+有两种方法。一种是通过 PECL 安装(先试试这个):
 
   sudo yum install php-pear
   sudo pecl install apc
 
-**If that doesn't work**, grab the package from PECL directly and follow the
-build instructions there:
+**如果这个失败**, 从 PECL 直接下载包，参照如下的构建说明安装:
 
 http://pecl.php.net/package/APC
 
-Installing APC is optional but **strongly recommended**, especially on
-production hosts.
 
-Once APC is installed, test that it is available by running:
+强烈推荐您安装 APC，尤其是在生产主机上。
+
+APC 安装以后，可以用下面的命令测试它：
 
   php -i | grep apc
 
-If it doesn't show up, add:
+如果没有显示下面的内容:
 
   extension=apc.so
 
-..to "/etc/php.d/apc.ini" or the "php.ini" file indicated by "php -i".
+则将其添加到 "/etc/php.d/apc.ini" 或者 "php.ini" 文件中.
 
-= Next Steps =
+= 下一步 =
 
-Continue by:
+接下来:
 
-  - configuring Phabricator with the @{article:Configuration Guide}; or
-  - learning how to keep Phabricator up to date with
-    @{article:Upgrading Phabricator}.
+  - 参照 @{article:配置向导} 配置 Phabricator; 或
+  - 通过 @{article:Upgrading Phabricator} 学习保持 Phabricator 更新。

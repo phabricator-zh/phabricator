@@ -20,13 +20,13 @@ final class CelerityDefaultPostprocessor
   public function buildVariables() {
     return array(
       // Fonts
-      'basefont' => "13px 'Segoe UI', 'Segoe UI Web Regular', ".
-        "'Segoe UI Symbol', 'Lato', 'Helvetica Neue', Helvetica, ".
-        "Arial, sans-serif",
+      'basefont' => "13px 'Segoe UI', 'Segoe UI Emoji', ".
+        "'Segoe UI Symbol', 'Lato', 'Helvetica Neue', ".
+        "Helvetica, Arial, sans-serif",
 
-      'fontfamily' => "'Segoe UI', 'Segoe UI Web Regular', ".
-        "'Segoe UI Symbol', 'Lato', 'Helvetica Neue', Helvetica, ".
-        "Arial, sans-serif",
+      'fontfamily' => "'Segoe UI', 'Segoe UI Emoji', ".
+        "'Segoe UI Symbol', 'Lato', 'Helvetica Neue', ".
+        "Helvetica, Arial, sans-serif",
 
       // Drop Shadow
       'dropshadow' => '0 2px 12px rgba(0, 0, 0, .20)',
@@ -209,10 +209,7 @@ final class CelerityDefaultPostprocessor
       'menu.profile.icon.disabled' => 'rgba(255,255,255,.4)',
 
       'menu.main.height' => '44px',
-
       'menu.profile.width' => '240px',
-      'menu.profile.width.collapsed' => '88px',
-      'menu.profile.item.height' => '46px',
 
     );
   }

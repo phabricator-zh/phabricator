@@ -12,8 +12,6 @@ abstract class PhabricatorApplication
   extends Phobject
   implements PhabricatorPolicyInterface {
 
-  const MAX_STATUS_ITEMS      = 100;
-
   const GROUP_CORE            = 'core';
   const GROUP_UTILITIES       = 'util';
   const GROUP_ADMIN           = 'admin';
@@ -270,20 +268,6 @@ abstract class PhabricatorApplication
 
 
 /* -(  UI Integration  )----------------------------------------------------- */
-
-
-  /**
-   * Render status elements (like "3 Waiting Reviews") for application list
-   * views. These provide a way to alert users to new or pending action items
-   * in applications.
-   *
-   * @param PhabricatorUser Viewing user.
-   * @return list<PhabricatorApplicationStatusView> Application status elements.
-   * @task ui
-   */
-  public function loadStatus(PhabricatorUser $user) {
-    return array();
-  }
 
 
   /**
@@ -612,14 +596,18 @@ abstract class PhabricatorApplication
   protected function getProfileMenuRouting($controller) {
     $edit_route = $this->getEditRoutePattern();
 
+    $mode_route = '(?P<itemEditMode>global|custom)/';
+
     return array(
       '(?P<itemAction>view)/(?P<itemID>[^/]+)/' => $controller,
       '(?P<itemAction>hide)/(?P<itemID>[^/]+)/' => $controller,
       '(?P<itemAction>default)/(?P<itemID>[^/]+)/' => $controller,
       '(?P<itemAction>configure)/' => $controller,
-      '(?P<itemAction>reorder)/' => $controller,
+      '(?P<itemAction>configure)/'.$mode_route => $controller,
+      '(?P<itemAction>reorder)/'.$mode_route => $controller,
       '(?P<itemAction>edit)/'.$edit_route => $controller,
-      '(?P<itemAction>new)/(?<itemKey>[^/]+)/'.$edit_route => $controller,
+      '(?P<itemAction>new)/'.$mode_route.'(?<itemKey>[^/]+)/'.$edit_route
+        => $controller,
       '(?P<itemAction>builtin)/(?<itemID>[^/]+)/'.$edit_route
         => $controller,
     );

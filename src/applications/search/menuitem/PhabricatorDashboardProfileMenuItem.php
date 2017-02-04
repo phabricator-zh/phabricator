@@ -21,6 +21,11 @@ final class PhabricatorDashboardProfileMenuItem
     return true;
   }
 
+  public function canMakeDefault(
+    PhabricatorProfileMenuItemConfiguration $config) {
+    return true;
+  }
+
   public function attachDashboard($dashboard) {
     $this->dashboard = $dashboard;
     return $this;
@@ -28,12 +33,37 @@ final class PhabricatorDashboardProfileMenuItem
 
   public function getDashboard() {
     $dashboard = $this->dashboard;
+
     if (!$dashboard) {
       return null;
     } else if ($dashboard->isArchived()) {
       return null;
     }
+
     return $dashboard;
+  }
+
+  public function newPageContent(
+    PhabricatorProfileMenuItemConfiguration $config) {
+    $viewer = $this->getViewer();
+
+    $dashboard_phid = $config->getMenuItemProperty('dashboardPHID');
+
+    // Reload the dashboard to attach panels, which we need for rendering.
+    $dashboard = id(new PhabricatorDashboardQuery())
+      ->setViewer($viewer)
+      ->withPHIDs(array($dashboard_phid))
+      ->needPanels(true)
+      ->executeOne();
+    if (!$dashboard) {
+      return null;
+    }
+
+    $engine = id(new PhabricatorDashboardRenderingEngine())
+      ->setViewer($viewer)
+      ->setDashboard($dashboard);
+
+    return $engine->renderDashboard();
   }
 
   public function willBuildNavigationItems(array $items) {
@@ -59,9 +89,11 @@ final class PhabricatorDashboardProfileMenuItem
   public function getDisplayName(
     PhabricatorProfileMenuItemConfiguration $config) {
     $dashboard = $this->getDashboard();
+
     if (!$dashboard) {
       return pht('(Restricted/Invalid Dashboard)');
     }
+
     if (strlen($this->getName($config))) {
       return $this->getName($config);
     } else {
@@ -100,7 +132,7 @@ final class PhabricatorDashboardProfileMenuItem
 
     $icon = $dashboard->getIcon();
     $name = $this->getDisplayName($config);
-    $href = $dashboard->getViewURI();
+    $href = $this->getItemViewURI($config);
 
     $item = $this->newItem()
       ->setHref($href)

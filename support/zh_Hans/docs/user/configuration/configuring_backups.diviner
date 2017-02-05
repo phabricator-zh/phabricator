@@ -1,147 +1,129 @@
-@title Configuring Backups and Performing Migrations
+@title 数据备份和迁移配置
 @group config
 
-Advice for backing up Phabricator, or migrating from one machine to another.
+有关备份和迁移 Phabricator 的建议。
 
 
-Overview
+概览
 ========
 
-Phabricator does not currently have a comprehensive backup system, but creating
-backups is not particularly difficult and Phabricator does have a few basic
-tools which can help you set up a reasonable process. In particular, the things
-which needs to be backed up are:
+Phabricator 暂时没有一个完备的备份系统，但是建立备份并不是很困难。有一些工具可以在建立备份
+的过程中提供帮助。需要备份的项目如下：
 
-  - the MySQL databases;
-  - hosted repositories;
-  - uploaded files; and
-  - your Phabricator configuration files.
+  - MySQL 数据库
+  - 托管的代码仓库
+  - 上传的文件
+  - Phabricator 配置文件
 
-This document discusses approaches for backing up this data.
+本文档将讨论备份这些数据的方式。
 
-If you are migrating from one machine to another, you can generally follow the
-same steps you would if you were creating a backup and then restoring it, you
-will just backup the old machine and then restore the data onto the new
-machine.
+进行机器间迁移时，一般首先按照相同的步骤进行备份，然后恢复备份即可。即在旧机器上进行数据备份，
+然后将备份在新机器上恢复。
 
-
-Backup: MySQL Databases
+备份: MySQL 数据库
 =======================
 
-Most of Phabricator's data is stored in MySQL, and it's the most important thing
-to back up. You can run `bin/storage dump` to get a dump of all the MySQL
-databases. This is a convenience script which just runs a normal `mysqldump`,
-but will only dump databases Phabricator owns.
+Phabricator 的大部分数据时存在 MySQL 中的，所以 MySQL 是最主要的备份内容。
+可以通过运行 `bin/storage dump` 导出所有的 MySQL 数据库。此脚本很方便，和执行 `mysqldump`
+一样，但是仅导出  Phabricator 相关的数据库。
 
-Since most of this data is compressible, it may be helpful to run it through
-gzip prior to storage. For example:
+由于大部分数据是可压缩的，所以保存前执行 gzip 压缩很必要。例如：
 
   phabricator/ $ ./bin/storage dump | gzip > backup.sql.gz
 
-Then store the backup somewhere safe, like in a box buried under an old tree
-stump. No one will ever think to look for it there.
+然后将备份存在在一个安全的地方，例如放在一个盒子里埋在一个老树下。没有人会
+去哪里寻找。
 
-Restore: MySQL
+恢复: MySQL 数据库
 ==============
 
-To restore a MySQL dump, just pipe it to `mysql` on a clean host. (You may need
-to uncompress it first, if you compressed it prior to storage.)
+恢复 MySQL 数据时，在干净的主机上将其 pipe 到 `mysql` 命令即可
+（如果保存前进行了压缩，需要先进行解压）。
 
   $ gunzip -c backup.sql.gz | mysql
 
 
-Backup: Hosted Repositories
+备份: 托管的代码仓库
 ===========================
 
-If you host repositories in Phabricator, you should back them up. You can use
-`bin/repository list-paths` to show the local paths on disk for each
-repository. To back them up, copy them elsewhere.
+如果使用 Phabricator 托管代码仓库，也需要备份它们。
+可以使用命令 `bin/repository list-paths` 查看每个仓库在本地硬盘
+上的路径。备份时将它们复制到其他地方即可。
 
-You can also just clone them and keep the clones up to date, or use
-{nav Add Mirror} to have the mirror somewhere automatically.
+也可通过保持最新的代码克隆（clone），或 使用 {nav Add Mirror} 进行自动镜像进行备份。
 
 
-Restore: Hosted Repositories
+恢复: 托管的代码仓库
 ============================
 
-To restore hosted repositories, copy them back into the correct locations
-as shown by `bin/repository list-paths`.
+恢复时，将它们复制到 `bin/repository list-paths` 命令显示的正确路径即可。
 
 
-Backup: Uploaded Files
+备份: 上传文件
 ======================
 
-Uploaded files may be stored in several different locations. The backup
-procedure depends on where files are stored:
+上传文件的存储方式不同，对应的备份步骤也不同。
 
-**Default / MySQL**: Under the default configuration, uploaded files are stored
-in MySQL, so the MySQL backup will include all files. In this case, you don't
-need to do any additional work.
+**默认 / MySQL**: 默认配置下，上传文件存储在 MySQL 中，此时 MySQL 备份
+已包含所有文件，你不需要做任何其他额外的工作。
 
-**Amazon S3**: If you use Amazon S3, redundancy and backups are built in to the
-service. This is probably sufficient for most installs. If you trust Amazon with
-your data //except not really//, you can backup your S3 bucket outside of
-Phabricator.
+**Amazon S3**: 使用 Amazon S3时，服务本身提供冗余和备份。很多安装看中这点。
+如果不是很信任 Amazon，可以对  S3 bucket 进行备份。
 
-**Local Disk**: If you use the local disk storage engine, you'll need to back up
-files manually. You can do this by creating a copy of the root directory where
-you told Phabricator to put files (the `storage.local-disk.path` configuration
-setting).
+**本地硬盘**: 
 
-For more information about configuring how files are stored, see
-@{article:Configuring File Storage}.
+如果使用本地硬盘存储，需要进行手动备份。
+将存储上传文件的根目录（查看 `storage.local-disk.path` 设置）复制一份即可。
+
+关于上传文件的更多信息，请查看 @{article:Configuring File Storage}。
 
 
-Restore: Uploaded Files
+恢复: 上传文件
 =======================
 
-To restore a backup of local disk storage, just copy the backup into place.
+要恢复本地磁盘存储的备份，只需将备份复制到指定地方即可。
 
 
-Backup: Configuration Files
+备份: 配置文件
 ===========================
 
-You should also backup your configuration files, and any scripts you use to
-deploy or administrate Phabricator (like a customized upgrade script). The best
-way to do this is to check them into a private repository somewhere and just use
-whatever backup process you already have in place for repositories. Just copying
-them somewhere will work fine too, of course.
+此外还需要备份配置以及其他的部署和管理脚本（比如自定义更新脚本）。最好的方式是将这些文件
+放置在私有仓库中，这样在备份仓库时这些脚本文件也会被备份。当然，将这些脚本文件复制到其他地方进行
+备份也是可以的。
 
-In particular, you should backup this configuration file which Phabricator
-creates:
+一定记得备份 Phabricator 创建的配置文件：
 
   phabricator/conf/local/local.json
 
-This file contains all of the configuration settings that have been adjusted
-by using `bin/config set <key> <value>`.
+此文件包含通过命令`bin/config set <key> <value>` 执行的所有设置。
 
 
-Restore: Configuration Files
+恢复: 配置文件
 ============================
 
-To restore configuration files, just copy them into the right locations. Copy
-your backup of `local.json` to `phabricator/conf/local/local.json`.
+将备份复制到正确的地方即可恢复配置文件。
 
-Security
+将备份的 `local.json` 复制到 `phabricator/conf/local/local.json`。
+
+安全
 ========
 
-MySQL dumps have no builtin encryption and most data in Phabricator is stored in
-a raw, accessible form, so giving a user access to backups is a lot like giving
-them shell access to the machine Phabricator runs on. In particular, a user who
-has the backups can:
+由于 Phabricator 中的大部分数据都是以原生、可读的方式存储的，并且 MySQL 导出没有内置加密功能，
+所以授权其他人访问备份，就像授予在 Phabricator 运行的服务器运行命令一样。
 
-  - read data that policies do not permit them to see;
-  - read email addresses and object secret keys; and
-  - read other users' session and conduit tokens and impersonate them.
+需要注意，拥有备份的人可以执行以下操作：
 
-Some of this information is durable, so disclosure of even a very old backup may
-present a risk. If you restrict access to the Phabricator host or database, you
-should also restrict access to the backups.
+  - 读取未被授权访问的数据
+  - 读取邮箱地址 和 对象私密 key
+  - 读取其他用户的 session 和 conduit tokens 来冒充它们
+
+有些信息是不常变更的，所以泄露旧的备份数据同样存在风险。 
+应该像限制用户访问 Phabricator 主机和数据库一样，限制对备份的访问权限。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - returning to the @{article:配置向导}.
+  - 返回 @{article:配置向导}.

@@ -139,7 +139,7 @@ NOTE: 说明仅针对 lighttpd，使用 Apache 或 niginx, 请参考相关说明
 
 所有问题都解决后，将看到欢迎页面, 输入密码创建管理账号。登录后，
 你需要配置其他用户登录和注册的方式，否则没有人可以注册和登录。  
-查看@{article:Configuring Accounts and Registration} 了解更多。
+查看@{article:账号与注册配置} 了解更多。
 
 = 存储: 配置 MySQL =
 
@@ -164,7 +164,7 @@ NOTE: 升级 Phabricator 时, 再次运行 `storage upgrade` 应用更新。
 
 接下来:
 
-  - 参照 @{article:Configuring Accounts and Registration}设置管理账号及登录注册; 或
+  - 参照 @{article:账号与注册配置}设置管理账号及登录注册; 或
   - 查看 @{article:Configuration User Guide: Advanced Configuration}了解高级配置选项; 或
   - 参照 @{article:Configuring a File Domain} 配置文件域名; 或
   - 参照@{article:Configuring a Preamble Script} 配置 preamble 脚本设置负载均衡变量

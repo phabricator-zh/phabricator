@@ -10,14 +10,9 @@
     "(\\.diviner$)": "DivinerArticleAtomizer"
   },
   "exclude": [
-    "(^externals/)",
-    "(^resources/)",
-    "(^scripts/)",
-    "(^src/docs/contributor/)",
-    "(^src/docs/tech/)",
-    "(^src/docs/user/)",
-    "(^support/)",
-    "(^webroot/rsrc/externals/)"
+    "(^zh_Hans/docs/contributor/)",
+    "(^zh_Hans/docs/tech/)",
+    "(^zh_Hans/docs/user/)"
   ],
   "groups": {
     "overview": {

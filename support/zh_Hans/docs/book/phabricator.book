@@ -11,14 +11,9 @@
     "(\\.php$)": "DivinerPHPAtomizer"
   },
   "exclude": [
-    "(^externals/)",
-    "(^resources/)",
-    "(^scripts/)",
-    "(^src/docs/contributor/)",
-    "(^src/docs/flavor/)",
-    "(^src/docs/user/)",
-    "(^support/)",
-    "(^webroot/rsrc/externals/)"
+    "(^zh_Hans/docs/contributor/)",
+    "(^zh_Hans/docs/flavor/)",
+    "(^zh_Hans/docs/user/)"
   ],
   "groups": {
     "aphront": {

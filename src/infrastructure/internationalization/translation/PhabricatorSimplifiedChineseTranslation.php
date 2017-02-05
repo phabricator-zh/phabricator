@@ -1,7 +1,7 @@
 <?php
 // autogenerate by tool.
-// created: 2017-02-04 05:35:21 
-// done: 15.77% (2202/13962)
+// created: 2017-02-05 11:41:34 
+// done: 15.76% (2201/13962)
 
 final class PhabricatorSimplifiedChineseTranslation
     extends PhutilTranslation {
@@ -1346,11 +1346,6 @@ return array (
   'Normal' => '一般',
   'Not Done' => '未完成',
   'Not Supported' => '不支持',
-  'Not enough process slots to schedule the other %s repository(s) for updates yet.' => 
-  array (
-    0 => 'Not enough process slots to schedule the other                                                         repository for update yet.',
-    1 => 'Not enough process slots to schedule the other %s repositories for updates yet.',
-  ),
   'Not supported.' => '不支持。',
   'Note' => '备注',
   'Notification Server' => '通知服务器',
@@ -2568,12 +2563,77 @@ return array (
     0 => '▲ 显示1行',
     1 => '▲ 显示%d行',
   ),
-  'If you disable **Email Notifications**, Phabricator will never send email to notify you about events. This preference overrides all your other settings.//You will still receive some administrative email, like password reset email.//' => '如果关闭 **电子邮件通知**，Phabricator永远不会发送电子邮件通知您有关事件。 此偏好设置会覆盖所有其他设置。//您仍然会收到一些管理电子邮件，例如密码重设电子邮件。//',
-  'After completing this build step Harbormaster can continue the build normally, or it can pause the build and wait for a message. If you are using this build step to trigger some work in an external system, you may want to have Phabricator wait for that system to perform the work and report results back.If you select **Continue Build Normally**, the build plan will proceed once this step finishes.If you select **Wait For Message**, the build plan will pause indefinitely once this step finishes. To resume the build, an external system must call `harbormaster.sendmessage` with the build target PHID, and either `"pass"` or `"fail"` to indicate the result for this step. After the result is recorded, the build plan will resume.' => '完成此构建步骤后，Harbormaster可以正常继续构建，或者它可以暂停构建并等待消息。 如果使用此构建步骤在外部系统中触发某些工作，您可能希望Phabricator等待该系统执行工作并报告结果。如果选择“继续正常构建”，构建计划将在此步骤完成后继续。如果选择“等待消息”，构建计划将在此步骤完成后无限期暂停。 要恢复构建，外部系统必须使用构建目标PHID调用harbormaster.sendmessage，并使用“pass”或“fail”来指示此步骤的结果。 记录结果后，构建计划将恢复。',
-  'Unable to connect to MySQL!%sMake sure Phabricator and MySQL are correctly configured.' => '无法连接到 MySQL!%s请确认 Phabricator 和 MySQL 配置是否正确。',
-  'Many text editors can be configured as URI handlers for special protocols like `editor://`. If you have such an editor, Phabricator can generate links that you can click to open files locally.These special variables are supported:| Value | Replaced With ||-------|---------------|| `%%f`  | Filename || `%%l`  | Line Number || `%%r`  | Repository Callsign || `%%%%`  | Literal `%%` |For complete instructions on editor configuration, see **[[ %s | %s ]]**.' => '许多文本编辑器可以配置为特殊协议的URI处理程序，如editor：//。 如果您有这样的编辑器，Phabricator可以生成链接，您可以单击以在本地打开文件。支持这些特殊变量:| Value | Replaced With ||-------|---------------|| `%%f`  | Filename || `%%l`  | Line Number || `%%r`  | Repository Callsign || `%%%%`  | Literal `%%` |有关编辑器配置的完整说明，请参阅 **[[ %s | %s ]]** 。',
-  'The **Add "Re:" Prefix** setting adds "Re:" in front of all messages, even if they are not replies. If you use **Mail.app** on Mac OS X, this may improve mail threading.| Setting                | Example Mail Subject|------------------------|----------------| Enable "Re:" Prefix  | `Re: [Differential] [Accepted] D123: Example Revision`| Disable "Re:" Prefix | `[Differential] [Accepted] D123: Example Revision`' => '添加“回复：”前缀设置在所有邮件前添加“回复：”，即使它们不是回复。 如果在Mac OS X上使用Mail.app，这可能会改进邮件阅读体验。| 设置                | 示例邮件标题|------------------------|----------------| 启用  | `回复: [Differential] [Accepted] D123: Example Revision`| 关闭 | `[Differential] [Accepted] D123: Example Revision`',
-  'With **Vary Subjects** enabled, most mail subject lines will include a brief description of their content, like `[Closed]` for a notification about someone closing a task.| Setting              | Example Mail Subject|----------------------|----------------| Vary Subjects        | `[Maniphest] [Closed] T123: Example Task`| Do Not Vary Subjects | `[Maniphest] T123: Example Task`This can make mail more useful, but some clients have difficulty threading these messages. Disabling this option may improve threading at the cost of making subject lines less useful.' => '启用变化主题后，大多数邮件主题行将包含其内容的简要说明，例如有人关闭任务的通知的：[已关闭]。| 设置              | 示例邮件标题|----------------------|----------------| 启用        | `[Maniphest] [关闭] T123: Example Task`| 关闭 | `[Maniphest] T123: Example Task`',
+  'If you disable **Email Notifications**, Phabricator will never send email to notify you about events. This preference overrides all your other settings.
+
+//You will still receive some administrative email, like password reset email.//' => '如果关闭 **电子邮件通知**，Phabricator永远不会发送电子邮件通知您有关事件。 此偏好设置会覆盖所有其他设置。
+//您仍然会收到一些管理电子邮件，例如密码重设电子邮件。//',
+  'After completing this build step Harbormaster can continue the build normally, or it can pause the build and wait for a message. If you are using this build step to trigger some work in an external system, you may want to have Phabricator wait for that system to perform the work and report results back.
+
+If you select **Continue Build Normally**, the build plan will proceed once this step finishes.
+
+If you select **Wait For Message**, the build plan will pause indefinitely once this step finishes. To resume the build, an external system must call `harbormaster.sendmessage` with the build target PHID, and either `"pass"` or `"fail"` to indicate the result for this step. After the result is recorded, the build plan will resume.' => '完成此构建步骤后，Harbormaster可以正常继续构建，或者它可以暂停构建并等待消息。 如果使用此构建步骤在外部系统中触发某些工作，您可能希望Phabricator等待该系统执行工作并报告结果。
+
+如果选择“继续正常构建”，构建计划将在此步骤完成后继续。
+
+如果选择“等待消息”，构建计划将在此步骤完成后无限期暂停。 要恢复构建，外部系统必须使用构建目标PHID调用harbormaster.sendmessage，并使用“pass”或“fail”来指示此步骤的结果。 记录结果后，构建计划将恢复。',
+  'Unable to connect to MySQL!
+
+%s
+
+Make sure Phabricator and MySQL are correctly configured.' => '无法连接到 MySQL!
+
+%s
+
+请确认 Phabricator 和 MySQL 配置是否正确。',
+  'Many text editors can be configured as URI handlers for special protocols like `editor://`. If you have such an editor, Phabricator can generate links that you can click to open files locally.
+
+These special variables are supported:
+
+| Value | Replaced With |
+|-------|---------------|
+| `%%f`  | Filename |
+| `%%l`  | Line Number |
+| `%%r`  | Repository Callsign |
+| `%%%%`  | Literal `%%` |
+
+
+For complete instructions on editor configuration, see **[[ %s | %s ]]**.' => '许多文本编辑器可以配置为特殊协议的URI处理程序，如editor：//。 如果您有这样的编辑器，Phabricator可以生成链接，您可以单击以在本地打开文件。
+
+支持这些特殊变量:
+
+| Value | Replaced With |
+|-------|---------------|
+| `%%f`  | Filename |
+| `%%l`  | Line Number |
+| `%%r`  | Repository Callsign |
+| `%%%%`  | Literal `%%` |
+
+
+有关编辑器配置的完整说明，请参阅 **[[ %s | %s ]]** 。',
+  'The **Add "Re:" Prefix** setting adds "Re:" in front of all messages, even if they are not replies. If you use **Mail.app** on Mac OS X, this may improve mail threading.
+
+| Setting                | Example Mail Subject
+|------------------------|----------------
+| Enable "Re:" Prefix  | `Re: [Differential] [Accepted] D123: Example Revision`
+| Disable "Re:" Prefix | `[Differential] [Accepted] D123: Example Revision`' => '添加“回复：”前缀设置在所有邮件前添加“回复：”，即使它们不是回复。 如果在Mac OS X上使用Mail.app，这可能会改进邮件阅读体验。
+
+| 设置                | 示例邮件标题
+|------------------------|----------------
+| 启用  | `回复: [Differential] [Accepted] D123: Example Revision`
+| 关闭 | `[Differential] [Accepted] D123: Example Revision`',
+  'With **Vary Subjects** enabled, most mail subject lines will include a brief description of their content, like `[Closed]` for a notification about someone closing a task.
+
+| Setting              | Example Mail Subject
+|----------------------|----------------
+| Vary Subjects        | `[Maniphest] [Closed] T123: Example Task`
+| Do Not Vary Subjects | `[Maniphest] T123: Example Task`
+
+This can make mail more useful, but some clients have difficulty threading these messages. Disabling this option may improve threading at the cost of making subject lines less useful.' => '启用变化主题后，大多数邮件主题行将包含其内容的简要说明，例如有人关闭任务的通知的：[已关闭]。
+
+| 设置              | 示例邮件标题
+|----------------------|----------------
+| 启用        | `[Maniphest] [关闭] T123: Example Task`
+| 关闭 | `[Maniphest] T123: Example Task`',
 );
     }
 }

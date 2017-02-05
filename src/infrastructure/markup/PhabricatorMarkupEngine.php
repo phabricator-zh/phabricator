@@ -660,7 +660,7 @@ final class PhabricatorMarkupEngine extends Phobject {
       // distinguish standard paragraphs from things like image macros. It may
       // not work well for non-latin text. We prefer to summarize with a
       // paragraph of normal words over an image macro, if possible.
-      $has_space = preg_match('/\w\s\w/', $block);
+      $has_space = preg_match('/\w\s\w/u', $block);
 
       // This is a test to find embedded images and headers. We prefer to
       // summarize with a normal paragraph over a header or an embedded object,

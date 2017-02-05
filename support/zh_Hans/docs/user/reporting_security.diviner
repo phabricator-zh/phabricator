@@ -1,36 +1,31 @@
-@title Reporting Security Vulnerabilities
+@title 报告安全漏洞
 @group intro
 
-Describes how to report security vulnerabilities in Phabricator.
+描述了如何报告 Phabricator 中的安全漏洞。
 
-Overview
+概览
 ========
 
-Phabricator runs a disclosure and award program through
-[[ https://www.hackerone.com/ | HackerOne ]]. This program is the best way to
-submit security issues to us, and awards responsible disclosure of
-vulnerabilities with cash bounties. You can find our project page
-here:
+Phabricator 通过
+[[ https://www.hackerone.com/ | HackerOne ]] 进行纰漏和奖励。
+
+这是提交安全问题的最佳途径，我们会进行纰漏和奖励。 我们的项目主页:
 
 (NOTE) https://hackerone.com/phabricator
 
-The project page has detailed information about the scope of the program and
-how to participate.
+此页面有关于参与流程的详细信息。
 
-We have a 24 hour response timeline, and are usually able to respond to (and,
-very often, fix) issues more quickly than that.
+我们有24小时的时间窗口进行回复，通常我们会以最快的速度进行回复（以及紧接着的修复）。
 
-
-Other Channels
+其他渠道
 ==============
 
-If you aren't sure if something qualifies or don't want to report via
-HackerOne, you can submit the issue as a normal bug report. For instructions,
-see @{article:Contributing Bug Reports}.
+如果您对相关问题不确定或不想通过 HackerOne 提交报告，
+也可以提交一个一般的 bug 报告。 查看 @{article:Contributing Bug Reports} 相关说明。
 
 
-Get Updated
+获取更新
 ===========
 
-General information about security changes is reported weekly in the
-[[ https://secure.phabricator.com/w/changelog/ | Changelog ]].
+有关安全问题我们会每周在 [[ https://secure.phabricator.com/w/changelog/ | 变更日志 ]] 中
+进行说明。

@@ -143,4 +143,4 @@ APC 安装以后，可以用下面的命令测试它：
 接下来:
 
   - 参照 @{article:配置向导} 配置 Phabricator; 或
-  - 通过 @{article:Upgrading Phabricator} 学习保持 Phabricator 更新。
+  - 通过 @{article:升级 Phabricator} 学习保持 Phabricator 更新。

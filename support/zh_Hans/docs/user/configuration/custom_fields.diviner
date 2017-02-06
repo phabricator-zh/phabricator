@@ -165,7 +165,7 @@ want to add a field to:
 The easiest way to get started is to drop your subclass into
 `phabricator/src/extensions/`. If Phabricator is configured in development
 mode, the class should immediately be available in the UI. If not, you can
-restart Phabricator (for help, see @{article:Restarting Phabricator}).
+restart Phabricator (for help, see @{article:重启 Phabricator}).
 
 For example, this is a simple template which adds a custom field to Maniphest:
 

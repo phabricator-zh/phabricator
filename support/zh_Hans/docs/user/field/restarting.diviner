@@ -1,73 +1,62 @@
-@title Restarting Phabricator
+@title 重启 Phabricator
 @group fieldmanual
 
-Instructions on how to restart HTTP and PHP servers to reload configuration
-changes in Phabricator.
+介绍如何重启 HTTP 和 PHP 服务器来使对 Phabricator 配置的修改生效。
 
 
-Overview
+概览
 ========
 
-Phabricator's setup and configuration instructions sometimes require you to
-restart your server processes, particularly after making configuration changes.
-This document explains how to restart them properly.
+Phabricator 的安装和配置说明中有时（特别是修改了配置时）会要求你重启服务器进程。
+本文将详述如何正确地进行重启。
 
-In general, you need to restart both whatever is serving HTTP requests and
-whatever is serving PHP requests. In some cases, these will be the same process
-and handled with one restart command. In other cases, they will be two
-different processes and handled with two different restart commands.
+通常，HTTP 和 PHP 进程都需要重启。在某些情况下，这些在同一进程中，可以用一个命令重启。 
+在其他情况下，他们在不同的进程中，需要使用不同的命令重启。
 
-{icon exclamation-circle color=blue} If you have two different processes (for
-example, nginx and PHP-FPM), you need to issue two different restart commands.
+{icon exclamation-circle color=blue} 如果在不同的进程中（例如 nginx 和 PHP-FPM），
+你需要使用两个不同的重启命令。
 
-It's important to restart both your HTTP server and PHP server because each
-server caches different configuration and settings. Restarting both servers
-after making changes ensures you're running up-to-date configuration.
+因为 HTTP 和 PHP 服务器会分别缓存不同的配置信息，所以一定要同时重启它们。这样才能保证
+你进行的配置变更都生效。
 
-To restart properly:
+正确的重启过程:
 
-  - Identify which HTTP server you are running (for example, Apache or nginx).
-  - Identify which PHP server you are running (for example, mod_php or PHP-FPM).
-  - For each server, follow the instructions below to restart it.
-  - If the instructions tell you to do so, make sure you restart **both**
-    servers!
+  - 确定运行的 HTTP 服务器 (比如, Apache 或 nginx)
+  - 确定运行的 PHP 服务器 (例如, mod_php 或 PHP-FPM)
+  - 对于每个服务器，请按照下文说明重启动它
+  - 如果说明要求你重启 Phabricator，确保**两个**都重启。
 
 
-Quick Start
+快速开始
 ===========
 
-**Apache**: If you use Apache with `mod_php`, you can just restart Apache. You
-do not need to restart `mod_php` separately. See below for instructions on how
-to do this if you aren't sure. This is a very common configuration.
+**Apache**: 如果使用 Apache 和 `mod_php`，无需单独重启 `mod_php`， 
+仅重启 Apache 即可。如果不确定如何操作，请查看下文的说明。这种配置方式比较常见。
 
-**nginx**: If you use nginx with PHP-FPM, you need to restart both nginx and
-PHP-FPM. See below for instructions on how to do this if you aren't sure. This
-is also a very common configuration.
+**nginx**: 如果使用 nginx 和 PHP-FPM，需要同时重启它们。
+如果不确定如何操作，请查看下文的说明。这种配置方式也比较常见。
 
-It's possible to use Apache or nginx in other configurations, or a different
-webserver. Consult the documentation for your system or webserver if you aren't
-sure how things are set up.
+Apache 或 nginx 也有其他的配置方式，也可以使用其他的网页服务器。
+如果不清楚配置方式请查看系统或服务器文档。
 
 
-Universal Restart
+通用重启
 =================
 
-If you are having trouble properly restarting processes on your server, try
-turning it off and on again. This is effective on every known system and
-under all configurations.
+如果在重启进程时遇到麻烦，可以试着重启自己的主机。
+这种方式在任何系统和配置下都有效。
 
 
-HTTP Server: Apache
+HTTP 服务器: Apache
 ===================
 
-If you are using Apache with `mod_php`, you only need to restart Apache.
+如果使用 Apache 和 `mod_php`，需要重启 Apache。
 
-If you are using Apache in FastCGI mode, you need to restart both Apache and
-the FCGI server (usually PHP-FPM). This is very unusual.
+如果使用 Apache 的 FastCGI 模式，需要重启 Apache 和 FCGI（通常是PHP-FPM） 服务器。
+这种比较少见。
 
-The correct method for restarting Apache depends on what system you are
-running. Consult your system documentation for details. You might use a command
-like one of these on your system, or a different command:
+运行的系统不同，重启 Apache 的命令也不同。请查看系统文档确定重启方式。
+你可以试试下面的几个命令：
 
 ```
 $ sudo apachectl restart
@@ -76,15 +65,13 @@ $ sudo service apache2 restart
 ```
 
 
-HTTP Server: Nginx
+HTTP 服务器: Nginx
 ==================
 
-If you're using Nginx with PHP-FPM, you need to restart both of them. This is
-the most common Nginx configuration.
+如果使用 Nginx 和 PHP-FPM，两个都需要重启。Nginx 一般都是这样配置的。
 
-The correct method for restarting Nginx depends on what system you are running.
-Consult your system documentation for details. You might use a command like
-one of these on your system, or a different command:
+运行的系统不同，重启 Ngnix 的命令也不同。请查看系统文档确定重启方式。
+你可以试试下面的几个命令：
 
 ```
 $ sudo /etc/init.d/nginx restart
@@ -92,23 +79,20 @@ $ sudo service nginx restart
 ```
 
 
-PHP Server: mod_php
+PHP 服务器: mod_php
 ===================
 
-This is a builtin PHP server that runs within Apache. Restarting Apache (see
-above) is sufficient to restart it. There is no separate restart command for
-`mod_php`, so you don't need to do anything else.
+这是内置在 Apache 内部的 PHP 服务器。重启 Apache 也会重启它。
+`mod_php` 没有重启命令，所以不需要对它做任何事情。
 
 
-PHP Server: PHP-FPM
+PHP 服务器: PHP-FPM
 ===================
 
-If you're using FastCGI mode, PHP-FPM is the most common PHP FastCGI server.
-You'll need to restart it if you're running it.
+如果使用 FastCGI 模式，你需要重启它。PHP-FPM 是最常用的 PHP FastCGI 服务器。
 
-The correct method for restarting PHP-FPM depends on what system you are
-running. Consult your system documentation for details. You might use a command
-like one of these on your system, or a different command:
+运行的系统不同，重启 PHP-FPM 的命令也不同。请查看系统文档确定重启方式。
+你可以试试下面的几个命令：
 
 ```
 $ sudo /etc/init.d/php-fpm restart

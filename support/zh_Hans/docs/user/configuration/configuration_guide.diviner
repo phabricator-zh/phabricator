@@ -165,7 +165,7 @@ NOTE: 升级 Phabricator 时, 再次运行 `storage upgrade` 应用更新。
 接下来:
 
   - 参照 @{article:账号与注册配置}设置管理账号及登录注册; 或
-  - 查看 @{article:Configuration User Guide: Advanced Configuration}了解高级配置选项; 或
+  - 查看 @{article:高级配置}了解高级配置选项; 或
   - 参照 @{article:Configuring a File Domain} 配置文件域名; 或
   - 参照@{article:Configuring a Preamble Script} 配置 preamble 脚本设置负载均衡变量
     或调整速率限制或

@@ -174,7 +174,7 @@ NOTE: 升级 Phabricator 时, 再次运行 `storage upgrade` 应用更新。
   - 参照  @{article:Configuring Inbound Email} 配置收取邮件; 或
   - 参照 @{article:Diffusion User Guide} 导入仓库; 或
   - 通过 @{article:Managing Daemons with phd} 了解后台进程; 或
-  - 通过 @{article:Notifications User Guide: Setup and Configuration}; 
+  - 通过 @{article:配置通知服务}; 
     了解通知服务，或
   - 参照 @{article:数据备份和迁移配置} 进行数据备份和迁移; 或
   - 参照 @{article:Contributor Introduction}进行贡献

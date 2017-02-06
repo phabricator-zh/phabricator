@@ -1,131 +1,112 @@
-@title Notifications User Guide: Setup and Configuration
+@title 配置通知服务
 @group config
 
-Guide to setting up notifications.
+通知服务 配置指南。
 
-Overview
+概览
 ========
 
-By default, Phabricator delivers information about events (like users creating
-tasks or commenting on code reviews) through email and in-application
-notifications.
+默认情况下， Phabricator 通过邮件和程序内的通知来
+发送事件（如用户新建任务和评论代码审查）信息。
 
-Phabricator can also be configured to deliver notifications in real time, by
-popping up a message in any open browser windows if something has happened or
-an object has been updated.
-
-To enable real-time notifications:
-
-  - Configure and start the notification server, as described below.
-  - Adjust `notification.servers` to point at it.
-
-This document describes the process in detail.
+也可以配置 Phabricator 当有事情发生或对象被更新时，在浏览器里弹出
+消息提示来提供实时的消息通知。
 
 
-Supported Browsers
+设置实时通知:
+
+  - 按下文描述配置启动通知服务器
+  - 修改 `notification.servers` 配置指向通知服务器
+
+本文详细描述了这一过程。
+
+支持的浏览器
 ==================
 
-Notifications are supported for browsers which support WebSockets. This covers
-most modern browsers (like Chrome, Firefox, Safari, and recent versions of
-Internet Explorer) and many mobile browsers.
+支持 WebSockets 的浏览器都支持实时通知。 这包括
+大多数现代浏览器（如 Chrome，Firefox，Safari 和 最新版本的IE浏览器）
+和许多移动浏览器。
 
-IE8 and IE9 do not support WebSockets, so real-time notifications won't work in
-those browsers.
+IE8 和 IE9 不支持 WebSockets, 所以它们不支持实时通知。
 
 
-Installing Node and Modules
+安装 Node 和 对应模块
 ===========================
 
-The notification server uses Node.js, so you'll need to install it first.
+通知服务器是用 Node.js 开发的，所以需要先安装 Node.js。
 
-To install Node.js, follow the instructions on
-[[ http://nodejs.org | nodejs.org ]].
+参照 [[ http://nodejs.org | nodejs.org ]] 安装 Node.js。
 
-You will also need to install the `ws` module for Node. This needs to be
-installed into the notification server directory:
+还需要为 Node 安装 `ws` 模块。需要安装在通知服务器所在目录：
 
   phabricator/ $ cd support/aphlict/server/
   phabricator/support/aphlict/server/ $ npm install ws
 
-Once Node.js and the `ws` module are installed, you're ready to start the
-server.
+安装好  Node.js 和 `ws` 模块，就可以启动通知服务器了。
 
-
-Running the Aphlict Server
+运行 Aphlict 服务器
 ==========================
 
-After installing Node.js, you can control the notification server with the
-`bin/aphlict` command. To start the server:
+安装 Node.js 后，可以通过 `bin/aphlict` 命令来管理通知服务器。
+启动服务器：
 
   phabricator/ $ bin/aphlict start
 
-By default, the server must be able to listen on port `22280`. If you're using
-a host firewall (like a security group in EC2), make sure traffic can reach the
-server.
+默认情况下，服务器会监听 `22280` 端口。如果服务器上有防火墙（比如 EC2 上的安全组），
+请确保流量可以到达服务器。
 
-The server configuration is controlled by a configuration file, which is
-separate from Phabricator's configuration settings. The default file can
-be found at `phabricator/conf/aphlict/aphlict.default.json`.
+服务器配置信息放在配置文件中，和 Phabricator 的配置是分开的。
+默认的配置文件在 `phabricator/conf/aphlict/aphlict.default.json`。
 
-To make adjustments to the default configuration, either copy this file to
-create `aphlict.custom.json` in the same directory (this file will be used if
-it exists) or specify a configuration file explicitly with the `--config` flag:
+可以直接修改默认配置文件，也可以在同目录下将其复制为 
+`aphlict.custom.json` 文件（如果存在，将使用这个文件），
+或者通过 `--config` 参数显示地指定配置文件：
 
   phabricator/ $ bin/aphlict start --config path/to/config.json
 
-The configuration file has these settings:
+配置文件的设置项目：
 
-  - `servers`: //Required list.// A list of servers to start.
-  - `logs`: //Optional list.// A list of logs to write to.
-  - `cluster`: //Optional list.// A list of cluster peers. This is an advanced
-    feature.
-  - `pidfile`: //Required string.// Path to a PID file.
-  - `memory.hint`: //Optional int.// Suggestion to `node` about how much
-    memory to use, via `--max-old-stack-size`. In most cases, this can be
-    left unspecified.
+  - `servers`: //必填（列表类型）// 启动的服务器列表
+  - `logs`: //可选（列表类型）// 写入日志列表
+  - `cluster`: //可选（列表类型）// 集群列表，这个是个高级功能。
+  - `pidfile`: //必填（字符串）// PID 文件路径
+  - `memory.hint`: //可选（整数）// 通过 `--max-old-stack-size` 参数建议 node 
+  	使用的内存大小。大部分情况下可以不指定。
+  
+服务器配置字段是一个对象，包含字段：  
+  - `type`: //必填（字符串）// 服务器类型。可选值：`admin` 或 `client`。
+  	 一般情况下每种需要启动一个。
+  - `port`: //必填（整数）// 服务器监听端口。
+  - `listen`: //可选（字符串）// 绑定的接口。默认
+     `admin` 服务器绑定到 `127.0.0.1`（只有本机的其他服务可以连接），
+	 而 `client` 服务器绑定到 `0.0.0.0` (所有客户端都可连接）.
+  - `ssl.key`: //可选（字符串）// 在此端口使用 SSL 时 SSL key 文件路径。
+  - `ssl.cert`: //可选（字符串）// // 在此端口使用 SSL 时 SSL 证书文件路径。
+  - `ssl.chain`: //可选（字符串）// 在此端口使用 SSL 时 SSL 证书链文件路径。
 
-Each server in the `servers` list should be an object with these keys:
+`logs` 列表中每个日志是一个对象，包含的字段：
 
-  - `type`: //Required string.// The type of server to start. Options are
-    `admin` or `client`. Normally, you should run one of each.
-  - `port`: //Required int.// The port this server should listen on.
-  - `listen`: //Optional string.// Which interface to bind to. By default,
-    the `admin` server is bound to `127.0.0.1` (so only other services on the
-    local machine can connect to it), while the `client` server is bound
-    to `0.0.0.0` (so any client can connect).
-  - `ssl.key`: //Optional string.// If you want to use SSL on this port,
-    the path to an SSL key.
-  - `ssl.cert`: //Optional string.// If you want to use SSL on this port,
-    the path to an SSL certificate.
-  - `ssl.chain`: //Optional string.// If you have configured SSL on this
-    port, an optional path to a certificate chain file.
+  - `path`: //必填（字符串）// 日志文件的路径
 
-Each log in the `logs` list should be an object with these keys:
+`cluster` 列表中条目是个对象，包含的字段:
 
-  - `path`: //Required string.// Path to the log file.
+  - `host`: //必填（字符串）// 主机地址.
+  - `port`: //必填（整数）// 端口.
+  - `protocol`: //必填（字符串）// 链接的协议, `"http"` 或 `"https"` 中的一个。
 
-Each peer in the `cluster` list should be an object with these keys:
+集群配置属于进阶话题，大部分安装可以忽略这部分。关于如何配置集群的更多信息
+请查看 @{article:Clustering Introduction} 和 @{article:Cluster: Notifications}。
 
-  - `host`: //Required string.// The peer host address.
-  - `port`: //Required int.// The peer port.
-  - `protocol`: //Required string.// The protocol to connect with, one of
-    `"http"` or `"https"`.
+默认值适用于简单情况，在复制配置环境中运行时，可能需要调整它们。
 
-Cluster configuration is an advanced topic and can be omitted for most
-installs. For more information on how to configure a cluster, see
-@{article:Clustering Introduction} and @{article:Cluster: Notifications}.
 
-The defaults are appropriate for simple cases, but you may need to adjust them
-if you are running a more complex configuration.
-
-Configuring Phabricator
+配置 Phabricator
 =======================
 
-After starting the server, configure Phabricator to connect to it by adjusting
-`notification.servers`. This configuration option should have a list of servers
-that Phabricator should interact with.
+服务器启动后，通过配置 Phabricator 的 `notification.servers` 信息进行连接。
+此配置项需要提供一组服务器供 Phabricator 交互。
 
-Normally, you'll list one client server and one admin server, like this:
+一般情况下，需要列出一个 client 服务器，一个 admin 服务器，比如：
 
 ```lang=json
 [
@@ -144,87 +125,73 @@ Normally, you'll list one client server and one admin server, like this:
 ]
 ```
 
-This definition defines which services the user's browser will attempt to
-connect to. Most of the time, it will be very similar to the services defined
-in the Aphlict configuration. However, if you are sending traffic through a
-load balancer or terminating SSL somewhere before traffic reaches Aphlict,
-the services the browser connects to may need to have different hosts, ports
-or protocols than the underlying server listens on.
+这些设置指定了用户的浏览器要连接的服务。大部分时候，这些配置和 Aphlict 的配置相似。
+然而，如果在流量到达 Aphlict 前使用了负载均衡器 或者设置 SSL，浏览器连接的服务
+端口和协议可能和底层服务器的不同。
 
 
-Verifying Server Status
+验证服务器状态
 =======================
 
-After configuring `notification.servers`, navigate to
-{nav Config > Notification Servers} to verify that things are operational.
+配置 `notification.servers` 后，导航到
+{nav Config > Notification Servers} 确保这些设置可以正常工作。
 
 
-Troubleshooting
+故障排除
 ===============
 
-You can run `aphlict` in the foreground to get output to your console:
+可以在终端的前台运行 `aphlict` 命令来显示输出内容：
 
   phabricator/ $ ./bin/aphlict debug
 
-Because the notification server uses WebSockets, your browser error console
-may also have information that is useful in figuring out what's wrong.
+因为通知服务器使用了 WebSockets ，浏览器的终端错误输出
+可能有些可以帮助解决问题的信息。
 
-The server also generates a log, by default in `/var/log/aphlict.log`. You can
-change this location by adjusting configuration. The log may contain
-information that is useful in resolving issues.
+服务器也会输出相关日志，默认存放在 `/var/log/aphlict.log`。
+可以通过配置修改日志存放路径。日志中也可能有帮助解决问题的信息。
 
-
-SSL and HTTPS
+SSL 和 HTTPS
 =============
 
-If you serve Phabricator over HTTPS, you must also serve websockets over HTTPS.
-Browsers will refuse to connect to `ws://` websockets from HTTPS pages.
+如果安装 Phabricator 通过 HTTPS 提供服务， websockets 也需要使用 HTTPS。
+浏览器在 HTTPS 页面下拒绝连接到 `ws://` 类的 websockets 。
 
-If a client connects to Phabricator over HTTPS, Phabricator will automatically
-select an appropriate HTTPS service from `notification.servers` and instruct
-the browser to open a websocket connection with `wss://`.
+如果客户端通过 HTTPS 连接到 Phabricator ， Phabricator 会自动从
+`notification.servers` 配置中选择合适的 HTTPS 服务，同时要求
+浏览器用 `wss://` 协议建立 websocket 连接。
 
-The simplest way to do this is configure Aphlict with an SSL key and
-certificate and let it terminate SSL directly.
+这样做的最简单方式是，直接为 Aphlict 配置 SSL key 和证书，让她直接用 SSL。
 
-If you prefer not to do this, two other options are:
+不想这样做的话，有两种方式可选：
 
-  - run the websocket through a websocket-capable loadbalancer and terminate
-    SSL there; or
-  - run the websocket through `nginx` over the same socket as the rest of
-    your web traffic.
+  - 使用兼容 websocket 的负载均衡器 运行 websocket，在那里提供 SSL 支持。
+  - 和其他一样通过 `nginx` 运行 websocket 
 
-See the next sections for more detail.
+有关更多详细信息，请参阅下一节。
 
-
-Terminating SSL with a Load Balancer
+通过负载均衡器提供 SSL 服务
 ====================================
 
-If you want to terminate SSL in front of the notification server with a
-traditional load balancer or a similar device, do this:
+如果想在通知服务器前通过负载均衡器提供 SSL 服务，步骤如下：
 
-  - Point `notification.servers` at your load balancer or reverse proxy,
-    specifying that the protocol is `https`.
-  - On the load balancer or proxy, terminate SSL and forward traffic to the
-    Aphlict server.
-  - In the Aphlict configuration, listen on the target port with `http`.
+  - 将 `notification.servers` 指向负载均衡器或反向代理，协议设置为 `https`。
+  - 在负载均衡或代理服务器上设置 SSL，将流量转发到 Aphlict 服务器。
+  - 配置 Aphlict 通过 `http` 协议监听目标端口。
 
-
-Terminating SSL with Nginx
+通过 Nginx 提供 SSL 服务
 ==========================
 
-If you use `nginx`, you can send websocket traffic to the same port as normal
-HTTP traffic and have `nginx` proxy it selectively based on the request path.
+使用 `nginx` 可以在同样端口上像发送普通 HTTP 流量一样发送 websocket 流量，
+此外 `nginx` 代理请求可以基于路径。
 
-This requires `nginx` 1.3 or greater. See the `nginx` documentation for
-details:
+这要求使用 `nginx` 1.3 或更高版本。 参见`nginx`文档：
 
 > http://nginx.com/blog/websocket-nginx/
 
-This is very complex, but allows you to support notifications without opening
-additional ports.
+虽然比较复杂，但是可以让你在不开新端口的情况下支持通知服务。
 
-An example `nginx` configuration might look something like this:
+
+`nginx` 配置示例：
 
 ```lang=nginx, name=/etc/nginx/conf.d/connection_upgrade.conf
 map $http_upgrade $connection_upgrade {
@@ -256,24 +223,21 @@ server {
   }
 }
 ```
+使用此方式，需要进行其他的额外调整：
 
-With this approach, you should make these additional adjustments:
+**Phabricator 配置**:  `notification.servers` 中的 `"client"` 
+配置项调整如下：
 
-**Phabricator Configuration**: The entry in `notification.servers` with type
-`"client"` should have these adjustments made:
+  - 设置 `host` 为 Phabricator 所在主机
+  - 设置 `port` 为标准的 HTTPS 端口 (一般为 `443`).
+  - 设置 `protocol` 为 `"https"`.
+  - 设置 `path` 为 `/ws/`, 需匹配 `nginx` 配置中的 `location` 项设置。
 
-  - Set `host` to the Phabricator host.
-  - Set `port` to the standard HTTPS port (usually `443`).
-  - Set `protocol` to `"https"`.
-  - Set `path` to `/ws/`, so it matches the special `location` in your
-    `nginx` config.
 
-You do not need to adjust the `"admin"` server.
+不需要调整 `"admin"` 服务器配置。
 
-**Aphlict**: Your Aphlict configuration should make these adjustments to
-the `"client"` server:
+**Aphlict**: Aphlict 配置中的 `"client"` 服务配置项调整如下:
 
-  - Do not specify any `ssl.*` options: `nginx` will send plain HTTP traffic
-    to Aphlict.
-  - Optionally, you can `listen` on `127.0.0.1` instead of `0.0.0.0`, because
-    the server will no longer receive external traffic.
+  - 不要设置任何的 `ssl.*` 配置项：`nginx` 会给 Aphlict 发送常规 HTTP 流量。
+  - 可以将监听端口从 `0.0.0.0` 调整为 `127.0.0.1`，因为服务器不会再接受
+    外部流量。

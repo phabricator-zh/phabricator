@@ -53,7 +53,7 @@ Configuring Aphlict
 
 To configure clustering on the server side, add a `cluster` key to your
 Aphlict configuration file. For more details about configuring Aphlict,
-see @{article:Notifications User Guide: Setup and Configuration}.
+see @{article:配置通知服务}.
 
 The `cluster` key should contain a list of `"admin"` server locations. Every
 message the server receives will be retransmitted to all nodes in the list.
@@ -167,5 +167,5 @@ Next Steps
 Continue by:
 
   - reviewing notification configuration with
-    @{article:Notifications User Guide: Setup and Configuration}; or
+    @{article:配置通知服务}; or
   - returning to @{article:Clustering Introduction}.

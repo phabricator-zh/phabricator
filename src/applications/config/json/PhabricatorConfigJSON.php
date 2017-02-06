@@ -14,6 +14,11 @@ final class PhabricatorConfigJSON extends Phobject {
     // object.
     // Otherwise, just use the default encoder.
 
+    // above 5.4.0 we can directly use json_encode with these flags to perform the same job.
+    if(defined('JSON_PRETTY_PRINT')){
+        return json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    }
+
     $type = null;
     if (is_array($value)) {
       $list_keys = range(0, count($value) - 1);

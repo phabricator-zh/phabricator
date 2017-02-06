@@ -1,47 +1,40 @@
-@title Managing Caches
+@title 管理缓存
 @group config
 
-Discusses Phabricator caches and cache management.
+讨论 Phabricator 缓存和相关管理。
 
-Overview
+概览
 ========
 
-Phabricator uses various caches to improve performance, similar to the caches
-a web browser uses to improve web performance.
 
-In particular, blocks of text which are expensive to render (like formatted
-text and syntax highlighted code) are often cached after they're rendered for
-the first time. When they're rendered again, Phabricator can read the cache
-instead of recomputing the result.
+如同浏览器通过使用缓存提高 web 性能一样， Phabricator 同样使用各种缓存来
+提高性能。
 
-Because text is cached, you may continue to see the old result even after you
-make certain configuration changes which should affect it. The most common
-example of this is that if you enable syntax highlighting with Pygments, old
-diffs and pastes may not appear highlighted.
+特别地，需要高昂渲染代价的大块文本（格式化文本或高亮代码），通常在第一次请求后进行缓存。
+当再次请求它们时，Phabricator 可以直接读取缓存而不需要重新计算结果。
 
-You may also run into this issue if you modify existing Remarkup rules or
-develop new ones, or modify other parts of the code that run before the results
-are cached.
+文本被缓存后，即使修改了影响它们的配置，还是有可能继续看到旧的结果。
+最常见例子时，您启用了 Pygments 进行代码高亮，但是旧 diffs 代码和 pastes 
+文本可能不会被高亮。
 
-Caches will naturally expire over time, so if they aren't causing a problem
-you can just ignore the out of date caches and they'll fix themselves
-eventually (usually within 30 days).
+如果你修改了缓存标示规则或创建了新的，修改了代码中缓存生成的部分，
+也可能会遇到缓存问题。
 
-If you don't want to wait, you can purge the caches. This will remove any
-cached data and force Phabricator to recompute the results.
+缓存最终都会过期，如果它们没有出现问题，可以忽略过期的缓存，
+最终（通常在30天内）它们会自己修复好的。
 
-Purging Caches
+如果你不想等缓存过期，也可以清理缓存。这将清除所有的缓存数据，
+强制 Phabricator 重新计算结果。 
+
+清理缓存
 ==============
 
-If you need to purge Phabricator's caches, you can use the CLI tool. Run it
-with the `--help` flag to see options:
+需要清理缓存，可以使用命令行工具，加上 `--help` 参数可以查看选项设置：
 
   phabricator/ $ ./bin/cache purge --help
 
-This tool can purge caches in a granular way, but it's normally easiest to
-just purge all of the caches:
+此工具可以清除特定缓存，但是最简单的还是直接清除所有的缓存。
 
   phabricator/ $ ./bin/cache purge --purge-all
 
-You can purge caches safely. The data they contain can always be rebuilt from
-other data if Phabricator needs it.
+您可以安全清除缓存。Phabricator 可以在需要的时候，通过其他数据重建这些缓存。

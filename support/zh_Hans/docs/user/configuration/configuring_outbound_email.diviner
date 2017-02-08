@@ -1,201 +1,176 @@
-@title Configuring Outbound Email
+@title 配置出站邮件
 @group config
 
-Instructions for configuring Phabricator to send mail.
 
-= Overview =
+关于 Phabricator 发送邮件配置的说明。
 
-Phabricator can send outbound email via several different providers, called
-"Adapters".
+= 概览 =
 
-| Send Mail With | Setup | Cost | Inbound | Notes |
+Phabricator 可以通过不同的提供商发送出站电子邮件，它们被称为“适配器”。
+
+| 发送邮件 | 设置 | 费用 | 接收邮件 | 备注 |
 |---------|-------|------|---------|-------|
-| Mailgun | Easy | Cheap | Yes | Recommended |
-| Amazon SES | Easy | Cheap | No | Recommended |
-| SendGrid | Medium | Cheap | Yes | Discouraged (See Note) |
-| External SMTP | Medium | Varies | No | Gmail, etc. |
-| Local SMTP | Hard | Free | No | (Default) sendmail, postfix, etc |
-| Custom | Hard | Free | No | Write an adapter for some other service. |
-| Drop in a Hole | Easy | Free | No | Drops mail in a deep, dark hole. |
+| Mailgun | 容易 | 便宜 | 是 | 推荐 |
+| Amazon SES | 容易 | 便宜 | 否 | 推荐 |
+| SendGrid | 中等 | 便宜 | 是 | 不推荐 (查看备注) |
+| External SMTP | 中等 | 都有 | 否 | Gmail, 等. |
+| Local SMTP | 困难 | 免费 | 否 | (默认) sendmail, postfix, 等 |
+| Custom | 困难 | 免费 | 否 | 为其他服务商开发适配器 |
+| Drop in a Hole | 容易 | 免费 | 否 | 把邮件丢在一个深黑的洞里。|
 
-Of these options, sending mail via local SMTP is the default, but usually
-requires some configuration to get working. See below for details on how to
-select and configure a delivery method.
+在这些选项中，通过本地 SMTP 发送邮件是默认值，但通常
+需要一些配置才能工作。 有关如何选择和配置的详细信息，请参阅下文。
 
-Overall, Mailgun and SES are much easier to set up, and using one of them is
-recommended. In particular, Mailgun will also let you set up inbound email
-easily.
+总的来说，Mailgun 和 SES 更容易设置些，推荐选择其一。 
+特别是，Mailgun 还将使您更容易地设置接收电子邮件。
 
-If you have some internal mail service you'd like to use you can also
-write a custom adapter, but this requires digging into the code.
+如果你有一些想使用的内部邮件服务，也可以写一个自定义适配器，
+但这需要深入地研究代码。
 
-Phabricator sends mail in the background, so the daemons need to be running for
-it to be able to deliver mail. You should receive setup warnings if they are
-not. For more information on using daemons, see
-@{article:Managing Daemons with phd}.
+Phabricator 通过后台进程发送邮件，所以需要先启动后台进程。
+如果没有启动会有警告信息。关于使用后台进程的信息，
+请参阅 @{article:Managing Daemons with phd}。
 
-**Note on SendGrid**: Users have experienced a number of odd issues with
-SendGrid, compared to fewer issues with other mailers. We discourage SendGrid
-unless you're already using it. If you send to SendGrid via SMTP, you may need
-to adjust `phpmailer.smtp-encoding`.
+**关于 SendGrid 的提醒**: 
+用户在使用 SendGrid 的过程中遇到了相较其他的邮件服务商更多的奇怪问题。
+除非正在使用 SendGrid，否则不建议使用。如果通过 SMTP 发送 SendGrid 邮件，
+你可能需要调整 `phpmailer.smtp-encoding` 设置。
 
-= Basics =
+= 基础 =
 
-Regardless of how outbound email is delivered, you should configure these keys
-in your configuration:
+无论选用哪种方式发送出站邮件，下面几项都需要配置：
 
-  - **metamta.default-address** determines where mail is sent "From" by
-    default. If your domain is `example.org`, set this to something like
-    `noreply@example.org`.
-  - **metamta.domain** should be set to your domain, e.g. `example.org`.
-  - **metamta.can-send-as-user** should be left as `false` in most cases,
-    but see the documentation for details.
+  - **metamta.default-address** 
+    这个决定邮件的发送来源。如果您的域名是 `example.org`，可以设置成 `noreply@example.org`。
+  - **metamta.domain** 设置为你的域名，比如 `example.org`。
+  - **metamta.can-send-as-user** 大部分情况下应该设置为 `false`，查看文档了解详情。
 
-= Configuring Mail Adapters =
+= 配置 Mail 适配器 =
 
-To choose how mail will be sent, change the `metamta.mail-adapter` key in
-your configuration. Possible values are listed in the UI:
+通过修改 `metamta.mail-adapter` 的值来类确定使用哪种方式发送邮件。
+界面显示的选项列表：
 
-  - `PhabricatorMailImplementationAmazonMailgunAdapter`: use Mailgun, see
-    "Adapter: Mailgun".
-  - `PhabricatorMailImplementationAmazonSESAdapter`: use Amazon SES, see
-    "Adapter: Amazon SES".
-  - `PhabricatorMailImplementationPHPMailerLiteAdapter`: default, uses
-    "sendmail", see "Adapter: Sendmail".
-  - `PhabricatorMailImplementationPHPMailerAdapter`: uses SMTP, see
-    "Adapter: SMTP".
-  - `PhabricatorMailImplementationSendGridAdapter`: use SendGrid, see
-    "Adapter: SendGrid".
-  - `Some Custom Class You Write`: use a custom adapter you write, see
-    "Adapter: Custom".
-  - `PhabricatorMailImplementationTestAdapter`: this will
-    **completely disable** outbound mail. You can use this if you don't want to
-    send outbound mail, or want to skip this step for now and configure it
-    later.
+  - `PhabricatorMailImplementationAmazonMailgunAdapter`: 使用 Mailgun, 查看
+    "适配器: Mailgun"。
+  - `PhabricatorMailImplementationAmazonSESAdapter`: 使用 Amazon SES, 查看
+    "适配器: Amazon SES"。
+  - `PhabricatorMailImplementationPHPMailerLiteAdapter`: 默认, 使用
+    "sendmail", 查看 "适配器: Sendmail"。
+  - `PhabricatorMailImplementationPHPMailerAdapter`: 使用 SMTP, 查看
+    "适配器: SMTP"。
+  - `PhabricatorMailImplementationSendGridAdapter`: 使用 SendGrid, 查看
+    "适配器: SendGrid"。
+  - `你编辑的自定义类`: 使用自定义适配器, 查看 "适配器: 自定义"。
+  - `PhabricatorMailImplementationTestAdapter`: 这个将**彻底禁止**发送出站邮件。
+    如果不想发送出站邮件；或者想现在跳过这步以后再设置，可以选用此项。
 
-= Adapter: Sendmail =
+= 适配器: Sendmail =
 
-This is the default, and selected by choosing
-`PhabricatorMailImplementationPHPMailerLiteAdapter` as the value for
-**metamta.mail-adapter**. This requires a `sendmail` binary to be installed on
-the system. Most MTAs (e.g., sendmail, qmail, postfix) should do this, but your
-machine may not have one installed by default. For install instructions, consult
-the documentation for your favorite MTA.
+这个是默认方式。通过将 **metamta.mail-adapter** 
+设置为 `PhabricatorMailImplementationPHPMailerLiteAdapter` 启用。
+这需要在系统上安装 `sendmail` 程序。大部分 MTAs（比如 sendmail, qmail, postfix）
+可以选用，但是通常系统上默认并没有安装。关于安装说明，请查看所选用 MTA 的文档。
 
-Since you'll be sending the mail yourself, you are subject to things like SPF
-rules, blackholes, and MTA configuration which are beyond the scope of this
-document. If you can already send outbound email from the command line or know
-how to configure it, this option is straightforward. If you have no idea how to
-do any of this, strongly consider using Mailgun or Amazon SES instead.
+既然你想自己发送邮件，那么你应该遵守诸如 SPF 规则， blackholes 和 MTA 配置等超出
+本文档范围的内容。如果你知道如何配置或者已经可以通过命令行发送邮件，这个选项是比较直接的
+办法。如果你对此选项知之甚少，强烈建议考虑选用 Mailgun 或 Amazon SES。
 
-If you experience issues with mail getting mangled (for example, arriving with
-too many or too few newlines) you may try adjusting `phpmailer.smtp-encoding`.
+如果遇到邮件内容显示混乱（比如过多换行或太少换行），可以尝试调整 `phpmailer.smtp-encoding` 
+的配置。
 
-= Adapter: SMTP =
+= 适配器: SMTP =
 
-You can use this adapter to send mail via an external SMTP server, like Gmail.
-To do this, set these configuration keys:
+可以使用这个适配器通过外部的 SMTP 服务器发送邮件，比如 Gmail。
+这个适配器需要设置的选项如下：
 
-  - **metamta.mail-adapter**: set to
-    `PhabricatorMailImplementationPHPMailerAdapter`.
-  - **phpmailer.mailer**: set to `smtp`.
-  - **phpmailer.smtp-host**: set to hostname of your SMTP server.
-  - **phpmailer.smtp-port**: set to port of your SMTP server.
-  - **phpmailer.smtp-user**: set to your username used for authentication.
-  - **phpmailer.smtp-password**: set to your password used for authentication.
-  - **phpmailer.smtp-protocol**: set to `tls` or `ssl` if necessary. Use
-    `ssl` for Gmail.
-  - **phpmailer.smtp-encoding**: Normally safe to leave as the default, but
-    adjusting it may help resolve mail mangling issues (for example, mail
-    arriving with too many or too few newlines).
+  - **metamta.mail-adapter**: 设置为 `PhabricatorMailImplementationPHPMailerAdapter`。
+  - **phpmailer.mailer**: 设置为 `smtp`。
+  - **phpmailer.smtp-host**: 设置为 SMTP 服务器的主机名。
+  - **phpmailer.smtp-port**: 设置为 SMTP 服务器的端口。
+  - **phpmailer.smtp-user**: 设置认证使用的用户名。
+  - **phpmailer.smtp-password**: 设置认证使用的密码。
+  - **phpmailer.smtp-protocol**: 如需要设置成 `tls` 或 `ssl`。Gmail 使用 `ssl`。
+  - **phpmailer.smtp-encoding**: 通常保留默认值是安全的。
+    但是如果遇到邮件内容显示混乱（比如过多换行或太少换行），可以调整此设置。
 
-= Adapter: Mailgun =
+= 适配器: Mailgun =
 
-Mailgun is an email delivery service. You can learn more at
-<http://www.mailgun.com>. Mailgun isn't free, but is very easy to configure
-and works well.
+Mailgun 提供邮件发送服务，可以查看 <http://www.mailgun.com> 了解更多内容。
+虽然 Mailgun 不是免费的，但是它易于配置且工作良好。
 
-To use Mailgun, sign up for an account, then set these configuration keys:
+使用 Mailgun 需要注册一个账号，然后设置下面的选项：
 
-  - **metamta.mail-adapter**: set to
-    `PhabricatorMailImplementationMailgunAdapter`.
-  - **mailgun.api-key**: set to your Mailgun API key.
-  - **mailgun.domain**: set to your Mailgun domain.
+  - **metamta.mail-adapter**: 设置为
+    `PhabricatorMailImplementationMailgunAdapter`。
+  - **mailgun.api-key**: 设置为你的 Mailgun API key。
+  - **mailgun.domain**: 设置为你的 Mailgun 域名。
 
-= Adapter: Amazon SES =
+= 适配器: Amazon SES =
 
-Amazon SES is Amazon's cloud email service. It is not free, but is easier to
-configure than sendmail and can simplify outbound email configuration. To use
-Amazon SES, you need to sign up for an account with Amazon at
-<http://aws.amazon.com/ses/>.
+Amazon SES 是 Amazon 提供的邮件发送云服务。它不是免费的，但是比 sendmail 配置要简单。 
+使用 Amazon SES 需要在 <http://aws.amazon.com/ses/> 注册账号。
 
-To configure Phabricator to use Amazon SES, set these configuration keys:
+配置 Phabricator 使用 Amazon SES, 需要设置这些选项：
 
-  - **metamta.mail-adapter**: set to
-    "PhabricatorMailImplementationAmazonSESAdapter".
-  - **amazon-ses.access-key**: set to your Amazon SES access key.
-  - **amazon-ses.secret-key**: set to your Amazon SES secret key.
-  - **amazon-ses.endpoint**: Set to your Amazon SES endpoint.
+  - **metamta.mail-adapter**: 设置为
+    "PhabricatorMailImplementationAmazonSESAdapter"。
+  - **amazon-ses.access-key**: 设置为你的 Amazon SES access key。
+  - **amazon-ses.secret-key**: 设置为你的 Amazon SES secret key。
+  - **amazon-ses.endpoint**: 设置为你的 Amazon SES endpoint。
 
-NOTE: Amazon SES **requires you to verify your "From" address**. Configure which
-"From" address to use by setting "`metamta.default-address`" in your config,
-then follow the Amazon SES verification process to verify it. You won't be able
-to send email until you do this!
+NOTE: Amazon SES **要求验证发送来源地址**。先通过"`metamta.default-address`" 
+配置发送来源地址，然后根据 Amazon SES 提供的验证过程进行验证。
+验证完成后才能发送邮件。
 
-= Adapter: SendGrid =
+= 适配器: SendGrid =
 
-SendGrid is an email delivery service like Amazon SES. You can learn more at
-<http://sendgrid.com/>. It is easy to configure, but not free.
+SendGrid 是一个类似 Amazon SES 的邮件发送服务。可以查看 <http://sendgrid.com/> 
+了解更多内容。它配置简单，但不是免费的。
 
-You can configure SendGrid in two ways: you can send via SMTP or via the REST
-API. To use SMTP, just configure `sendmail` and leave Phabricator's setup
-with defaults. To use the REST API, follow the instructions in this section.
+可以通过两种方式配置使用 SendGrid 发送邮件： 使用 SMTP 或者 REST API 发送。
+使用 SMTP，只需要配置 sendmail` 其他的用默认值即可。
+使用 REST API ，设置如下选项：
 
-To configure Phabricator to use SendGrid, set these configuration keys:
+  - **metamta.mail-adapter**: 设置为
+    "PhabricatorMailImplementationSendGridAdapter"。
+  - **sendgrid.api-user**: 设置为你的 SendGrid 登录名。
+  - **sendgrid.api-key**: 设置为你的 SendGrid 密码。
 
-  - **metamta.mail-adapter**: set to
-    "PhabricatorMailImplementationSendGridAdapter".
-  - **sendgrid.api-user**: set to your SendGrid login name.
-  - **sendgrid.api-key**: set to your SendGrid password.
+登录你的 SendGrid 账号后，可以在 <http://sendgrid.com/developer> 找到
+这些信息。
 
-If you're logged into your SendGrid account, you may be able to find this
-information easily by visiting <http://sendgrid.com/developer>.
 
-= Adapter: Custom =
+= 适配器: 自定义 =
 
-You can provide a custom adapter by writing a concrete subclass of
-@{class:PhabricatorMailImplementationAdapter} and setting it as the
-`metamta.mail-adapter`.
+可以通过编写 @{class:PhabricatorMailImplementationAdapter} 子类来
+提供自定义的适配器。将 `metamta.mail-adapter` 设置为对应类名。
 
 TODO: This should be better documented once extending Phabricator is better
 documented.
 
-= Adapter: Disable Outbound Mail =
+= 适配器: 禁止出站邮件 =
 
-You can use the @{class:PhabricatorMailImplementationTestAdapter} to completely
-disable outbound mail, if you don't want to send mail or don't want to configure
-it yet. Just set **metamta.mail-adapter** to
-`PhabricatorMailImplementationTestAdapter`.
+可以使用 @{class:PhabricatorMailImplementationTestAdapter} 完全禁止出站邮件。
+如果不想发送邮件或者还不想配置，可以将 **metamta.mail-adapter** 设置为
+`PhabricatorMailImplementationTestAdapter`。
 
-= Testing and Debugging Outbound Email =
+= 测试和调试出站邮件 =
 
-You can use the `bin/mail` utility to test, debug, and examine outbound mail. In
-particular:
+可以使用 `bin/mail` 工具进行测试、调试 和 检查出站邮件。
 
-  phabricator/ $ ./bin/mail list-outbound   # List outbound mail.
-  phabricator/ $ ./bin/mail show-outbound   # Show details about messages.
-  phabricator/ $ ./bin/mail send-test       # Send test messages.
+  phabricator/ $ ./bin/mail list-outbound   # 列出出站邮件。
+  phabricator/ $ ./bin/mail show-outbound   # 显示消息的详细信息。
+  phabricator/ $ ./bin/mail send-test       # 发送测试信息。
 
-Run `bin/mail help <command>` for more help on using these commands.
+运行 `bin/mail help <command>` 查看使用此命令的帮助信息。
 
-You can monitor daemons using the Daemon Console (`/daemon/`, or click
-**Daemon Console** from the homepage).
 
-= Next Steps =
+您可以使用守护程序控制台监视守护程序（路径为`/daemon/` 或从首页点击 **Daemon Console** ）。
 
-Continue by:
+= 下一步=
 
-  - @{article:Configuring Inbound Email} so users can reply to email they
-  receive about revisions and tasks to interact with them; or
-  - learning about daemons with @{article:Managing Daemons with phd}; or
-  - returning to the @{article:配置向导}.
+接下来:
+
+  - @{article:Configuring Inbound Email} 这样用户就可以回复它们收到的关于修订和任务的邮件；或
+  - 查看 @{article:Managing Daemons with phd} 学习管理后台进程; 或
+  - 返回到 @{article:配置向导}.

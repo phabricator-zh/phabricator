@@ -1,4 +1,4 @@
-@title Configuring Encryption
+@title 加密配置
 @group config
 
 加密 配置指南
@@ -6,47 +6,42 @@
 概览
 ========
 
-Phabricator supports at-rest encryption of uploaded file data stored in the
-"Files" application.
+Phabricator 支持对存储在 "Files" 程序中上传文件进行静态加密。
 
-Configuring at-rest file data encryption does not encrypt any other data or
-resources. In particular, it does not encrypt the database and does not encrypt
-Passphrase credentials.
+配置静态数据文件加密并不会对其他数据和资源进行加密。
+尤其不会加密数据库和 Passphrase 认证。
 
-Attackers who compromise a Phabricator host can read the master key and decrypt
-the data. In most configurations, this does not represent a significant
-barrier above and beyond accessing the file data. Thus, configuring at-rest
-encryption is primarily useful for two types of installs:
+危害 Phabricator 主机的攻击者可以读取主密钥并解密数据。 
+在大多数配置中，这并不代表一个高于和超过访问文件数据的重要屏障。 
+因此，配置静态加密主要用于两种类型的安装
 
-  - If you maintain your own webserver and database hardware but want to use
-    Amazon S3 or a similar cloud provider as a blind storage server, file data
-    encryption can let you do so without needing to trust the cloud provider.
-  - If you face a regulatory or compliance need to encrypt data at rest but do
-    not need to actually secure this data, encrypting the data and placing the
-    master key in plaintext next to it may satisfy compliance requirements.
+  - 如果你维护自己的网页服务器和数据库硬件但想使用
+    Amazon S3 或类似的云提供商作为盲存储服务器，文件数据
+    加密可以让您这样做，而不需要信任云这些提供商。
+  - 如果您面临监管或合规性问题，可以静态加密数据，
+  	但这样并不会实际保护这些数据，
+	加密数据和将密钥放置在文本中可以满足合规性要求。
+  
+本文档的剩余部分讨论如何配置静态加密。
 
-The remainder of this document discusses how to configure at-rest encryption.
-
-
-Quick Start
+快速开始
 ===========
 
-To configure encryption, you will generally follow these steps:
+要配置加密，您通常将执行以下步骤：
 
-  - Generate a master key with `bin/files generate-key`.
-  - Add the master key it to the `keyring`, but don't mark it as `default` yet.
-  - Use `bin/files encode ...` to test encrypting a few files.
-  - Mark the key as `default` to automatically encrypt new files.
-  - Use `bin/files encode --all ...` to encrypt any existing files.
+  - 使用 `bin/files generate-key` 生成一个主密钥。
+  - 将主密钥添加到 `keyring`, 先不要标记 `default` 。
+  - 使用 `bin/files encode ...` 测试加密一些文件。
+  - 将其标记为 `default` 自动加密新文件。
+  - 使用 `bin/files encode --all ...` 加密全部已有文件。
 
-See the following sections for detailed guidance on these steps.
+有关这些步骤的详细指导，请参阅以下部分。
 
-
-Configuring a Keyring
+配置 Keyring
 =====================
 
-To configure a keyring, set `keyring` with `bin/config` or by using another
-configuration source. This option should be a list of keys in this format:
+要配置一个 keyring，使用`bin/config` 设置`keyring` 或者使用另一个配置源。
+此选项应该是以下格式的键列表：
 
 ```lang=json
 ...
@@ -62,135 +57,122 @@ configuration source. This option should be a list of keys in this format:
 ...
 ```
 
-Each key should have these properties:
+每个键应该具有这些属性:
 
-  - `name`: //Required string.// A unique key name.
-  - `type`: //Required string.// Type of the key. Only `aes-256-cbc` is
-    supported.
-  - `material.base64`: //Required string.// The key material. See below for
-    details.
-  - `default`: //Optional bool.// Optionally, mark exactly one key as the
-    default key to enable encryption of newly uploaded file data.
-
-The key material is sensitive and an attacker who learns it can decrypt data
-from the storage engine.
+  - `name`: //必填字符串。// 唯一的键名
+  - `type`: //必填字符串。// 键类型。 仅支持 `aes-256-cbc` 。
+  - `material.base64`: //必填字符串。// 密钥材料。见下文细节。
+  - `default`: //可选布尔值。// 可选地，只为新上传文件数据启用加密。
+ 
+密钥材料是敏感的，攻击者可以通过学习它用来解密存储引擎中的数据。
 
 
-Format: Raw Data
+格式: 原始数据
 ================
 
-The `raw` storage format is automatically selected for all newly uploaded
-file data if no key is makred as the `default` key in the keyring. This is
-the behavior of Phabricator if you haven't configured anything.
+如果在 keyring 配置中没有标为 `default` 默认值，
+新上传的文件都将使用 `raw` 存储格式。
+如果未进行任何配置，这就是 Phabricator 的方式。
 
-This format stores raw data without modification.
+此格式存储原始数据，没有进行修改。
 
 
-Format: AES256
+格式: AES256
 ==============
 
-The `aes-256-cbc` storage format is automatically selected for all newly
-uploaded file data if an AES256 key is marked as the `default` key in the
-keyring.
+如果在 keyring 配置中将 AES256 值标为 `default` 默认值，
+新上传的文件都将使用 ``aes-256-cbc` 存储格式。
 
-This format uses AES256 in CBC mode. Each block of file data is encrypted with
-a unique, randomly generated private key. That key is then encrypted with the
-master key. Among other motivations, this strategy allows the master key to be
-cycled relatively cheaply later (see "Cycling Master Keys" below).
+此格式在 CBC 模式下使用 AES256。 每个文件数据块用
+唯一的，随机生成的私钥进行加密。 然后该密钥用主密钥加密。 
+除了其他动机，这个策略允许主密钥循环使用，相对便宜（见下面的“循环主键”）。
 
-AES256 keys should be randomly generated and 256 bits (32 characters) in
-length, then base64 encoded when represented in `keyring`.
+AES256 密钥应随机生成，256位（32个字符）长度，
+然后用 base64 编码，存储在`keyring`。
 
-You can generate a valid, properly encoded AES256 master key with this command:
+
+您可以使用此命令生成有效的，正确编码的 AES256 主密钥：
 
 ```
 phabricator/ $ ./bin/files generate-key --type aes-256-cbc
 ```
 
-This mode is generally similar to the default server-side encryption mode
-supported by Amazon S3.
+此模式通常与 Amazon S3 支持的默认服务器端加密模式类似。
 
 
-Format: ROT13
+格式: ROT13
 =============
 
-The `rot13` format is a test format that is never selected by default. You can
-select this format explicitly with `bin/files encode` to test storage and
-encryption behavior.
+`rot13` 是一个测试格式，从未被选为默认值。
+可以使用 `bin/files encode` 显示地选择此格式
+测试存储和加密行为。
 
-This format applies ROT13 encoding to file data.
+这种格式使用 ROT13 加密文件数据。
 
 
-Changing File Storage Formats
+修改文件存储格式
 =============================
 
-To test configuration, you can explicitly change the storage format of a file.
+要测试配置，您可以显式更改文件的存储格式。
 
-This will read the file data, decrypt it if necessary, write a new copy of the
-data with the desired encryption, then update the file to point at the new
-data. You can use this to make sure encryption works before turning it on by
-default.
+这将读取文件数据，如有需要则解密它，使用所需的加密写一个新的副本数据，
+然后更新文件指向新的数据。您可以使用它来确保加密工作正常，然后再默认打开它。
 
-To change the format of an individual file, run this command:
+
+要更改单个文件的格式，请运行以下命令：
 
 ```
 phabricator/ $ ./bin/files encode --as <format> F123 [--key <key>]
 ```
 
-This will change the storage format of the sepcified file.
+这将更改指定文件的存储格式。
 
-
-Verifying Storage Formats
+验证存储格式
 =========================
 
-You can review the storage format of a file from the web UI, in the
-{nav Storage} tab under "Format". You can also use the "Engine" and "Handle"
-properties to identify where the underlying data is stored and verify that
-it is encrypted or encoded in the way you expect.
-
-See @{article:配置文件存储} for more information on storage
-engines.
+您可以从网页界面的“格式”下的“nav storage”选项卡中查看文件的存储格式。 
+您还可以使用“引擎”和“处理”属性来标识底层数据的存储位置并验证它以您期望的方式加密或编码。
 
 
-Cycling Master Keys
+有关存储的更多信息，请参阅 @{article:配置文件存储} 。
+
+循环主密钥
 ===================
 
-If you need to cycle your master key, some storage formats support key cycling.
+如果你需要循环你的主密钥，某些存储格式支持密钥循环。
 
-Cycling a file's encryption key decodes the local key for the data using the
-old master key, then re-encodes it using the new master key. This is primarily
-useful if you believe your master key may have been compromised.
+循环文件的加密密钥使用旧的主密钥来解码数据的本地密钥，
+然后使用新的主密钥对其进行重新编码。
+如果您认为您的主密钥可能已被入侵，则非常有用。
 
-First, add a new key to the keyring and mark it as the default key. You need
-to leave the old key in place for now so existing data can be decrypted.
+首先在 keyring 添加一个键，并标示为默认。
+你需要现在离开旧密钥，数据可以解密了。
 
-To cycle an individual file, run this command:
+
+要循环单个文件，请运行以下命令：
 
 ```
 phabricator/ $ ./bin/files cycle F123
 ```
+通过查看命令输出并访问文件以检查数据是否存在和可解密来验证循环是否正常工作。
+您可以验证更多的循环文件以获得更多的信心。
 
-Verify that cycling worked properly by examining the command output and
-accessing the file to check that the data is present and decryptable. You
-can cycle additional files to gain additional confidence.
 
-You can cycle all files with this command:
+可以使用此命令验证所有的循环文件:
 
 ```
 phabricator/ $ ./bin/files cycle --all
 ```
+一旦所有的文件都完成循环，从 keyring 移除旧的主键。
 
-Once all files have been cycled, remove the old master key from the keyring.
-
-Not all storage formats support key cycling: cycling a file only has an effect
-if the storage format is an encrypted format. For example, cycling a file that
-uses the `raw` storage format has no effect.
+并不是所有的存储都支持主键循环：循环文件只有在存储格式是加密格式时才有效。 
+例如，循环一个使用`raw`存储格式存储的文件没有效果。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - understanding storage engines with @{article:配置文件存储}; or
-  - returning to the @{article:配置向导}.
+  - 通过 @{article:配置文件存储} 了解存储引擎; 或
+  - 返回到 @{article:配置向导}.

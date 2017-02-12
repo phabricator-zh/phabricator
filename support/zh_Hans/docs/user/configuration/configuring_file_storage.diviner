@@ -190,6 +190,5 @@ Phabricator 支持以下几种不同的文件存储引擎：
 
 接下来:
 
-  - reviewing at-rest encryption options with
-    @{article:Configuring Encryption}; or
+  - 查看 @{article:加密配置} 了解文件静态加密; 或者
   - 返回到 @{article:配置向导}.

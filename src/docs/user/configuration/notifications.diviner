@@ -1,70 +1,77 @@
 @title Notifications User Guide: Setup and Configuration
 @group config
 
-设置通知服务 的指南。
+Guide to setting up notifications.
 
-概览
+Overview
 ========
 
-默认情况下， Phabricator 通过邮件和程序内的通知来
-发送事件（如用户新建任务和评论代码审查）信息。
+By default, Phabricator delivers information about events (like users creating
+tasks or commenting on code reviews) through email and in-application
+notifications.
 
-也可以配置 Phabricator 当有事情发生或对象被更新时，在浏览器里弹出
-消息提示来提供实时的消息通知。
+Phabricator can also be configured to deliver notifications in real time, by
+popping up a message in any open browser windows if something has happened or
+an object has been updated.
+
+To enable real-time notifications:
+
+  - Configure and start the notification server, as described below.
+  - Adjust `notification.servers` to point at it.
+
+This document describes the process in detail.
 
 
-开始实时通知:
-
-  - 按下文描述配置启动通知服务器
-  - 修改 `notification.servers` 配置指向通知服务器
-
-本文相信描述了这一过程。
-
-支持的浏览器
+Supported Browsers
 ==================
 
-支持 WebSockets 的浏览器都支持实时通知。 这包括
-大多数现代浏览器（如Chrome，Firefox，Safari 和 最新版本的IE浏览器）
-和许多移动浏览器。
+Notifications are supported for browsers which support WebSockets. This covers
+most modern browsers (like Chrome, Firefox, Safari, and recent versions of
+Internet Explorer) and many mobile browsers.
 
-IE8 和 IE9 不支持 WebSockets, 所以它们不支持实时通知。
+IE8 and IE9 do not support WebSockets, so real-time notifications won't work in
+those browsers.
 
 
-安装 Node 和 模块
+Installing Node and Modules
 ===========================
 
-通知服务器是用 Node.js 开发的，所以需要先安装 Node.js。
+The notification server uses Node.js, so you'll need to install it first.
 
-参照 [[ http://nodejs.org | nodejs.org ]] 安装 Node.js。
+To install Node.js, follow the instructions on
+[[ http://nodejs.org | nodejs.org ]].
 
-还需要为 Node 安装 `ws` 模块。需要安装在通知服务器所在目录：
+You will also need to install the `ws` module for Node. This needs to be
+installed into the notification server directory:
 
   phabricator/ $ cd support/aphlict/server/
   phabricator/support/aphlict/server/ $ npm install ws
 
-安装好  Node.js 和 `ws` 模块，就可以启动通知服务器了。
+Once Node.js and the `ws` module are installed, you're ready to start the
+server.
 
-运行 Aphlict 服务器
+
+Running the Aphlict Server
 ==========================
 
-安装 Node.js 后，可以通过 `bin/aphlict` 命令来管理通知服务器。
-启动服务器：
+After installing Node.js, you can control the notification server with the
+`bin/aphlict` command. To start the server:
 
   phabricator/ $ bin/aphlict start
 
-默认情况下，服务器会监听 `22280` 端口。如果服务器上有防火墙（比如 EC2 上的安全组），
-请确保流量可以到达服务器。
+By default, the server must be able to listen on port `22280`. If you're using
+a host firewall (like a security group in EC2), make sure traffic can reach the
+server.
 
-服务器配置信息放在配置文件中，和 Phabricator 的配置是分开的。
-默认的配置文件在 `phabricator/conf/aphlict/aphlict.default.json`。
+The server configuration is controlled by a configuration file, which is
+separate from Phabricator's configuration settings. The default file can
+be found at `phabricator/conf/aphlict/aphlict.default.json`.
 
-直接修改默认配置文件，也可以在同目录下将其复制为 
-`aphlict.custom.json` 文件（如果存在，将使用这个文件），
-或者通过 `--config` 参数显示地指定配置文件：
+To make adjustments to the default configuration, either copy this file to
+create `aphlict.custom.json` in the same directory (this file will be used if
+it exists) or specify a configuration file explicitly with the `--config` flag:
 
   phabricator/ $ bin/aphlict start --config path/to/config.json
-
-pei zh
 
 The configuration file has these settings:
 

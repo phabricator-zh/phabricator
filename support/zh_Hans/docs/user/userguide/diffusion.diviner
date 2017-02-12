@@ -40,7 +40,7 @@ hosted repository.
   - For hosted repositories, make sure you go through the setup instructions
     in @{article:Diffusion User Guide: Repository Hosting} first.
   - For all repositories, you'll need to be running the daemons. If you have
-    not set them up yet, see @{article:Managing Daemons with phd}.
+    not set them up yet, see @{article:用 phd 管理后台进程}.
 
 By default, you must be an administrator to create a new repository. You can
 change this in the application settings.
@@ -81,7 +81,7 @@ Continue by:
   - managing repository hooks with
     @{article:Diffusion User Guide: Commit Hooks}; or
   - understanding daemons in more detail with
-    @{article:Managing Daemons with phd}.
+    @{article:用 phd 管理后台进程}.
 
 If you're having trouble getting things working, these topic guides may be
 helpful:

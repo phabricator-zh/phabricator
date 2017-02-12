@@ -29,7 +29,7 @@ Phabricator 可以通过不同的提供商发送出站电子邮件，它们被�
 
 Phabricator 通过后台进程发送邮件，所以需要先启动后台进程。
 如果没有启动会有警告信息。关于使用后台进程的信息，
-请参阅 @{article:Managing Daemons with phd}。
+请参阅 @{article:用 phd 管理后台进程}。
 
 **关于 SendGrid 的提醒**: 
 用户在使用 SendGrid 的过程中遇到了相较其他的邮件服务商更多的奇怪问题。
@@ -172,5 +172,5 @@ documented.
 接下来:
 
   - @{article:配置入站邮件} 这样用户就可以回复它们收到的关于修订和任务的邮件；或
-  - 查看 @{article:Managing Daemons with phd} 学习管理后台进程; 或
+  - 查看 @{article:用 phd 管理后台进程} 学习管理后台进程; 或
   - 返回到 @{article:配置向导}.

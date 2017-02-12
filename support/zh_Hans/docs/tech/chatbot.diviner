@@ -84,4 +84,4 @@ The bot is a Phabricator daemon, so start it with `phd`:
   ./bin/phd launch phabricatorbot <absolute_path_to_config_file>
 
 If you have issues you can try `debug` instead of `launch`, see
-@{article:Managing Daemons with phd} for more information.
+@{article:用 phd 管理后台进程} for more information.

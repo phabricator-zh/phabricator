@@ -160,7 +160,7 @@ After restarting the daemons, any pending tasks should be able to retry
 immediately.
 
 For more information on managing the daemons, see
-@{article:Managing Daemons with phd}.
+@{article:用 phd 管理后台进程}.
 
 
 Forced Parsing

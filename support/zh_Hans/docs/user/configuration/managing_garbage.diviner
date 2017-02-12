@@ -1,68 +1,62 @@
 @title Managing Garbage Collection
 @group config
 
-Understanding and configuring garbage collection.
 
-Overview
+了解 和 配置垃圾回收。
+
+概览
 ========
 
-Phabricator generates various logs and caches during normal operation. Some of
-these logs and caches are usually of very little use after some time has
-passed, so they are deleted automatically (often after a month or two) in a
-process called "garbage collection".
+Phabricator 在正常操作期间生成各种日志和高速缓存。 
+一些日志和缓存通常在一段时间后很少使用，
+所以它们被自动删除（通常在一两个月后）
+这个过程称为“垃圾收集”。
 
-Garbage collection is performed automatically by the daemons. You can review
-all of the installed garbage collectors by browsing to {nav Config > Garbage
-Collectors}.
+垃圾收集由守护程序自动执行。浏览{nav Config > Garbage
+Collectors} 可以查看所有安装的垃圾收集器。
 
 
-Configuring Retention Policies
+配置保留策略
 ==============================
 
-You can reconfigure the data retention policies for most collectors.
+您可以为大多数收集器重新配置数据保留策略。
 
-The default retention polcies should be suitable for most installs. However,
-you might want to **decrease** retention to reduce the amount of disk space
-used by some high-volume log that you don't find particularly interesting, or
-to adhere to an organizational data retention policy.
+默认保留策略应适用于大多数安装。 然而，
+您可能希望**减少**无用日志的保留时间
+以减少磁盘空间占用量。
 
-Alternatively, you might want to **increase** retention if you want to retain
-some logs for a longer period of time, perhaps for auditing or analytic
-purposes.
+或者，你想要将日志保留更长的时间用户分析或审计，
+可以**增加**保留时间。
 
-You can review the current retention policies in
-{nav Config > Garbage Collectors}. To change a policy, use
-`bin/garbage set-policy` to select a new policy:
+查看 {nav Config > Garbage Collectors} 了解当前的
+数据保留策略。使用 `bin/garbage set-policy` 修改
+使用新的策略。
 
 ```
 phabricator/ $ ./bin/garbage set-policy --collector cache.markup --days 7
 ```
 
-You can use `--days` to select how long data is retained for. You can also use
-`--indefinite` to set an indefinite retention policy. This will stop the
-garbage collector from cleaning up any data. Finally, you can use `--default`
-to restore the default policy.
+使用 `--days` 选择数据保留的时长。也可以使用 `--indefinite` 设置永久保留策略，
+此时垃圾回收器将不再清理任何数据。最后，可以用 `--default` 重置为默认策略。 
 
-Your changes should be reflected in the web UI immediately, and will take
-effect in the actual collector **the next time the daemons are restarted**.
+您的更改应立即反映在网络用户界面中，并将在**下次后台进程重启**后生效。
 
 
-Troubleshooting
+故障排除
 ===============
 
-You can manually run a collector with `bin/garbage collect`.
+通过 `bin/garbage collect` 手动运行回收器。
 
 ```
 phabricator/ $ ./bin/garbage collect --collector cache.general
 ```
 
-By using the `--trace` flag, you can inspect the operation of the collector
-in detail.
+通过 `--trace` 参数，你可以查看垃圾回收操作的详情。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下里:
 
-  - exploring other daemon topics with @{article:用 phd 管理后台进程}.
+  - 查看 @{article:用 phd 管理后台进程} 了解其他后台进程话题。

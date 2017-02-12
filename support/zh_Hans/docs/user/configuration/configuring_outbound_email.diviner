@@ -171,6 +171,6 @@ documented.
 
 接下来:
 
-  - @{article:Configuring Inbound Email} 这样用户就可以回复它们收到的关于修订和任务的邮件；或
+  - @{article:配置入站邮件} 这样用户就可以回复它们收到的关于修订和任务的邮件；或
   - 查看 @{article:Managing Daemons with phd} 学习管理后台进程; 或
   - 返回到 @{article:配置向导}.

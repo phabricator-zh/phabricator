@@ -75,7 +75,7 @@ Phabricator 的大部分数据时存在 MySQL 中的，所以 MySQL 是最主要
 如果使用本地硬盘存储，需要进行手动备份。
 将存储上传文件的根目录（查看 `storage.local-disk.path` 设置）复制一份即可。
 
-关于上传文件的更多信息，请查看 @{article:Configuring File Storage}。
+关于上传文件的更多信息，请查看 @{article:配置文件存储}。
 
 
 恢复: 上传文件

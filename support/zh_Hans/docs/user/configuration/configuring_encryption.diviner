@@ -1,9 +1,9 @@
 @title Configuring Encryption
 @group config
 
-Setup guide for configuring encryption.
+加密 配置指南
 
-Overview
+概览
 ========
 
 Phabricator supports at-rest encryption of uploaded file data stored in the
@@ -148,7 +148,7 @@ You can review the storage format of a file from the web UI, in the
 properties to identify where the underlying data is stored and verify that
 it is encrypted or encoded in the way you expect.
 
-See @{article:Configuring File Storage} for more information on storage
+See @{article:配置文件存储} for more information on storage
 engines.
 
 
@@ -192,5 +192,5 @@ Next Steps
 
 Continue by:
 
-  - understanding storage engines with @{article:Configuring File Storage}; or
+  - understanding storage engines with @{article:配置文件存储}; or
   - returning to the @{article:配置向导}.

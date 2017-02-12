@@ -1,202 +1,195 @@
-@title Configuring File Storage
+@title 配置文件存储
 @group config
 
-Setup file storage and support for large files.
+设置文件存储 并支持大文件。
 
-Overview
+概览
 ========
 
-This document describes how to configure Phabricator to support large file
-uploads, and how to choose where Phabricator stores files.
+本文档描述如何配置 Phabricator 支持大文件上传，
+以及如何选择 Phabricator 存储文件的位置。
 
-There are two major things to configure:
+有两个主要的事情要配置:
 
-  - set up PHP and your HTTP server to accept large requests;
-  - choose and configure a storage engine.
+  - 设置 PHP 和 HTTP 服务器支持大请求
+  - 选择和配置一个存储引擎
 
-The following sections will guide you through this configuration.
+以下部分将指导您完成这些配置。
 
-
-How Phabricator Stores Files
+Phabricator 如何存储文件
 ============================
 
-Phabricator stores files in "storage engines", which are modular backends
-that implement access to some storage system (like MySQL, the filesystem, or
-a cloud storage service like Amazon S3).
+Phabricator 将文件存储在实现存储的模块化后端的“存储引擎”中，
+（如MySQL，文件系统或像Amazon S3这样的云存储服务）。
 
-Phabricator stores large files by breaking them up into many chunks (a few
-megabytes in size) and storing the chunks in an underlying storage engine.
-This makes it easier to implement new storage engines and gives Phabricator
-more flexibility in managing file data.
+Phabricator 通过将大文件分成许多块来存储它们（几个兆字节大小），
+并将这些块存储在底层存储引擎中。这使得实现新的存储引擎更容易，
+同时 Phabricator 能更灵活地管理文件数据。
 
-The first section of this document discusses configuring your install so that
-PHP and your HTTP server will accept requests which are larger than the size of
-one file chunk. Without this configuration, file chunk data will be rejected.
+本文档的第一部分讨论如何配置
+PHP 和 HTTP 服务器接受大于一个文件块的请求。 
+没有此配置，文件块数据将被拒绝。
 
-The second section discusses choosing and configuring storage engines, so data
-is stored where you want it to be.
+第二部分讨论选择和配置存储引擎，让数据存储在您想要的位置。
 
 
-Configuring Upload Limits
+配置上传限制
 =========================
 
-File uploads are limited by several pieces of configuration at different layers
-of the stack. Generally, the minimum value of all the limits is the effective
-one.
+文件上传受限于堆栈上不同层的几个配置。 通常，设置为限制的最小值是就可以。
 
-To upload large files, you need to increase all the limits to at least
-**32MB**. This will allow you to upload file chunks, which will let Phabricator
-store arbitrarily large files.
+要上传大文件，需要将所有限制至少设置为 **32MB**。
+这将允许您上传文件块，使 Phabricator 存储任意大小的文件。
 
-The settings which limit file uploads are:
+限制文件上传的设置：
 
-**HTTP Server**: The HTTP server may set a limit on the maximum request size.
-If you exceed this limit, you'll see a default server page with an HTTP error.
-These directives limit the total size of the request body, so they must be
-somewhat larger than the desired maximum filesize.
+**HTTP 服务器**: 
 
-  - **Apache**: Apache limits requests with the Apache `LimitRequestBody`
-    directive.
-  - **nginx**: nginx limits requests with the nginx `client_max_body_size`
-    directive. This often defaults to `1M`.
-  - **lighttpd**: lighttpd limits requests with the lighttpd
-    `server.max-request-size` directive.
+HTTP 服务器可以设置对最大请求大小的限制。
+如果超过此限制，您将看到一个带有 HTTP 错误的默认服务器页面。
+这些指令限制请求正文的总大小，因此它们必须设置为
+稍大于所需的最大文件大小。
 
-Set the applicable limit to at least **32MB**. Phabricator can not read these
-settings, so it can not raise setup warnings if they are misconfigured.
+  - **Apache**: Apache 使用 `LimitRequestBody`限制请求大小。
+  - **nginx**: nginx使用 `client_max_body_size`限制请求大小。
+    通常默认为1M。
+  - **lighttpd**: 了ighttpd 使用  `server.max-request-size` 限制请求大小。
 
-**PHP**: PHP has several directives which limit uploads. These directives are
-found in `php.ini`.
+将适用的限制设置为至少 **32MB**。 Phabricator 不能读这些设置，
+因此如果配置错误，它不能发出设置警告。
 
-  - **post_max_size**: Maximum POST request size PHP will accept. If you
-    exceed this, Phabricator will give you a useful error. This often defaults
-    to `8M`. Set this to at least `32MB`. Phabricator will give you a setup
-    warning about this if it is set too low.
-  - **memory_limit**: For some uploads, file data will be read into memory
-    before Phabricator can adjust the memory limit. If you exceed this, PHP
-    may give you a useful error, depending on your configuration. It is
-    recommended that you set this to `-1` to disable it. Phabricator will
-    give you a setup warning about this if it is set too low.
+**PHP**: 
 
-You may also want to configure these PHP options:
+PHP有几个限制上传的指令。 这些指令是 在`php.ini`.
 
-  - **max_input_vars**: When files are uploaded via HTML5 drag and drop file
-    upload APIs, PHP parses the file body as though it contained normal POST
-    parameters, and may trigger `max_input_vars` if a file has a lot of
-    brackets in it. You may need to set it to some astronomically high value.
-  - **upload_max_filesize**: Maximum file size PHP will accept in a raw file
-    upload. This is not normally used when uploading files via drag-and-drop,
-    but affects some other kinds of file uploads. If you exceed this,
-    Phabricator will give you a useful error. This often defaults to `2M`. Set
-    this to at least `32MB`.
+  - **post_max_size**: PHP 接受 POST 请求最大值。 
+  如果你超过这个，Phabricator 会给你一个有用的错误提示。 
+  通常默认值为 '8M'。请设置为至少“32MB”。 
+  如果设置太低，Phabricator 将给你一个设置警告。
+  
+  - **memory_limit**: 某些上传会在 Phabricator 能调整内存限制前，
+    将文件数据读入到内存中。如果你超过这个，PHP
+	可能会给你一个错误提示，这取决于您的配置。 
+	建议您将此设置为`-1`以禁用它。 
+	如果设置太低，Phabricator 会给出有关的设置警告。
+  
 
-Once you've adjusted all this configuration, your server will be able to
-receive chunk uploads. As long as you have somewhere to store them, this will
-enable you to store arbitrarily large files.
+您可能还需要配置这些 PHP 选项:
+
+  - **max_input_vars**: 当通过 HTML5 拖放上传API上传文件时，
+	  PHP解析文件体，就好像它包含正常的POST参数一样，
+	  如果文件有很多，可能会触发`max_input_vars`限制。 
+	  您可能需要将其设置为某种天文学上的高值。
+  - **upload_max_filesize**: PHP 在原始文件上传中接受的最大文件大小。
+    通过拖放上传文件时通常不使用此选项，但会影响其他类型的文件上传。 
+	如果超过这个， Phabricator 会给你一个有用的错误提示。
+	 通常默认为“2M”，请至少设置为“32MB”。
+
+调整所有此配置后，您的服务器将能够接收块上传。 
+只要你有地方存储它们，这将会使您能够存储任意大小的文件。
 
 
-Storage Engines
+存储引擎
 ===============
 
-Phabricator supports several different file storage engines:
+Phabricator 支持以下几种不同的文件存储引擎：
 
-| Engine | Setup | Cost | Notes |
+| 存储引擎 | 设置 | 费用 | 备注 |
 |--------|-------|------|-------|
-| MySQL  | Automatic | Free | May not scale well. |
-| Local Disk | Easy | Free | Does not scale well. |
-| Amazon S3 | Easy | Cheap | Scales well. |
-| Custom | Hard | Varies | Implement a custom storage engine. |
+| MySQL  | 自动 | 免费 | 扩展性不好 |
+| Local Disk | 容易 | 免费 | 扩展性不好 |
+| Amazon S3 | 容易 | 便宜 | 容易扩展 |
+| Custom | 困难 | 不一定 | 实现自定义存储引擎。|
 
-You can review available storage engines and their configuration by navigating
-to {nav Applications > Files > Help/Options > Storage Engines} in the web UI.
+可以在网页中打开 {nav Applications > Files > Help/Options > Storage Engines} 
+浏览可用的存储引擎和它们的配置。
 
-By default, Phabricator is configured to store files up to 1MB in MySQL, and
-reject files larger than 1MB. To store larger files, you can either:
+默认情况下，Phabricator 配置为在 MySQL 中存储小于 1MB 的文件，
+大于 1MB 文件会被拒绝。存储更大文件，可以：
 
-  - increase the MySQL limit to at least 8MB; or
-  - configure another storage engine.
+  - 提高 MySQL 限制到 8MB; 或
+  - 配置另一个存储引擎
 
-Doing either of these will enable the chunk storage engine and support for
-arbitrarily large files.
+任何一个启用都将启用块存储，同时支持任意大小文件。
 
-The remaining sections of this document discuss the available storage engines
-and how to configure them.
+本文档的其余部分讨论可用的存储引擎以及如何配置它们。
 
 
-Engine: MySQL
+引擎: MySQL
 =============
 
-  - **Pros**: Low latency, no setup required.
-  - **Cons**: Storing files in a database is a classic bad idea. May become
-    difficult to administrate if you have a large amount of data.
+  - **优点**: 低延迟，无需设置。
+  - **缺点**: 用数据库存储文件是一个经典的错误。
+  	当有大量的数据时，将会变得很难管理。
 
-MySQL storage is configured by default, for files up to (just under) 1MB. You
-can configure it with these keys:
+对于小于 1MB 的文件，MySQL 是默认配置。可以进行如下设置:
 
-  - `storage.mysql-engine.max-size`: Change the filesize limit, in bytes. Set
-    to 0 to disable.
+  - `storage.mysql-engine.max-size`: 设置文件大小限制，按字节。
+  	设置为 0 禁用。
 
-For most installs, it is reasonable to leave this engine as-is and let small
-files (like thumbnails and profile images) be stored in MySQL, which is usually
-the lowest-latency filestore, even if you configure another storage engine.
+对于大多数安装，即使配置了其他存储引擎，
+保留此引擎将小文件（如缩略图和头像）存储在 MySQL 中是合理的。
+因为这是延迟最低的文件存储。
 
-To support large files, increase this limit to at least `8388608` (8MB).
-This will activate chunk storage in MySQL.
+将此限制设置为 `8388608` (8MB) 来支持大文件。这将激活MySQL中的块存储。
 
-Engine: Local Disk
+
+引擎: 本地硬盘
 ==================
 
-  - **Pros**: Simple to setup.
-  - **Cons**: Doesn't scale to multiple web frontends without NFS.
+  - **优点**: 设置简单
+  - **缺点**: 没有 NFS 不能扩展到多台服务器前端。
 
-To configure file storage on the local disk, set:
+要配置本地磁盘上的文件存储，请设置：
 
-  - `storage.local-disk.path`: Set to some writable directory on local disk.
-    Make that directory.
+  - `storage.local-disk.path`: 设置为本地磁盘上的可写入目录。
+  	记得创建此目录。
 
-Engine: Amazon S3
+引擎: Amazon S3
 =================
 
-  - **Pros**: Scales well.
-  - **Cons**: Slightly more complicated than other engines, not free.
+  - **优点**: 扩展性好
+  - **缺点**: 比其他的要略为复杂，也不是免费的。
 
-To enable file storage in S3, set these keys:
+设置 S3 文件存储:
 
-  - `amazon-s3.access-key`: Your AWS access key.
-  - `amazon-s3.secret-key`: Your AWS secret key.
-  - `amazon-s3.region`: Your AWS S3 region.
-  - `amazon-s3.endpoint`: Your AWS S3 endpoint.
-  - `storage.s3.bucket`: S3 bucket name where files should be stored.
+  - `amazon-s3.access-key`: 你的 AWS access key.
+  - `amazon-s3.secret-key`: 你的 AWS secret key.
+  - `amazon-s3.region`: 你的 AWS S3 region.
+  - `amazon-s3.endpoint`: 你的 AWS S3 endpoint.
+  - `storage.s3.bucket`: 文件存储的 S3 bucket 名字。
 
-Testing Storage Engines
+测试存储引擎
 =======================
 
-You can test that things are correctly configured by dragging and dropping
-a file onto the Phabricator home page. If engines have been configured
-properly, the file should upload.
+可以将文件拖拽到 Phabricator 首页上测试配置是否正确。
+如果引擎配置正确，文件将被上传。
 
-Migrating Files Between Engines
+
+不同引擎间迁移文件
 ===============================
 
-If you want to move files between storage engines, you can use the `bin/files`
-script to perform migrations. For example, suppose you previously used MySQL but
-recently set up S3 and want to migrate all your files there. First, migrate one
-file to make sure things work:
+如果你想在存储引擎之间移动文件，你可以使用`bin/files`
+脚本执行迁移。 例如，假设您以前使用 MySQL，但是
+最近启用 S3，并希望将所有文件迁移到那里。 
+
+首先，迁移一个文件进行测试：
 
   phabricator/ $ ./bin/files migrate --engine amazon-s3 F12345
 
-If that works properly, you can then migrate everything:
+如果一切工作正常，就可以迁移所有的：
 
   phabricator/ $ ./bin/files migrate --engine amazon-s3 --all
 
-You can use `--dry-run` to show which migrations would be performed without
-taking any action. Run `bin/files help` for more options and information.
+可以使用 `--dry-run` 来查看将进行哪些迁移，但是并不真正执行迁移操作。
+运行`bin/files help`了解更多选项和信息。
 
-Next Steps
+
+下一步
 ==========
 
-Continue by:
+接下来:
 
   - reviewing at-rest encryption options with
     @{article:Configuring Encryption}; or
-  - returning to the @{article:配置向导}.
+  - 返回到 @{article:配置向导}.

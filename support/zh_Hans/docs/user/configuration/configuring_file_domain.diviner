@@ -1,119 +1,106 @@
 @title Configuring a File Domain
 @group config
 
-Setup guide for an alternate file domain or CDN.
+备用文件域名和 CDN 设置指南。
 
-Overview
+
+概览
 ========
 
-Serving files that users upload from the same domain that Phabricator runs on
-is a security risk.
+用户上传文件的域名和 Phabricator 运行所在的域名相同时有安全风险的。
 
-In general, doing this creates a risk that users who have permission to upload
-files may be able to upload specially crafted files (like Flash or Java
-applets) which can execute with domain permissions in some contexts (usually
-because of security issues with Flash and Java, but both products have a rich
-history of security issues). The attacker can then trick another user into
-executing the file and gain access to their session.
+一般来说，这样做的风险是，有上传权限的用户可能会上传一个专门制作的文件
+（像 Flash 或 Java applets 文件），这些拥有域名权限的文件在某些情况
+（通常因为 Flash 和 Java 的安全问题，但两个产品都有丰富安全问题的历史）下
+将会运行。攻击者能勾诱导其他用户执行这个文件，从而获得它们的权限。
 
-The best way to mitigate this threat is to serve files from a separate domain.
-For example, if Phabricator is hosted at `https://phabricator.example.com/`,
-you can serve files from `https://files.exampleusercontent.com/`.
+消除这个威胁的最好办法是通过单独的域名来处理文件请求。
+比如：如果 Phabricator 运行在 `https://phabricator.example.com/`，
+你可以用`https://files.exampleusercontent.com/`来处理文件请求。
 
-The alternate file domain should be a completely different domain from your
-primary domain, not just a different subdomain. For example, Google uses
-`googleusercontent.com`, //not// `usercontent.google.com`.
+备用的域名应该和你的主域名完全不同，不应该是不同的子域名。比如， Google 使用
+`googleusercontent.com`，而//不是// `usercontent.google.com`。
 
-You can also configure the alternate file domain to serve through a CDN, which
-will improve performance.
+也可以配置备用域名来使用 CDN，这将提高性能。
 
-Approaches
+
+方式
 =========
 
-Broadly, you can either choose a CDN service and configure that (which will
-also defuse the security risks) or you can configure a second domain with the
-same settings as your first domain. A CDN service may be easier to set up and
-can improve performance.
+广泛地，您可以选择一个 CDN 服务并配置它
+（这也会消除了安全风险）或者可以像配置第一个域名一样配置第二个域名。
+CDN 服务可能更容易设置，也可以提高性能。
 
-| Method | Setup Difficulty | Cost | Notes |
+
+| 方式 | 设置难度 | 费用 | 备注 |
 |---|---|---|---|
-| AWS CloudFront | Very Easy | Cheap | Recommended |
-| CloudFlare | Easy | Free/Cheap | Recommended |
-| Self Hosted | Moderate | Free | No CDN unless you're an ops wizard. |
+| AWS CloudFront | 很容易 | 便宜 | 推荐 |
+| CloudFlare | 容易 | 免费/便宜 | 推荐 |
+| 自托管 | 中等 | 免费 | No CDN unless you're an ops wizard. |
 
-Approach: AWS CloudFront
+方式: AWS CloudFront
 ========
 
-CloudFront is a CDN service that's part of Amazon Web Services. It makes
-particular sense to use if you're hosting your install in AWS.
+CloudFront 作为 Amazon Web Services 的一部分提供 CDN 服务。
+如果你使用 AWS 安装，这个很适合。
 
-To configure it, set up a new CloudFront distribution which is pointed at
-your Phabricator install as an origin (make sure you point it at the primary
-domain name of your install, not just a load balancer or instance). You do not
-need to set up a new domain name, which makes setup a bit more straightforward.
+创建一个新的 CloudFront distribution，将它指向到你安装的 Phabricator。
+确保指向的是主域名，而不是负载均衡器或某个实例。你不需要设置新的域名，
+这个简化了设置过程。
 
-Most settings can be left at their default values, but you should change
-the **Allowed HTTP Methods** setting from `GET, HEAD` to
-`GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE`.
+可以保留绝大数默认值，但是你需要将 **Allowed HTTP Methods** 从
+`GET, HEAD` 修改为 `GET, HEAD, OPTIONS, PUT, POST, PATCH, DELETE`。
 
-Once configured, accessing the distribution's domain name should return a
-Phabricator error page indicating that Phabricator does not recognize the
-domain. If you see this page, it means you've configured things correctly.
+配置完成后，访问域名应该能看到一个表示 Phabricator 无法识别域名的错误页面。
+如果看到此页面，代表你的配置是正确的。
 
-Continue to "Configuring Phabricator", below.
+直接查看下文 “配置 Phabricator”。
 
-Approach: CloudFlare
+
+方式: CloudFlare
 ========
 
-WARNING: You should review all your CloudFlare settings, and be very
-sure to turn off all JavaScript, HTML, CSS minification and
-optimization features, including systems like "Rocket Loader". These
-features will break Phabricator in strange and mysterious ways that
-are unpredictable. Only allow CloudFlare to cache files, and never
-optimize them.
+WARNING: 你需要检查你的 CloudFlare 配置，一定要确保关闭所有的
+JavaScript, HTML, CSS 精简和优化功能，包括像 "Rocket Loader"的功能。
+这些功能将以不可预测的奇怪和灵异方式破坏 Phabricator 。只允许 CloudFlare
+缓存文件，永远不要优化它们。
 
-[[ https://cloudflare.com | CloudFlare ]] is a general-purpose CDN service.
 
-To set up CloudFlare, you'll need to register a second domain and go through
-their enrollment process to host the alternate domain on their servers. Use a
-CNAME record to forward a subdomain to your Phabricator install.
+[[ https://cloudflare.com | CloudFlare ]] 通用的 CDN 服务。
 
-CloudFlare will automatically generate SSL certificates for hosted domains,
-which can significantly reduce the cost and complexity of setup.
+要启用 CloudFlare，需要先注册一个域名，然后按它们的完整流程将域名托管在它们的服务上。
+使用 CNAME 记录转发子域名到你的 Phabricator。
 
-Once configured, accessing the CNAME-forwarded subdomain should return a
-Phabricator error page indicating that Phabricator does not recognize the
-domain. If you see this page, it means you've configured things correctly.
+CloudFlare 将自动生成托管域名的 SSL 证书，这将显著的减少费用和设置复杂度。
 
-Continue to "Configuring Phabricator", below.
+完成设置后，访问 CNAME 转发的子域名应该能看到一个表示 Phabricator 无法识别域名的错误页面。
+如果看到此页面，代表你的配置是正确的。
 
-Approach: Self Hosted
+直接查看下文 “配置 Phabricator”。
+
+方式: 自托管
 ========
 
-To do this, just set up a second domain exactly like your primary domain is
-set up. When setup is complete, visiting the domain should return a Phabricator
-error page indicating that Phabricator does not recognize the domain. This
-means that you've configured things correctly.
+像设置主域名一样设置第二域名即可。
+设置完成后，访问域名应该能看到一个表示 Phabricator 无法识别域名的错误页面。
+如果看到此页面，代表你的配置是正确的。
 
-Note that if you use SSL (which you should), you'll also need to get a
-certificate for this alternate domain and configure that, too.
+如果使用 SSL（应该使用），也需要为此域名获取一个证书，并配置它。
 
-You can also configure a self-hosted domain to route through a caching server
-to provide some of the performance benefits of a CDN, but this is advanced and
-outside the scope of this documentation.
+也可以配置自托管域名通过缓存服务器提供某些 CDN 服务，来提供性能优势，
+但这超出了本文档内容范围。
 
-Continue to "Configuring Phabricator", below.
 
-Configuring Phabricator
+直接查看下文 “配置 Phabricator”。
+
+配置 Phabricator
 ========
 
-After you've set up a CDN or an alternate domain, configure Phabricator to
-recognize the domain. Run this command, providing the domain you have
-configured in place of the `<domain>` token. You should include the protocol,
-so an example domain might be `https://cdn.phabcdn.net/`.
+配置 CDN 或备用域名后，配置 Phabricator 来识别此域名。
+运行此命令，用配置域名替换 `<domain>`。
+需要包含协议，示例域名： `https://cdn.phabcdn.net/`。
 
   phabricator/ $ ./bin/config set security.alternate-file-domain <domain>
 
-Phabricator should now serve CSS, JS, images, profile pictures, and user
-content through the file domain. You can verify this with "View Source" or
-by downloading a file and checking the URL.
+Phabricator 现在应该通过文件域名来处理 CSS、JS、 images、头像、以及其他用户内容。
+可以通过 "View Source" 或下载文件查看 URL 来确认这一点。

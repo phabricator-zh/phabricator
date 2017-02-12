@@ -1,176 +1,155 @@
-@title Managing Storage Adjustments
+@title 管理存储调整
 @group config
 
-Explains how to apply storage adjustments to the MySQL schemata.
+说明如何对 MySQL 架构应用存储调整。
 
-Overview
+概览
 ========
 
-Phabricator uses a workflow called //storage adjustment// to make some minor
-kinds of changes to the MySQL schema. This workflow compliments the //storage
-upgrade// workflow, which makes major changes.
+Phabricator 使用一种称为 //存储调整// 的工作流来对 MySQL 模式进行
+一些微小的修改。 此工作流补充了执行主要的修改的//存储升级//工作流。
 
-You can perform storage adjustment by running:
+要执行存储调整，可以运行：
 
   phabricator/ $ ./bin/storage adjust
 
-This document describes what adjustments are, how they relate to storage
-upgrades, how to perform them, and how to troubleshoot issues with storage
-adjustment.
+本文档描述了这些调整是什么，同存储升级的关系，以及如何执行它们
+和存储调整过程中的故障排除。
 
 
-Understanding Adjustments
+理解这些调整
 ===================
 
-Storage adjustments make minor changes to the Phabricator MySQL schemata to
-improve consistency, unicode handling, and performance. Changes covered by
-adjustment include:
+存储调整对 Phabricator MySQL 模式进行微小的修改，
+以保证一致性、编码处理和性能。所涵盖的变化调整包括：
 
-  - Character set and collation settings for columns, tables, and databases.
-  - Setting and removing "Auto Increment" on columns.
-  - Adding, removing, renaming and adjusting keys.
+  - 列，表和数据库的字符集设置。
+  - 设置和移除列的 "Auto Increment"。
+  - 添加、移除、重命名和调整键值。
 
-Adjustment does not make major changes to the schemata, like creating or
-removing columns or tables or migrating data. (Major changes are performed by
-the upgrade workflow.)
+调整不会对模式进行重大更改，例如创建或删除列、表或迁移数据。 
+（主要变更在升级工作流程进行。）
 
-Adjustments are separate from upgrades primarily because adjustments depend on
-the MySQL version, while upgrades do not. If you update MySQL, better collations
-may become available, and the adjustment workflow will convert your schemata to
-use them.
+调整从升级过程中分离出来是因为调整依赖于数据库版本，但是升级不依赖。
+升级 MySQL 后，将会有更好的字符集可用，调整流程能转换模式使用它们。
 
-All changes covered by adjustment are minor, and technically optional. However,
-you are strongly encouraged to apply outstanding adjustments: if you do not,
-you may encounter issues storing or sorting some unicode data, and may suffer
-poor performance on some queries.
+调整涵盖的所有更改都是次要的，在技术上是可选的。 然而，
+强烈鼓励您应用未完成的调整：如果您不这样做，
+您可能会在存储或排序一些 unicode 数据遇到问题，
+或导致某些查询性能较差。
 
 
-Reviewing Outstanding Adjustments
+检查未完成调整
 =================================
 
-There are two ways to review outstanding adjustments: you can use the web UI,
-or you can use the CLI.
+有两种方式可以检查未完成的调整：使用网页界面或命令行。
 
-To access the web UI, navigate to {nav Config > Database Status} or
-{nav Config > Database Issues}. The //Database Status// panel provides a general
-overview of all schemata. The //Database Issues// panel shows outstanding
-issues.
+要访问网络用户界面，请导航至 {nav Config > 数据库状态} 或
+{nav Config > 数据库问题}。//数据库状态// 提供所有模式的一般概览。
+//数据库问题// 显示了未解决的问题。
 
-These interfaces report //Errors//, which are serious issues that can not be
-resolved through adjustment, and //Warnings//, which are minor issues that the
-adjustment workflow can resolve.
+这些接口报告的//错误//，是调整无法解决的严重问题，
+//警告// 是调整工作流可以解决的小问题。
 
-You can also review adjustments from the CLI, by running:
+通过命令行检查调整，可以运行：
 
   phabricator/ $ ./bin/storage adjust
+  
+在提示你应用调整前，你将得到一个可用调整的列表。
+之后你可以选择是否应用它们。
 
-Before you're prompted to actually apply adjustments, you'll be given a list of
-available adjustments. You can then make a choice to apply them.
 
-
-Performing Adjustments
+性能调整
 ======================
 
-To perform adjustments, run the `adjust` workflow:
+要执行调整，运行 `adjust`：
 
   phabricator/ $ ./bin/storage adjust
 
-For details about flags, use:
+有关标志的详细信息，请使用:
 
   phabricator/ $ ./bin/storage help adjust
 
-You do not normally need to run this workflow manually: it will be run
-automatically after you run the `upgrade` workflow.
+通常，您不需要手动运行此工作流：它将在您运行`更新`工作流程后自动运行。
 
 
-History and Rationale
+历史与根据
 =====================
 
-The primary motivation for the adjustment workflow is MySQL's handling of
-unicode character sets. Before MySQL 5.5, MySQL supports a character set called
-`utf8`. However, this character set can not store 4-byte unicode characters
-(including emoji). Inserting 4-byte characters into a `utf8` column truncates
-the data.
+调整工作流的主要动机是 MySQL 对 unicode 字符集的处理。
+MySQL 5.5 之前，MySQL 支持 `utf8` 字符集。然而
+此字符集不能存储四子节的 unicode 字符（包括 emoji）。
+在 `utf8` 列插入四子节的字符将会截断数据。
 
-With MySQL 5.5, a new `utf8mb4` character set was introduced. This character
-set can safely store 4-byte unicode characters.
+MySQL 5.5 引入了一个新的字符集 `utf8mb4`。
+这个字符集可以安全地存储四子节 unicode 字符。
 
-The adjustment workflow allows us to alter the schema to primarily use
-`binary` character sets on older MySQL, and primarily use `utf8mb4` character
-sets on newer MySQL. The net effect is that Phabricator works consistently and
-can store 4-byte unicode characters regardless of the MySQL version. Under
-newer MySQL, we can also take advantage of the better collation rules the
-`utf8mb4` character set offers.
+调整工作流让我们修改主要在旧版 MySQL 使用的 `binary` 字符集为
+可以在新版 MySQL 使用的 `utf8mb4` 字符。最直接的效果是 Phabricator
+可以一致地工作，无论 MySQL 是什么版本都可以存储四子节字符；我们可以充分
+利用更好的 `utf8mb4` 的字符集规则。
 
-The adjustment workflow was introduced in November 2014. If your install
-predates its introduction, your first adjustment may take a long time (we must
-convert all of the data out of `utf8` and into the appropriate character set).
-If your install was set up after November 2014, adjustments should generally
-be very minor and complete quickly, unless you perform a major MySQL update and
-make new character sets available.
+调整工作流在2014年11月引入。如果你的安装早于引入时间，
+你的第一次调整需要进行较长时间（我们需要将所有非`utf8`数据转换为合适的字符集）。
+如果安装是在 2014年11月之后，调整一般来说很小，很快就能完成，
+除非你执行一个MySQL 大版本升级，使得有新字符集可用。
 
-If you plan to update MySQL from an older version to 5.5 or newer, it is
-advisable to update first, then run the adjustment workflow. If you adjust
-first, you'll need to adjust again after updating, so you'll end up spending
-twice as much time performing schemata adjustments.
+如果你打算将 MySQL 从旧版本升级到 5.5 或更新版本，建议先进行升级，然后运行调整流程。
+如果你先执行调整，安装之后还得需要调整，所以你最终需要执行调整所需的两倍时间。
 
 
-Troubleshooting
+故障排除
 ===============
 
-When you apply adjustments, some adjustments may fail. Some of the most common
-errors you may encounter are:
+应用调整时，某些调整可能失败。一些最常见的
+您可能会遇到的错误是：
 
-  - **#1406 Data Too Long**: Usually this is caused by a very long object name
-    (like a task title) which contains multibyte unicode characters. When the
-    column type is converted to `binary`, only the first part of the title still
-    fits in the column. Depending on what is failing, you may be able to find
-    the relevant object in the web UI and retitle it so the adjustment succeeds.
-    Alternatively, you can use `--unsafe` to force the adjustment to truncate
-    the title. This will destroy some data, but usually the data is not
-    important (just the end of very long titles).
-  - **#1366 Incorrect String Value**: This can occur when converting invalid
-    or truncated multibyte unicode characters to a unicode character set.
-    In both cases, the old value can not be represented under the new character
-    set. You may be able to identify the object and edit it to allow the
-    adjustment to proceed, or you can use the `--unsafe` flag to truncate the
-    data at the invalid character. Usually, the truncated data is not important.
 
-As with most commands, you can add the `--trace` flag to get more details about
-what `bin/storage adjust` is doing. This may help you diagnose or understand any
-issues you encounter, and this data is useful if you file reports in the
-upstream.
+  - **#1406 数据太长**: 通常这是由很长的对象名称引起的
+	（如任务标题），其中包含多字节 Unicode 字符。 
+	当列类型转换为 `binary` 的时候，只有标题的第一部分仍然适合列。 
+	根据失败提示信息，你可以在网页界面中找到相关对象，并重命名它，
+	这样调整就可以成功了。或者，可以使用`--unsafe`强制调整为截断标题。 
+	这将破坏一些数据，但通常这些数据并不是重要（只是非常长的标题的结尾）。
+  	
+  - **#1366 不正确的字符值**: 
+	当转换无效或截断的多字节 unicode 字符转换为 unicode 字符集时，
+	可能会发生这种情况。在这两种情况下，旧值都不能在新字符下表示。 
+	您可以找出这些对象，并编辑它以允许调整继续，
+	或者您可以使用 `--unsafe`  标志来在无效字符截断数据。 
+	一般来说，截断的数据并不重要。
 
-In general, adjustments are not critical. If you run into issues applying
-adjustments, it is safe to file a task in the upstream describing the problem
-you've encountered and continue using Phabricator normally until the issue can
-be resolved.
+与大多数命令一样，您可以添加`--trace`标志以获取更多
+关于`bin/storage adjust`正在做什么的详细信息。
+这可以帮助您诊断或理解任何您遇到的问题，
+这个数据很有用，可以提交到官方。
 
-Surplus Schemata
+一般来说，调整并不重要。 如果你在调整中遇到问题，
+可以在官方新建一个任务，描述你所有遇到的问题，然后继续正常使用 
+Phabricator，直到这个问题被解决。
+
+
+Surplus 模式
 ================
 
-After performing adjustment, you may receive an error that a table or column is
-"Surplus". The error looks something like this:
+执行调整后，您可能会收到表或列为的错误
+“Surplus”。 错误看起来像这样：
 
-| Target | Error |
+| 目标 | 错误 |
 | --- | --- |
 | phabricator_example.example_table | Surplus |
 
-Generally, "Surplus" means that Phabricator does not expect the table or column
-to exist. These surpluses usually exist because you (or someone else
-with database access) added the table or column manually. Rarely, they can
-also exist for other reasons. They are usually safe to delete, but because
-deleting them destroys data and Phabricator can not be sure that the table or
-column doesn't have anything important in it, it does not delete them
-automatically.
+一般来说，"Surplus" 意味着 Phabricator 不希望存在这个表或列。
+这些表或列通常都是你手动添加的。极少情况下，它们的存在会是其他原因。
+它们通常可以安全地删除，但是删除会销毁数据，并且 Phabricator 不确定
+这些表和列是否包含重要的数据，所以不会自动删除它们。 
 
-If you recognize the schema causing the issue as something you added and you
-don't need it anymore, you can safely delete it. If you aren't sure whether
-you added it or not, you can move the data somewhere else and delete it later.
+如果你感觉遇到的问题是你添加的这些东西导致的，或者不再需要它们，
+可以安全的删除它们。如果你不确定这些数据是不是自己添加的，可以将
+数据移动到其他地方，稍后再删除它们。
 
-To move a table, first create a database for it like `my_backups`. Then, rename
-the table to move it into that database (use the table name given in the error
-message):
+移动数据表时，首先为它创建一个数据库例如 `my_backups`。
+然后重命名数据表移动到那个数据库（使用错误中给出的表名）：
 
 ```lang=sql
 CREATE DATABASE my_backups;
@@ -178,14 +157,15 @@ RENAME TABLE phabricator_example.example_table
   TO my_backups.example_table;
 ```
 
-Phabricator will ignore tables that aren't in databases it owns, so you can
-safely move anything you aren't sure about outside of the Phabricator databases.
+Phabricator 会忽略那些不再自己数据库中的表，所以你可以安全地将不使用的
+任何东西移动到 Phabricator 的数据库外。
 
-If you're sure you don't need a table, use `DROP TABLE` to destroy it,
-specifying the correct table name (the one given in the error message):
+如果确定自己不再使用表，指定正确的表名（错误消息中给出的名称）
+使用 `DROP TABLE` 销毁它：
+
 
 ```lang=sql
 DROP TABLE phabricator_example.example_table;
 ```
 
-This will destroy the table permanently.
+这将永久销毁表。

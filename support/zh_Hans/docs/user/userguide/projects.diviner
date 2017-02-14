@@ -1,339 +1,295 @@
-@title Projects User Guide
+@title 项目用户指南
 @group userguide
 
-Organize users and objects with projects.
+使用项目组织用户和 对象。
 
-Overview
+概览
 ========
 
-NOTE: This document is only partially complete.
+NOTE: 本文档尚未全部完成。
 
-Phabricator projects are flexible, general-purpose groups of objects that you
-can use to organize information. Projects have some basic information like
-a name and an icon, and may optionally have members.
+Phabricator 项目是灵活的、通用的对象组，您可以用它来组织信息。 
+项目具有一些基本信息，例如名称和图标，并且也可以具有成员。
 
-For example, you can create projects to provide:
+例如，您可以通过创建项目提供：
 
-  - **Organization**: Create a project to represent a product or initative,
-    then use it to organize related work.
-  - **Groups**: Create a project to represent a group of people (like a team),
-    then add members of the group as project members.
-  - **Tags**: To create a tag, just create a project without any members. Then
-    tag anything you want.
-  - **Access Control Lists**: Add members to a project, then restrict the
-    visibility of objects to members of that project. See "Understanding
-    Policies" below to understand how policies and projects interact in
-    more detail.
+  - **组织机构**: 创建一个项目以表示产品或计划，然后使用它来组织相关工作。
+  - **用户组**: 创建一个项目来代表一组人（如一个团队），然后将组的成员添加为项目成员。
+  - **标签**: 要创建标签，只需创建一个没有任何成员的项目。 然后标记任何你想要的。
+  - **访问控制列表**: 将成员添加到项目，然后将对象的可见性限制到该项目的成员。 
+    请参阅下面的“理解策略”，以更详细地了解策略和项目如何进行交互。
 
-Understanding Policies
+理解策略
 ======================
 
-An important rule to understand about projects is that **adding or removing
-projects to an object never affects who can see the object**.
+了解项目的一个重要规则是，**添加或删除项目不会影响对象的可见性**。
 
-For example, if you tag a task with a project like {nav Backend}, that does not
-change who can see the task. In particular, it does not limit visibility to
-only members of the "Backend" project, nor does it allow them to see it if they
-otherwise could not. Likewise, removing projects does not affect visibility.
+例如，使用 {nav Backend} 项目标记任务，这不会改变任务的可见性。
+特别是，它不限制只有 “Backend” 项目的成员可见，
+如果她们没有权限也不允许他们看到它。 同样，删除项目不会影响可见性。
 
-If you're familiar with other software that works differently, this may be
-unexpected, but the rule in Phabrictor is simple: **adding and removing
-projects never affects policies.**
+如果你熟悉其他采用不同方式工作的软件，这可能和你预想的不一样。
+但是 Phabrictor 里的规则很简单：**添加或删除项目从不影响可见性**。
 
-Note that you //can// write policy rules which restrict capabilities to members
-of a specific project or set of projects, but you do this by editing an
-object's policies and adding rules based on project membership, not by tagging
-or untagging the object with projects.
+注意，你//可以//创建一个策略，仅允许特定项目或一组项目的成员具有权限，
+但这是通过编辑对象策略，添加基于项目成员的规则来实现的，而不是通过
+项目标记的添加和取消实现。
 
-To manage who can seen an object, use the object's policy controls,
-Spaces (see @{article:Spaces User Guide}) and Custom Forms
-(see @{article:User Guide: Customizing Forms}).
+要管理对象可见性，需使用对象策略、
+空间（查看 @{article:Spaces User Guide}）和
+自定义表单（查看 @{article:User Guide: Customizing Forms}）来控制。
 
-For more details about rationale, see "Policies In Depth", below.
+有关理由的更多详细信息，请参阅下面的“深入理解策略”。
 
-Joining Projects
+加入项目
 ================
 
-Once you join a project, you become a member and will receive mail sent to the
-project, like a mailing list. For example, if a project is added as a
-subscriber on a task or a reviewer on a revision, you will receive mail about
-that task or revision.
 
-If you'd prefer not to receive mail sent to a project, you can go to
-{nav Members} and select {nav Disable Mail}. If you disable mail for a project,
-you will no longer receive mail sent to the project.
+一旦你加入一个项目，便成为一个成员，将接收发送到项目的邮件，
+像邮件列表。 例如，如果项目添加为任务或审阅者修订的订阅者，
+您将收到有关该任务或修订的邮件。
 
+如果您不想接收发送到项目的邮件，可以打开 {nav Members}，
+然后选择 {nav Disable Mail}。 如果禁用项目邮件，
+您将不再收到发送到项目的邮件。
 
-Watching Projects
+关注项目
 =================
 
-Watching a project allows you to closely follow all activity related to a
-project.
+关注项目可以让您密切关注与项目相关的所有活动。
 
-You can **watch** a project by clicking {nav Watch Project} on the project
-page. To stop watching a project, click {nav Unwatch Project}.
+您可以通过点击项目页面上的{nav 关注项目}来**关注**项目。 
+要停止关注项目，请点击{nav 取消关注项目}。
 
-When you watch a project, you will receive a copy of mail about any objects
-(like tasks or revisions) that are tagged with the project, or that the project
-is a subscriber, reviewer, or auditor for. For moderately active projects, this
-may be a large volume of mail.
+当关注项目时，你会收到项目关联、项目订阅、审核、审计的所有对象的邮件。
+对于中等活跃的项目，这可能会产生大量的邮件。
 
 
-Edit Notifications
+编辑通知
 ==================
 
-Edit notifications are generated when project details (like the project
-description, name, or icon) are updated, or when users join or leave projects.
+编辑通知是在项目详细信息（如项目描述，名称或图标）被更新，
+或者当用户加入或离开项目时生成的。
 
-By default, these notifications are are only sent to the acting user. These
-notifications are usually not very interesting, and project mail is already
-complicated by members and watchers.
+By default, these notifications are are only sent to the acting user. 
+这些通知通常不是很有趣，项目邮件已经被成员和观察者复杂化了。
 
-If you'd like to receive edit notifications for a project, you can write a
-Herald rule to keep you in the loop.
+如果您想接收项目的编辑通知，可以写一个
+Herald 规则来及时通知你。
 
 
-Customizing Menus
+自定义菜单
 =================
 
-Projects support profile menus, which are customizable. For full details on
-managing and customizing profile menus, see @{article:Profile Menu User Guide}.
+项目支持配置菜单项，并且可以自定义。 
+有关管理和自定义菜单的详细信息，
+请参阅@ {article:Profile Menu User Guide}。
 
-Here are some examples of common ways to customize project profile menus that
-may be useful:
+下面是一些可能有用的，常见的自定义项目配置菜单的例子：
 
-**Link to Tasks or Repositories**: You can add a menu item for "Open Tasks" or
-"Active Repositories" for a project by running the search in the appropriate
-application, then adding a link to the search results to the menu.
+**链接到任务或代码仓库**: 您可以通过在适当的应用程序中进行搜索，
+然后通过添加搜索结果链接，为项目添加 “进行中的任务” 或“ 活动的代码库” 菜单项。
 
-This can let you quickly jump from a project screen to related tasks,
-revisions, repositories, or other objects.
+这可以让您快速从项目页面跳转到
+相关任务、修订版本、存储库或其他对象页面。
 
-For more details on how to use search and manage queries, see
-@{article:Search User Guide}.
+有关如何使用搜索和管理查询的详细信息，请参阅 @{article:Search User Guide}。
 
-**New Task Button**: To let users easily make a new task that is tagged with
-the current project, add a link to the "New Task" form with the project
-prefilled, or to a custom form with appropriate defaults.
+**新建任务按钮**: 
 
-For information on customizing and prefilling forms, see
-@{article:User Guide: Customizing Forms}.
-
-**Link to Wiki Pages**: You can add links to relevant wiki pages or other
-documentation to the menu to make it easy to find and access. You could also
-link to a Conpherence if you have a chatroom for a project.
-
-**Link to External Resources**: You can link to external resources outside
-of Phabricator if you have other pages which are relevant to a project.
-
-**Set Workboard as Default**: For projects that are mostly used to organize
-tasks, change the default item to the workboard instead of the profile to get
-to the workboard view more easily.
-
-**Hide Unused Items**: If you have a project which you don't expect to have
-members or won't have a workboard, you can hide these items to streamline the
-menu.
+为了让用户更容易的创建被当前项目标记的任务，
+可以添加一个链接，指向到有项目预填信息的“新建任务”表单，
+或有合适默认值的自定义表单。
 
 
-Subprojects and Milestones
+有关自定义和预填表单的信息，请参阅 @{article:User Guide: Customizing Forms}.
+
+**链接到 Wiki 页面**: 
+
+
+您可以在菜单中添加链接，指向到相关 wiki 或其他
+文档页面，以方便查找和访问。如果你有一个关于此项目的聊天室，
+也可以链接到 Conpherence 页面。
+
+
+** 链接到外部资源 **: 如果您有与项目相关的其他页面，
+您可以链接到 Phabricator 之外的页面。
+
+**将工作台设为默认视图**: 对于主要用于组织任务的项目，
+用工作台替代简介页做默认视图，可以更方便使用。
+
+**隐藏无用的菜单项**: 如果你有一个项目，不希望有成员或工作台菜单，
+你可以隐藏这些菜单项，以简化菜单。
+
+
+子项目和里程碑
 ==========================
 
-IMPORTANT: This feature is only partially implemented.
+IMPORTANT: 此功能仅部分实现。
 
-After creating a project, you can use the
-{nav icon="sitemap", name="Subprojects"} menu item to add subprojects or
-milestones.
+创建项目后，您可以使用{nav icon="sitemap", name="Subprojects"}
+菜单项添加子项目或里程碑。
 
-**Subprojects** are projects that are contained inside the main project. You
-can use them to break large or complex groups, tags, lists, or undertakings
-apart into smaller pieces.
+**子项目** 是包含在主项目内的项目。 
+您可以使用它们将大型或复杂的用户组、标签、列表或承诺拆分为较小的部分。
 
-**Milestones** are a special kind of subproject for organizing tasks into
-blocks of work. You can use them to implement sprints, iterations, milestones,
-versions, etc.
+**里程碑**是一种特殊的子项目，用于将任务组织成工作块。 
+您可以使用它们来实现 Sprints、迭代、里程碑、版本等。
 
-Subprojects and milestones have some additional special behaviors and rules,
-particularly around policies and membership. See below for details.
+子项目和里程碑有一些额外的特殊行为和规则，
+特别是围绕策略和成员资格。详情请参阅下文。
 
-This is a brief summary of the major differences between normal projects,
-subprojects, parent projects, and milestones.
+这是一般项目、子项目、父项目和里程碑之间主要差异的简要总结。
 
-| | Normal | Parent | Subproject | Milestone |
+
+| | 一般项目 | 父项目 | 子项目 | 里程碑 |
 |---|---|---|---|---|
-| //Members// | Yes | Union of Subprojects | Yes | Same as Parent |
-| //Policies// | Yes | Yes | Affected by Parent | Same as Parent |
-| //Hashtags// | Yes | Yes | Yes | Special |
+| //成员// | 支持 | 所有子项目成员 | 支持 | 与父级相同|
+| //策略// | 支持| Yes | 受父级影响 | 与父级相同 |
+| //Hashtags// | 支持 | 支持 | 支持 | 特殊 |
 
 
-Subprojects
+子项目
 ===========
 
-Subprojects are full-power projects that are contained inside some parent
-project. You can use them to divide a large or complex project into smaller
-parts.
+子项目是包含在某个父项目中的全功能项目。 
+您可以使用它们将大型或复杂项目分割为较小的部分。
 
-Subprojects have normal members and normal policies, but note that the policies
-of the parent project affect the policies of the subproject (see "Parent
-Projects", below).
+子项目具有自己的成员和策略，但请注意，
+父项目的策略会影响子项目的策略（请参阅下面的“父项目”）。
 
-Subprojects can have their own subprojects, milestones, or both. If a
-subproject has its own subprojects, it is both a subproject and a parent
-project. Thus, the parent project rules apply to it, and are stronger than the
-subproject rules.
+子项目可以有自己的子项目或里程碑。 
+如果子项目有自己的子项目，则它既是子项目又是父项目。 
+因此，父项目规则适用于它，并且它的规则强于自己的子项目规则。
 
-Subprojects can have normal workboards.
+子项目也可以有自己的工作板。
 
-The maximum subproject depth is 16. This limit is intended to grossly exceed
-the depth necessary in normal usage.
+子项目最大深度为16。此限制能满足几乎所有的工作需要。
 
-Objects may not be tagged with multiple projects that are ancestors or
-descendants of one another. For example, a task may not be tagged with both
-{nav Stonework} and {nav Stonework > Masonry}.
+不能用父项目和子项目同时标记对象。例如，一个任务不能同时被 
+{nav Stonework} 和 {nav Stonework > Masonry} 标记。
 
-When a project tag is added that is the ancestor or descendant of one or more
-existing tags, the old tags are replaced. For example, adding
-{nav Stonework > Masonry} to a task tagged with {nav Stonework} will replace
-{nav Stonework} with the newer, more specific tag.
+当添加的项目标签和已有项目标签有父子关系时，旧标签将被替换。
+例如，当一个已经添加了 {nav Stonework} 标签的任务，再添加
+{nav Stonework > Masonry} 标签时，{nav Stonework} 标签
+将会被替换掉。
 
-This restriction does not apply to projects which share some common ancestor
-but are not themselves mutual ancestors. For example, a task may be tagged
-with both {nav Stonework > Masonry} and {nav Stonework > Sculpting}.
+此限制不适用于具有共同祖先但本身不是相互祖先的项目。 例如，可以同时
+用 {nav Stonework> Masonry}和{nav Stonework> Sculpting} 标记任务。
 
-This restriction //does// apply when the descendant is a milestone. For
-example, a task may not be tagged with both {nav Stonework} and
-{nav Stonework > Iteration II}.
+这个限制也适用于子孙是里程碑的情况。比如，一个任务不能同时被
+{nav Stonework} 和 {nav Stonework > Iteration II} （ Iteration II 是里程碑）标记。
 
 
-Milestones
+里程碑
 ==========
 
-Milestones are simple subprojects for tracking sprints, iterations, versions,
-or other similar blocks of work. Milestones make it easier to create and manage
-a large number of similar subprojects (for example: {nav Sprint 1},
-{nav Sprint 2}, {nav Sprint 3}, etc).
+里程碑是用于跟踪 sprints、迭代、版本或其他类似工作块的简单子项目。 
+里程碑使创建和管理大量类似的子项目更容易
+（例如：{nav Sprint 1}，{nav Sprint 2}，{nav Sprint 3}等）。
 
-Milestones can not have direct members or policies. Instead, the membership
-and policies of a milestones are always the same as the milestone's parent
-project. This makes large numbers of milestones more manageable when changes
-occur.
-
-Milestones can not have subprojects, and can not have their own milestones.
-
-By default, Milestones do not have their own hashtags.
-
-Milestones can have normal workboards.
-
-Objects may not be tagged with two different milestones of the same parent
-project. For example, a task may not be tagged with both {nav Stonework >
-Iteration III} and {nav Stonework > Iteration V}.
-
-When a milestone tag is added to an object which already has a tag from the
-same series of milestones, the old tag is removed. For example, adding the
-{nav Stonework > Iteration V} tag to a task which already has the
-{nav Stonework > Iteration III} tag will remove the {nav Iteration III} tag.
-
-This restriction does not apply to milestones which are not part of the same
-series. For example, a task may be tagged with both
-{nav Stonework > Iteration V} and {nav Heraldry > Iteration IX}.
+里程碑不能有直接成员或策略。 相反，
+里程碑的策略和成员始终与它父级项目相同。 
+当发生修改变更时，这使得大量的里程碑更容易管理。
 
 
-Parent Projects
+里程碑不能有子项目，并且不能有自己的里程碑。
+
+默认情况下，里程碑没有自己的 hashtags。
+
+里程碑不能有工作台。
+
+对象不能被同一父项目的两个不同里程碑同时标记。
+例如，任务不能被 {nav Stonework >Iteration III} 
+和 {nav Stonework > Iteration V} 同时标记。
+
+当里程碑标记被添加到已经具有来自同一系列里程碑的标记的对象时，旧标记将被删除。
+例如，当一个任务已经添加了 {nav Stonework > Iteration III} 时，再
+添加 {nav Stonework > Iteration V} 时，{nav Iteration III} 会被删除。
+
+此限制不适用于不属于相同系列的里程碑。 
+例如，任务可以用 {nav Stonework > Iteration V}和{nav Heraldry > Iteration IX}来标记。
+
+父项目
 ===============
 
-When you add the first subproject to an existing project, it is converted into
-a **parent project**. Parent projects have some special rules.
-
-**No Direct Members**: Parent projects can not have members of their own.
-Instead, all of the users who are members of any subproject count as members
-of the parent project. By joining (or leaving) a subproject, a user is
-implicitly added to (or removed from) all ancestors of that project.
-
-Consequently, when you add the first subproject to an existing project, all of
-the project's current members are moved to become members of the subproject
-instead. Implicitly, they will remain members of the parent project because the
-parent project is an ancestor of the new subproject.
-
-You can edit the project afterward to change or remove members if you want to
-split membership apart in a more granular way across multiple new subprojects.
-
-**Searching**: When you search for a parent project, results for any subproject
-are returned. For example, if you search for {nav Engineering}, your query will
-match results in {nav Engineering} itself, but also subprojects like
-{nav Engineering > Warp Drive} and {nav Engineering > Shield Batteries}.
-
-**Policy Effects**: To view a subproject or milestone, you must be able to
-view the parent project. As a result, the parent project's view policy now
-affects child projects. If you restrict the visibility of the parent, you also
-restrict the visibility of the children.
-
-In contrast, permission to edit a parent project grants permission to edit
-any subproject. If a user can {nav Root Project}, they can also edit
-{nav Root Project > Child} and {nav Root Project > Child > Sprint 3}.
+将第一个子项目添加到现有项目时，现有项目将转换为
+**父项目**。 父项目有一些特殊的规则。
 
 
-Policies In Depth
+**没有直接成员**: 父项目不能有自己的成员。
+相反，任何子项目的成员都会计为父项目的成员。 
+通过加入（或退出）子项目，用户隐含地加入（或退出）到所有父项目。
+
+因此，当将第一个子项目添加到现有项目时，项目的当前成员将
+全部移动成为子项目的成员。隐含地，他们将仍然是父项目的成员，
+因为父项目是新子项目的祖先。
+
+如果要在多个新子项目中以更精细的方式拆分成员资格，
+可以在以后编辑项目以更改或删除成员。
+
+**搜索**: 当您搜索父项目时，任何子项目的结果也将返回。 
+例如，如果您搜索{nav Engineering}，您的查询将
+匹配{nav Engineering}本身的结果，但也包括子项目
+{nav Engineering> Warp Drive}和{nav Engineering> Shield Batteries}的结果。
+
+
+**策略效果**: 要查看子项目或里程碑，您必须能够查看父项目。
+因此，父项目的查看策略会影响子项目。 
+如果限制父级的可见性，同时也会限制子级的可见性。
+
+相比之下，编辑父项目的权限将授予编辑任何子项目的权限。 
+如果用户可以编辑 {nav Root Project}，
+他们也可以编辑{nav Root Project> Child} 和 {nav Root Project> Child> Sprint 3}。
+
+
+深入理解策略
 =================
 
-As discussed above, adding and removing projects never affects who can see an
-object. This is an explicit product design choice aimed at reducing the
-complexity of policy management.
+如上所述，添加和删除项目不会影响对象的可见性。 
+这是一个有意的产品设计选择，旨在降低策略管理的复杂性。
 
-Phabricator projects are a flexible, general-purpose, freeform tool. This is a
-good match for many organizational use cases, but a very poor match for
-policies. It is important that policies be predictable and rigid, because the
-cost of making a mistake with policies is high (inadvertent disclosure of
-private information).
+Phabricator 项目是一个灵活的、通用的、自由形式的工具。 
+这很适合用来组织管理，但是并不适合策略管理。 
+重要的是，策略具有可预测和稳定性，因为策略制定错误的成本高（无意披露私人信息）。
 
-In Phabricator, each object (like a task) can be tagged with multiple projects.
-This is important in a flexible organizational tool, but is a liability in a
-policy tool.
+在 Phabricator 中，每个对象（像一个任务）可以用多个项目标记。
+这对一个灵活组织工具很重要，但在策略工具中却带来了损耗。
 
-If each project potentially affected visibility, it would become more difficult
-to predict the visibility of objects and easier to make mistakes with policies.
-There are different, reasonable expectations about how policies might be
-affected when tagging objects with projects, but these expectations are in
-conflict, and different users have different expectations. For example:
+如果每个项目都潜在地影响可见性，则对象的可见性将难以预测，
+并且更容易导致策略上的错误。 对于用项目标记对象如何影响策略，
+有不同的合理期望，但这些期望是冲突的，
+并且不同的用户有不同的期望。例如：
 
-  - if a user adds a project like {nav Backend} to a task, their intent
-    might be to //open// the task up and share it with the "Backend" team;
-  - if a user adds a project like {nav Security Vulnerability} to a task,
-    their intent might be to //close// the task down and restrict it to just
-    the security team;
-  - if a user adds a project like {nav Easy Starter Task} to a task, their
-    intent might be to not affect policies at all;
-  - if a user adds {nav Secret Inner Council} to a task already tagged with
-    {nav Security Vulnerability}, their intent might be to //open// the task
-    to members of //either// project, or //close// the task to just members of
-    //both// projects;
-  - if a user adds {nav Backend} to a task already tagged with
-    {nav Security Vulnerability}, their intent is totally unclear;
-  - in all cases, users may be adding projects purely to organize objects
-    without intending to affect policies.
+  - 如果用户向任务添加像{nav Backend}这样的项目，
+  	他们的意图可能是//开放//任务与 “Backend” 团队共享;
+  - 如果用户向任务添加项目{nav Security Vulnerability}，
+  	他们的意图可能是//关闭//任务并将其限制在安全团队;
+  - 如果用户向任务添加了像{nav Easy Starter Task}这样的项目，
+  	他们的意图可能是完全不影响策略;
+  - 如果用户将{nav Secret Inner Council}添加到已经用{nav Security Vulnerability}标记的任务，
+  	他们的意图可能时将任务开放给任意一个项目的成员，或//关闭//只有//两个//项目的成员的任务;
+  - 如果用户将{nav Backend}添加到已经用{nav Security Vulnerability}标记的任务，
+  	他们的意图是完全明确的;
+  - 在所有情况下，用户可能只是添加项目来组织对象，而不想影响策略。
 
-We can't distinguish between these cases without adding substantial complexity,
-and even if we made an attempt to navigate this it would still be very
-difficult to predict the effect of tagging an object with multiple
-policy-affecting projects. Users would need to learn many rules about how these
-policy types interacted to predict the policy effects of adding or removing a
-project.
+我们不能在不增加实质性复杂性的情况下区分这些情况，
+即使我们试图引导这一点，仍然很难预测用具有多个策略的项目标记对象时的影响。 
 
-Because of the implied complexity, we almost certainly could not prevent some
-cases where a user intends to take a purely organizational action (like adding
-a {nav Needs Documentation} tag) and accidentally opens a private object to a
-wide audience. The policy system is intended to make these catastrophically bad
-cases very difficult, and allowing projects to affect policies would make these
-mistakes much easier to make.
+由于隐含的复杂性，我们几乎可以肯定不能防止一些
+用户进行了一些纯组织性操作（例如添加{nav Needs Documentation}标签）
+的情况，不小心将一个私有对象开发给广泛的用户。 
+策略系统旨在防止这些灾难性的恶劣情况，
+但允许项目影响策略将使错误更容易产生。
 
-We believe the only reasonable way we could reduce ambiguity and complexity is
-by making project policy actions explicit and rule-based. But we already have a
-system for explicit, rule-based management of policies: the policy system. The
-policy tools are designed for policy management and aimed at making actions
-explicit and mistakes very difficult.
+我们相信，我们可以减少歧义和复杂性的唯一合理的方法是
+独立项目策略的操作行为，并使策略基于规则。 
+但我们已经有一个明确的，基于规则的策略管理系统：策略系统。 
+策略工具是为策略管理设计的，旨在使操作更明显和犯错更困难。
 
-Many of the use cases where project-based access control seems like it might be
-a good fit can be satisfied with Spaces instead (see @{article:Spaces User
-Guide}). Spaces are explicit, unambiguous containers for groups of objects with
-similar policies.
+许多基于项目的使用案例，很适合使用空间进行访问控制
+（参见@ @{article:Spaces User Guide}）。 
+空间是用来管理具有类似策略的对象组的容器。
 
-Form customization also provides a powerful tool for making many policy
-management tasks easier (see @{article:User Guide: Customizing Forms}).
+表单自定义还提供了一个强大的工具，
+使许多策略管理任务更容易（参见@ @{article:User Guide: Customizing Forms}）。

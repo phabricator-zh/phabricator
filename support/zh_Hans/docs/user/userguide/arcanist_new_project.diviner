@@ -53,11 +53,11 @@ Other options include:
     for use when making HTTPS connections.
   - **lint.engine**: the name of a subclass of
     @{class@arcanist:ArcanistLintEngine}, which should be used to apply lint
-    rules to this project. See @{article:Arcanist User Guide: Lint}.
+    rules to this project. See @{article:Arcanist 用户指南: Lint}.
   - **unit.engine**: the name of a subclass of
     @{class@arcanist:ArcanistUnitTestEngine}, which should be used to apply
     unit test rules to this project. See
-    @{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}.
+    @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}.
 
 These options are supported, but their use is discouraged:
 
@@ -220,4 +220,4 @@ Without `.arcconfig`:
 
 Continue by:
 
-  - returning to @{article:Arcanist User Guide}.
+  - returning to @{article:Arcanist 用户指南}.

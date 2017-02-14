@@ -5,12 +5,12 @@ Explains how to build new classes to control how Arcanist behaves.
 
 This is a configuration guide that helps you set up advanced features. If you're
 just getting started, you don't need to look at this yet. Instead, start with
-the @{article:Arcanist User Guide}.
+the @{article:Arcanist 用户指南}.
 
 = Overview =
 
 Arcanist has some basic configuration options available in the `.arcconfig`
-file (see @{article:Arcanist User Guide: Configuring a New Project}), but it
+file (see @{article:Arcanist 用户指南: Configuring a New Project}), but it
 can't handle everything. If you want to customize Arcanist at a deeper level,
 you need to build new classes. For instance:
 
@@ -89,4 +89,4 @@ This is mostly useful for debugging and testing.
 = Next Steps =
 
   - Learn how to reuse existing linters by reading
-    @{article:Arcanist User Guide: Customizing Existing Linters}.
+    @{article:Arcanist 用户指南: Customizing Existing Linters}.

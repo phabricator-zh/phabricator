@@ -164,7 +164,7 @@ Phabricator. For example, you might write this file to
 ```
 
 For details on creating a `.arcconfig`, see
-@{article:Arcanist User Guide: Configuring a New Project}. In general, this
+@{article:Arcanist 用户指南: Configuring a New Project}. In general, this
 tells `arc liberate` that it should look for symbols in Phabricator when
 performing static analysis.
 

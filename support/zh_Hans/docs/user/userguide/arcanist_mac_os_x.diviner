@@ -8,7 +8,7 @@ Explains how to install Arcanist on Mac OS X.
 You need to install:
 
   - PHP, which should be installed by default.
-  - Arcanist itself, see @{article:Arcanist User Guide}.
+  - Arcanist itself, see @{article:Arcanist 用户指南}.
   - SVN, Git, or Mercurial.
 
 Then, configure:
@@ -28,4 +28,4 @@ Now you should be able to run `arc` like a normal command.
 
 Continue by:
 
-  - returning to @{article:Arcanist User Guide}.
+  - returning to @{article:Arcanist 用户指南}.

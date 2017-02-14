@@ -7,10 +7,10 @@
 
 = 安装 Arcanist =
 
-关安装 Arcanist 的详细说明，请参阅 @{article:Arcanist User Guide}。
+关安装 Arcanist 的详细说明，请参阅 @{article:Arcanist 用户指南}。
 
-  - Mac OS X, 查看 @{article:Arcanist User Guide: Mac OS X}.
-  - Windows, 查看 @{article:Arcanist User Guide: Windows}.
+  - Mac OS X, 查看 @{article:Arcanist 用户指南: Mac OS X}.
+  - Windows, 查看 @{article:Arcanist 用户指南: Windows}.
 
 首先，安装依赖：
 
@@ -28,13 +28,13 @@
 
   $ export PATH="$PATH:/somewhere/arcanist/bin/"
 
-这不适用于 Windows，请参阅 @{article:Arcanist User Guide: Windows} 说明。
+这不适用于 Windows，请参阅 @{article:Arcanist 用户指南: Windows} 说明。
 
 
 = 配置你的项目 =
 
 有关项目配置的详细说明，请参阅
-@{article:Arcanist User Guide: Configuring a New Project}。
+@{article:Arcanist 用户指南: Configuring a New Project}。
 
 在项目工作副本的根目录创建 `.arcconfig` 文件:
 
@@ -64,7 +64,7 @@ NOTE: 你应该把**这个文件提交到**代码仓库。
 
 = 发送更改以供审核 =
 
-有关使用“arc diff”的详细说明，请参阅 @{article:Arcanist User Guide: arc diff}。
+有关使用“arc diff”的详细说明，请参阅 @{article:Arcanist 用户指南: arc diff}。
 
   $ $EDITOR file.c
   $ arc diff
@@ -73,8 +73,8 @@ NOTE: 你应该把**这个文件提交到**代码仓库。
 
 接下来:
 
-  - 通过 @{article:Arcanist User Guide: Configuring a New Project}理解更多项目配置内容; 或
-  - 通过 @{article:Arcanist User Guide: arc diff} 学习更多关于arc diff的
+  - 通过 @{article:Arcanist 用户指南: Configuring a New Project}理解更多项目配置内容; 或
+  - 通过 @{article:Arcanist 用户指南: arc diff} 学习更多关于arc diff的
     内容; 或
-  - 返回到 @{article:Arcanist User Guide}。
+  - 返回到 @{article:Arcanist 用户指南}。
 

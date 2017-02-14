@@ -5,11 +5,11 @@ Guide to lint, linters, and linter configuration.
 
 This is a configuration guide that helps you set up advanced features. If you're
 just getting started, you don't need to look at this yet. Instead, start with
-the @{article:Arcanist User Guide}.
+the @{article:Arcanist 用户指南}.
 
 This guide explains how lint works when configured in an `arc` project. If
 you haven't set up a project yet, do that first. For instructions, see
-@{article:Arcanist User Guide: Configuring a New Project}.
+@{article:Arcanist 用户指南: Configuring a New Project}.
 
 
 Overview
@@ -55,7 +55,7 @@ character sets, spelling mistakes, and unresolved merge conflicts.
 
 If you have a tool you'd like to use as a linter that isn't supported by
 default, you can write bindings for it. For information on writing new linter
-bindings, see @{article:Arcanist User Guide: Customizing Lint, Unit Tests and
+bindings, see @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and
 Workflows}.
 
 
@@ -334,12 +334,12 @@ file and uses it to decide which linters should be run on which paths. If no
 
 You can write a custom lint engine instead, which can make a more powerful set
 of decisions about which linters to run on which paths. For instructions on
-writing a custom lint engine, see @{article:Arcanist User Guide: Customizing
+writing a custom lint engine, see @{article:Arcanist 用户指南: Customizing
 Lint, Unit Tests and Workflows}.
 
 To name an alternate lint engine, set `lint.engine` in your `.arcconfig` to the
 name of a class which extends @{class@arcanist:ArcanistLintEngine}. For more
-information on `.arcconfig`, see @{article:Arcanist User Guide: Configuring a
+information on `.arcconfig`, see @{article:Arcanist 用户指南: Configuring a
 New Project}.
 
 You can also set a default lint engine by setting `lint.engine` in your global
@@ -412,8 +412,8 @@ lint tools at Facebook:
 Continue by:
 
   - integrating and customizing built-in linters and lint bindings with
-    @{article:Arcanist User Guide: Customizing Existing Linters}; or
+    @{article:Arcanist 用户指南: Customizing Existing Linters}; or
   - use a linter that hasn't been integrated into Arcanist with
-    @{article:Arcanist User Guide: Script and Regex Linter}; or
+    @{article:Arcanist 用户指南: Script and Regex Linter}; or
   - learning how to add new linters and lint engines with
-    @{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}.
+    @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}.

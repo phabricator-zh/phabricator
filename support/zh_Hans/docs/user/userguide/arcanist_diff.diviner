@@ -4,11 +4,11 @@
 Guide to running `arc diff`, to send changes to Differential for review.
 
 This article assumes you have `arc` installed and running; if not, see
-@{article:Arcanist User Guide} for help getting it set up.
+@{article:Arcanist 用户指南} for help getting it set up.
 
 Before running `arc diff`, you should create a `.arcconfig` file. If someone
 set things up for you, they may already have done this. See
-@{article:Arcanist User Guide: Configuring a New Project} for instructions and
+@{article:Arcanist 用户指南: Configuring a New Project} for instructions and
 information.
 
 = Overview =

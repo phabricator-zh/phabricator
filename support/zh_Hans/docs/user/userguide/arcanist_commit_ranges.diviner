@@ -5,7 +5,7 @@ Explains how commit ranges work in Arcanist.
 
 This is an advanced user guide which covers a complicated topic in detail. If
 you're just getting started, you don't need to look at this yet. Instead, start
-with the @{article:Arcanist User Guide}.
+with the @{article:Arcanist 用户指南}.
 
 = Overview =
 
@@ -315,5 +315,5 @@ any other return code.
 Continue by:
 
   - learning about `arc diff` in more detail with
-    @{article:Arcanist User Guide: arc diff}; or
-  - returning to @{article:Arcanist User Guide}.
+    @{article:Arcanist 用户指南: arc diff}; or
+  - returning to @{article:Arcanist 用户指南}.

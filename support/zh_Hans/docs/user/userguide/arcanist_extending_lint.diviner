@@ -5,11 +5,11 @@ Explains how to customize existing linters.
 
 This is a configuration guide that helps you set up advanced features. If you're
 just getting started, you don't need to look at this yet. Instead, start with
-the @{article:Arcanist User Guide}.
+the @{article:Arcanist 用户指南}.
 
 This guide explains how to refine lint behavior. To configure lint in the first
-place, see @{article:Arcanist User Guide: Configuring a New Project} and
-@{article:Arcanist User Guide: Lint}.
+place, see @{article:Arcanist 用户指南: Configuring a New Project} and
+@{article:Arcanist 用户指南: Lint}.
 
 = Overview =
 
@@ -18,8 +18,8 @@ or in part in other projects. This document explains how to customize existing
 linters for use in new engines.
 
 First, you should set up an engine by following the instructions in
-@{article:Arcanist User Guide: Lint} and possibly
-@{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}.
+@{article:Arcanist 用户指南: Lint} and possibly
+@{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}.
 Then, follow this guide to customize linters.
 
 = General Guidelines =

@@ -16,7 +16,7 @@ into issues.
 
 You need to install:
 
-  - Arcanist itself, see @{article:Arcanist User Guide}.
+  - Arcanist itself, see @{article:Arcanist 用户指南}.
   - PHP (see "Detailed PHP Install Instructions" below).
   - SVN, Git, or Mercurial.
 
@@ -105,4 +105,4 @@ instructions if you're having trouble.
 
 Continue by:
 
-  - returning to @{article:Arcanist User Guide}.
+  - returning to @{article:Arcanist 用户指南}.

@@ -11,7 +11,7 @@ use it to add and run tests in these projects or other libphutil libraries.
 
 In the general case, you can integrate `arc` with a custom unit test engine
 (like PHPUnit or any other unit testing library) to run tests in other projects.
-See @{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}
+See @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}
 for information on customizing engines.
 
 = Adding Tests =

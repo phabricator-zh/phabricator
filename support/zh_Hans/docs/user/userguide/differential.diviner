@@ -38,7 +38,7 @@ The Differential home screen shows two sets of revisions:
 = Creating Revisions =
 
 The preferred way to create revisions in Differential is with `arc`
-(see @{article:Arcanist User Guide}). You can also create revisions from the
+(see @{article:Arcanist 用户指南}). You can also create revisions from the
 web interface, by navigating to Differential, pressing the "Create Revision"
 button, and pasting a diff in.
 

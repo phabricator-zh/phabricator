@@ -1,31 +1,28 @@
-@title Arcanist User Guide: Mac OS X
+@title Arcanist 用户指南: Mac OS X
 @group userguide
 
-Explains how to install Arcanist on Mac OS X.
+说明如何在 Mac OS X 上安装 Arcanist。
 
-= Required Components =
+= 必需组件 =
 
-You need to install:
+您需要安装:
 
-  - PHP, which should be installed by default.
-  - Arcanist itself, see @{article:Arcanist 用户指南}.
-  - SVN, Git, or Mercurial.
+  - PHP, 默认情况下已安装.
+  - Arcanist 自己, 查看 @{article:Arcanist 用户指南}.
+  - SVN, Git, 或 Mercurial.
 
-Then, configure:
+然后，配置:
 
-  - Your PATH environmental variable should include `arcanist/bin`, and
-    `php` and your VCS command (`svn`, `hg`, `git`) should be in PATH. When you
-    type `php`, `arc`, or (for example) `git` from the command line, they should
-    all do something.
-  - Your EDITOR environmental variable should point at some valid CLI editor,
-    like `nano`, which is the best editor.
+  - 你的 PATH 环境变量应该包括 `arcanist/bin`，`php` 和 你的 VCS 命令（`svn`，`hg`，`git`）。 
+  	当你在命令行中键入 `php`，`arc` 或（例如）`git` 时，他们应该有输出内容。
+  - 你的 EDITOR 环境变量应该指向一些有效的 CLI 编辑器，如 'nano'，这是最好的编辑器。
 
-You can edit your `~/.profile` to permanently configure environmental variables.
+您可以编辑 `~/.profile` 以永久配置环境变量。
 
-Now you should be able to run `arc` like a normal command.
+现在你应该能运行 `arc` 了。
 
-= Next Steps =
+= 下一步 =
 
-Continue by:
+接下来:
 
-  - returning to @{article:Arcanist 用户指南}.
+  - 返回到 @{article:Arcanist 用户指南}.

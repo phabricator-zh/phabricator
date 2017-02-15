@@ -155,7 +155,7 @@ Arcanist 使用它遇到的第一个定义作为运行时设置。
 
 接下来:
 
-  - 查看@{article:Arcanist User Guide: Configuring a New Project} 使用 `arc` 设置一个新项目 ; 或
+  - 查看@{article:Arcanist 用户指南: 配置新项目} 使用 `arc` 设置一个新项目 ; 或
   - 通过 @{article:Arcanist 用户指南: arc diff} 学习如何使用 `arc` 发送修改以供审核。
 
 也有一些高级话题。这些是关于如何配置 `arc` ，以重新定义他的功能。

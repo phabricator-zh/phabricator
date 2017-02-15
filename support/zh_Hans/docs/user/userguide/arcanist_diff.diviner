@@ -8,7 +8,7 @@
 
 在运行 `arc diff` 之前，你应该创建一个 `.arcconfig` 文件。
 这个文件应该有人已经帮你建好了。 
-有关说明和信息，请参阅 @{article:Arcanist User Guide: Configuring a New Project}。
+有关说明和信息，请参阅 @{article:Arcanist 用户指南: 配置新项目}。
 
 = 概览 =
 

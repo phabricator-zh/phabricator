@@ -1,108 +1,98 @@
-@title Arcanist User Guide: Windows
+@title Arcanist 用户指南: Windows
 @group userguide
 
-Explains how to install Arcanist on Windows.
+说明如何在 Windows 上安装 Arcanist。
 
-= Overview =
+= 概览 =
 
-Arcanist runs on Windows, either in `cmd.exe` or the Git Bash environments.
-However, it will take a little effort to get working. This document explains
-what you need to do in order to get it running.
+Arcanist 通过 `cmd.exe` 或 Git 的 Bash 环境在 Windows 上运行。
+但是，得需要花费一些力气才能让它工作。本文档解释了要让它运行需要做的
+工作。
 
-NOTE: Windows support is relatively new and incomplete, file bugs when you run
-into issues.
 
-= Required Components =
+NOTE: Windows 支持是相对新的和不完整的，请在遇到错误时提交 Bug 反馈。
 
-You need to install:
+= 必需组件 =
 
-  - Arcanist itself, see @{article:Arcanist 用户指南}.
-  - PHP (see "Detailed PHP Install Instructions" below).
-  - SVN, Git, or Mercurial.
+你需要安装:
 
-Then, configure:
+  - Arcanist 自己, 查看 @{article:Arcanist 用户指南}.
+  - PHP (请参阅下面的 “PHP 安装详细说明”).
+  - SVN, Git, 或 Mercurial.
 
-  - Your PATH environmental variable should include `arcanist/bin`, the `php`
-    directory, and the directory where your VCS command lives. When you type
-    `php`, `arc`, or (for example) `git` from the command line, they should all
-    do something.
-  - Your EDITOR environmental variable should point at some valid CLI editor,
-    like the Git Bash `vim`. You can set this in `arc` if you prefer.
-    See below for details.
+然后，配置:
 
-You can set environmental variables somewhere in the `Advanced` tab of the
-`System` control panel.
+  - 您的 PATH 环境变量应包括 `arcanist/bin`，`php` 目录以及 VCS 命令所在的目录。 
+    当你在命令行中键入 `php`，`arc` 或（例如）`git` 时，他们应该有输出内容。
+  - 你的 EDITOR 环境变量应该指向一些有效的 CLI 编辑器，如 Git Bash 的 `vim`。 
+    如果你喜欢，你也可以在 `arc` 中设置。详情请参阅下文。
 
-Now you should be able to run `arc` normally (either from `cmd.exe` or
-Git Bash) and it should work more-or-less properly.
+您可以在“系统”控制面板的“高级”选项卡中设置环境变量。
 
-= Configuring an Editor =
+现在你应该能够正常运行 `arc`（从 `cmd.exe` 或者 Git Bash）了。
 
-NOTE: You **can not** use Notepad as your editor, because it does not have a
-blocking mode. You can use GitPad instead.
 
-Some arc workflows prompt you to edit large blocks of text using a text editor.
-You can configure various programs for this purpose, depending on which text
-editor you prefer. Some editors that will work are:
+= 配置编辑器 =
 
-  - [[ http://notepad-plus-plus.org/ | Notepad++ ]], a good all-around editor.
-  - **vim**, which comes with Git Bash.
-  - [[ https://github.com/github/gitpad | GitPad ]], which allows you to use
-    Notepad as your editor.
+NOTE: 你**不能**使用 Notepad 作为你的编辑器，因为它没有阻塞模式。 
+你可以使用 GitPad。
 
-Other editors may also work, but they must have a blocking edit mode.
+一些 arc 工作流程提示您使用文本编辑器编辑大块文本。 
+您可以配置各种程序，具体取决于您喜欢的哪个文本编辑器。 
+可以用的编辑器如下：
 
-To configure an editor, either set the `EDITOR` environmental variable to point
-at it, or run:
+  - [[ http://notepad-plus-plus.org/ | Notepad++ ]], 一个好的全面编辑器.
+  - **vim**, 来自 Git Bash.
+  - [[ https://github.com/github/gitpad | GitPad ]], 它允许您使用 Notepad 作为您的编辑器。
+
+其他编辑也可以工作，但他们必须得有一个阻塞编辑模式。
+
+要配置编辑器，可以设置 `EDITOR` 环境变量指向它，或者运行：
 
   $ arc set-config editor "\"C:\path\to\some\editor.exe\""
 
-NOTE: Note the use of quotes. Paths with spaces in them must be quoted, and
-these quotes must be escaped when passed to `arc set-config`, as in the examples
-below.
+NOTE: 注意使用引号。 其中的带有空格的路径必须用引号括起来
+这些引号必须转义后传递给 `arc set-config'，如下面的例子所示。
 
-Specifically, you can use this command for **Notepad++** (adjusting the path for
-your machine):
+
+具体来说，您可以将此命令用于 **Notepad++**（调整机器的路径）
 
   name=Notepad++
   $ arc set-config editor "\"C:\Program Files (x86)\Notepad++\notepad++.exe\" -multiInst -nosession"
 
-And this command for Vim (you may need to adjust the path):
+Vim 运行这个命令（你可能需要调整路径）：
 
   name=vim
   $ arc set-config editor "\"C:\Program Files (x86)\Git\share\vim\vim73\vim.exe\""
 
-And this for GitPad (you may need to adjust the path):
+GitPad 运行 (你可能需要调整路径):
 
   name=GitPad
   $ arc set-config editor "\"C:\Users\yourusername\AppData\Roaming\GitPad\GitPad.exe\""
 
-And this for Sublime Text (you may need to adjust the path):
+Sublime 使用这个命令 (你可能需要调整路径):
 
   name=Sublime Text
   $ arc set-config editor "\"C:\Program Files\Sublime Text 2\sublime_text.exe\" -w -n"
 
-= Detailed PHP Install Instructions =
+= PHP 安装详细说明 =
 
-While multiple versions of PHP should work, you can follow these specific
-instructions if you're having trouble.
+PHP 很多版本都可以使用。如果遇到问题，可以按下面说明安装：
 
-  - Download the latest stable PHP binary release from:
-    <http://windows.php.net/download/>. When this document was last
-    updated, this was PHP 5.4.6, but newer versions should also work. The
-    "VC9 x86 Non Thread Safe" build should work correctly. (Other versions newer
-    than PHP 5.3 should work, and thread-safe versions should also work.)
-  - Unzip the PHP directory.
-  - Copy `php.ini-development` to `php.ini` in that same directory.
-  - Open `php.ini` and locate the line `;extension=php_curl.dll`. Remove the
-    `;` to activate this extension. Locate the line `; extension_dir = "ext"`
-    and change it to `extension_dir = "C:\PHP\ext"`, where `C:\PHP` is
-    the directory where you installed PHP.
-  - Verify that things work by running `php -i` from your commandline and
-    looking for `curl` in the output.
+  - 从 <http://windows.php.net/download/> 下载 PHP 的最新稳定版本。
+  	本文档最后更新时，最新版本是 PHP 5.4.6，更新的版本应该也可以使用。
+	VC9 x86非线程安全”构建的版本因应该也能正常工作（
+	比 PHP 5.3 更新的其他版本应该也能工作，线程安全版本也可以工作。）。
+  - 解压（Unzip）PHP 目录。
+  - 将 `php.ini-development` 复制到同一目录中的 `php.ini` 。
+  - 打开 `php.ini` 文件，找到 `;extension=php_curl.dll` 所在行，
+  	删除掉 `;` 启用扩展。找到 `; extension_dir = "ext"` 所在行，
+	修改为 `extension_dir = "C:\PHP\ext"`，此处的 `C:\PHP` 是
+	PHP 的安装目录。
+  - 通过从命令行运行 `php -i` 并在输出中查找 `curl` 来验证安装是否正常。
 
-= Next Steps =
+= 下一步 =
 
-Continue by:
+接下来:
 
-  - returning to @{article:Arcanist 用户指南}.
+  - 返回到 @{article:Arcanist 用户指南}.

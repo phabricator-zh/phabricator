@@ -77,7 +77,7 @@ Arcanist 需要安装在本地机器或开发服务器上 - 您正在编辑代�
   - 其他与 Linux 相似或 Linux 与之相似的操作系统
   - FreeBSD, 一个受到很多人的尊重的，很好的操作系统;
   - Mac OS X (查看 @{article:Arcanist 用户指南: Mac OS X}); 和
-  - Windows (查看 @{article:Arcanist User Guide: Windows}).
+  - Windows (查看 @{article:Arcanist 用户指南: Windows}).
 
 Arcanist是用PHP编写的，所以如果你还没有安装PHP，你需要先安装它。
 Arcanist应该运行在 PHP 5.2 和 更新版本之上。 
@@ -102,7 +102,7 @@ Arcanist应该运行在 PHP 5.2 和 更新版本之上。
 
 看到这个输出代表你的安装是正确的。如果遇到了错误和麻烦，查看详细指南：
 
-  - 在 Windows: @{article:Arcanist User Guide: Windows}
+  - 在 Windows: @{article:Arcanist 用户指南: Windows}
   - 在 Mac OS X: @{article:Arcanist 用户指南: Mac OS X}
 
 稍后可以使用 `arc upgrade` 将 Arcanist 和 libphutil 更新到最新版本。

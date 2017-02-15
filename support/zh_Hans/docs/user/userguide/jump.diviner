@@ -1,39 +1,37 @@
-@title Search User Guide: Shortcuts
+@title 搜索用户指南: 快捷键
 @group userguide
 
-Command reference for global search shorcuts.
+全局搜索快捷方式的 命令参考。
 
-Overview
+概览
 ========
 
-Phabricator's global search bar automatically interprets certain commands as
-shortcuts to make it easy to navigate to specific places.
+Phabricator 全局搜索栏自动将某些命令解释为快捷方式，以方便导航到特定位置。
 
-To use these shortcuts, just type them into the global search bar in the main
-menu and press return. For example, enter `T123` to jump to the corresponding
-task quickly.
+要使用这些快捷方式，只需将它们输入到主菜单中的全局搜索栏中，然后按回车键。 
+例如，输入`T123` 快速跳转到相应的任务。
 
-Supported Commands
+支持的命令
 ========
 
-  - **T** - Jump to Maniphest.
-  - **T123** - Jump to Maniphest Task 123.
-  - **D** - Jump to Differential.
-  - **D123** - Jump to Differential Revision 123.
-  - **r** - Jump to Diffusion.
-  - **rXYZ** - Jump to Diffusion Repository XYZ.
-  - **rXYZabcdef** - Jump to Diffusion Commit rXYZabcdef.
-  - **r <name>** - Search for repositories by name.
-  - **u** - Jump to People
-  - **u username** - Jump to username's Profile
-  - **p** - Jump to Project
-  - **p Some Project** - Jump to Project: Some Project
-  - **s SymbolName** - Jump to Symbol SymbolName
-  - **(default)** - Search for input.
+  - **T** - 跳转到 Maniphest 主页
+  - **T123** - 跳转到 Maniphest 任务 123
+  - **D** - 跳转到 Differential
+  - **D123** - 跳转到 Differential 修订 123
+  - **r** - 跳转到 Diffusion.
+  - **rXYZ** - 跳转到 Diffusion 仓库 XYZ.
+  - **rXYZabcdef** - 跳转到 Diffusion 提交 rXYZabcdef.
+  - **r <name>** - 通过名称搜索代码仓库
+  - **u** - 跳转到用户列表页
+  - **u username** - 跳转到 username 的主页
+  - **p** - 跳转到项目
+  - **p Some Project** - 跳转到项目: Some Project
+  - **s SymbolName** - 跳转到 Symbol SymbolName
+  - **(default)** - 搜索输入内容
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - returning to the @{article:Search User Guide}.
+  - 返回到 @{article:Search User Guide}.

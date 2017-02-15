@@ -14,7 +14,7 @@
 
 虽然 `arc` 有大量与各种 Phabricator 应用程序接口交互的命令，
 但 `arc` 的主要用途是发送修改到 Differential 以供审核
-（ 有关 Differential 的更多信息，请参阅 @{article:Differential User Guide}）。 
+（ 有关 Differential 的更多信息，请参阅 @{article:Differential 用户指南}）。 
 如果你不熟悉 Differential，最好先阅读这篇文章，大概了解下代码审查工作流程。
 
 您通过运行 `arc diff' 可以发送更改以供审核。本文档的其余部分

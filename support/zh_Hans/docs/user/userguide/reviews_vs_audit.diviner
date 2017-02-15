@@ -9,7 +9,7 @@ Phabricator supports two similar but separate code review workflows:
 
   - **Differential** is used for pre-push code review, called "reviews"
     elsewhere in the documentation. You can learn more in
-    @{article:Differential User Guide}.
+    @{article:Differential 用户指南}.
   - **Audit** is used for post-push code reviews, called "audits" elsewhere in
     the documentation. You can learn more in @{article:Audit User Guide}.
 
@@ -119,5 +119,5 @@ Here are super biased recommendations from developers of code review software:
 
 = Next Steps =
 
-  - Learn more about reviews in @{article:Differential User Guide}; or
+  - Learn more about reviews in @{article:Differential 用户指南}; or
   - learn more about audits in @{article:Audit User Guide}.

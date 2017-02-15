@@ -1,9 +1,8 @@
-@title Running built-in PHP webserver
+@title 运行 PHP 内置 Web 服务器
 @group developer
 
-As of version 5.4.0, the PHP command line interface provides a built-in web
-server. This web server is designed for developmental purposes only, and should
-not be used in production. Phabricator can be executed under it with the
-command:
+从版本 5.4.0 开始，PHP 命令行界面提供了一个内置的 Web 服务器。 
+此Web服务器仅用于开发目的，不应在生产环境中使用。 
+可以通过下面的命令运行 Phabricator：
 
   $ php -S localhost:8000 -t path/to/phabricator/webroot/ path/to/phabricator/webroot/index.php

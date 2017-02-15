@@ -1,8 +1,8 @@
 {
   "name": "phabcontrib",
-  "title": "Phabricator Contributor Documentation",
-  "short": "Phabricator Contributor Docs",
-  "preface": "Information for Phabricator contributors and developers.",
+  "title": "Phabricator 贡献者文档",
+  "short": "Phabricator 贡献者文档",
+  "preface": "为 Phabricator 贡献者和开发人员提供的信息。",
   "root": "../../../",
   "uri.source":
     "https://secure.phabricator.com/diffusion/P/browse/master/%f$%l",

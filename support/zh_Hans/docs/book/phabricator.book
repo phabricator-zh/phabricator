@@ -1,8 +1,8 @@
 {
   "name": "phabdev",
-  "title": "Phabricator Technical Documentation",
-  "short": "Phabricator Tech Docs",
-  "preface": "Technical reference material for Phabricator developers.",
+  "title": "Phabricator 技术文档",
+  "short": "Phabricator 技术文档",
+  "preface": "为 Phabricator 开发人员提供的技术参考资料。",
   "root": "../../../",
   "uri.source":
     "https://secure.phabricator.com/diffusion/P/browse/master/%f$%l",

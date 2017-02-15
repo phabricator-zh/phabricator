@@ -1,27 +1,24 @@
-@title Slowvote User Guide
+@title Slowvote 用户指南
 @group userguide
 
-Detailed dispute resolution manual.
+详细的 争议解决手册。
 
-= Overview =
+= 概览 =
 
-Slowvote is a simple polling application for asking questions like "Where should
-we order pizza from?", "Are dogs better than cats?" and "What is the optimal
-strategic direction for our company?". You can use it to quickly get feedback
-from people in a lightweight, structured way.
+Slowvote 是一个简单的投票应用程序，
+用于提问，比如“我们应该从哪里订购披萨？”，
+“狗比猫好吗？ 和“我们公司的最佳战略方向是什么？”。 
+您可以通过它以轻量，结构化的方式快速获得人们的反馈。
 
-Slowvote is based on a Facebook application called Quickvote, which was pretty
-good when it was originally written but went through a couple of poorly executed
-rewrites and ended up being extremely slow and glitchy, often taking more than
-10 seconds to load. I originally designed and implemented the entire Slowvote
-application while waiting for a Quikvote to load.
+Slowvote 是基于一个名为 Quickvote 的 Facebook 应用程序，
+刚完成开发的时候还是不错的。但通过几次糟糕的重写，最终变的极度缓慢和毛刺，
+通常需要超过10秒来加载页面。
+我最初就是在等待 Quikvote 加载时，完成了对整个 Slowvote 应用程序的设计和实现。
 
-= Plurality vs Approval =
+= 多选 vs 单选 =
 
-When you create a poll, you can choose **plurality** or **approval** voting.
+创建投票时，您可以选择**多选**或**批准**投票。
 
-In plurality voting, users choose one option. The winning option is the one with
-the most votes.
+在多选投票中，用户选择一个选项。获胜选项是得票最多的选项。
 
-In approval voting, users choose all the options they approve of. The winning
-option is the one the largest number of people accept.
+在单选投票中，用户选择他们接受的所有选项。获胜选项是得票最多的选项。

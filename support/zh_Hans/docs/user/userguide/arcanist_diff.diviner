@@ -1,209 +1,191 @@
-@title Arcanist User Guide: arc diff
+@title Arcanist 用户指南: arc diff
 @group userguide
 
-Guide to running `arc diff`, to send changes to Differential for review.
+运行 `arc diff` 的指南，将更改发送到 Differential 进行审核。
 
-This article assumes you have `arc` installed and running; if not, see
-@{article:Arcanist 用户指南} for help getting it set up.
+本文假设您已安装并能够运行 `arc` ; 如果没有，见
+@{article:Arcanist 用户指南} 帮助设置它。
 
-Before running `arc diff`, you should create a `.arcconfig` file. If someone
-set things up for you, they may already have done this. See
-@{article:Arcanist 用户指南: Configuring a New Project} for instructions and
-information.
+在运行 `arc diff` 之前，你应该创建一个 `.arcconfig` 文件。
+这个文件应该有人已经帮你建好了。 
+有关说明和信息，请参阅 @{article:Arcanist User Guide: Configuring a New Project}。
 
-= Overview =
+= 概览 =
 
-While `arc` has a large number of commands that interface with various
-Phabricator applications, the primary use of `arc` is to send changes for
-review in Differential (for more information on Differential, see
-@{article:Differential User Guide}). If you aren't familiar with Differential,
-it may be instructive to read that article first to understand the big picture
-of how the code review workflow works.
+虽然 `arc` 有大量与各种 Phabricator 应用程序接口交互的命令，
+但 `arc` 的主要用途是发送修改到 Differential 以供审核
+（ 有关 Differential 的更多信息，请参阅 @{article:Differential User Guide}）。 
+如果你不熟悉 Differential，最好先阅读这篇文章，大概了解下代码审查工作流程。
 
-You send changes for review by running `arc diff`. The rest of this document
-explains how to use `arc diff`, and how the entire review workflow operates for
-different version control systems.
+您通过运行 `arc diff' 可以发送更改以供审核。本文档的其余部分
+解释了如何使用 `arc diff'，以及整个审核工作流程如何用于
+不同版本控制系统。
 
 = Subversion =
 
-In Subversion, `arc diff` sends the **uncommitted changes in the working copy**
-for review.
+在 Subversion 中，`arc diff` 将发送**工作副本中未提交的修改** 进行审核。
 
-To **create a revision** in SVN:
+要在 SVN 中**创建修订版**，运行：
 
-  $ nano source_code.c # Make changes.
+  $ nano source_code.c # 进行修改
   $ arc diff
 
-This will prompt you for information about the revision. To later **update an
-existing revision**, just do the same thing:
+这将提示您提供有关修订的信息。 
+要稍后**更新现有的修订版**，只需执行相同的操作：
 
-  $ nano source_code.c # Make more changes.
+  $ nano source_code.c # 进一步修改
   $ arc diff
 
-This time, `arc` will prompt you to update the revision. Once your revision has
-been accepted, you can commit it like this:
+这一次，`arc` 将提示您更新修订版本。
+一旦您的修订版本被接受，您可以这样提交：
 
   $ arc commit
 
 = Git =
 
-In Git, `arc diff` sends **all commits in a range** for review. By default,
-this range is:
+在 Git 中，`arc diff` 将发送 **指定范围内的所有提交** 进行审核。 
+默认情况下，此范围是：
 
   `git merge-base origin/master HEAD`..HEAD
 
-That's a fancy way of saying "all the commits on the current branch that
-you haven't pushed yet". So, to **create a revision** in Git, run:
+此范围的意思即“当前分支尚未推送的所有提交”。
+所以，要在 Git 中**创建修订**，运行：
 
-  $ nano source_code.c  # Make changes.
-  $ git commit -a       # Commit changes.
-  $ arc diff            # Creates a new revision out of ALL unpushed commits on
-                        # this branch.
+  $ nano source_code.c  # 进行修改
+  $ git commit -a       # 提交修改
+  $ arc diff            # 从此分支上的所有未提交的提交中创建新的修订版本。
 
-The `git commit` step is optional. If there are uncommitted changes in the
-working copy then Arcanist will ask you to create a commit from them.
+`git commit` 步骤是可选的。 
+如果工作副本中有未提交的更改，那么 Arcanist 会要求您从它们创建提交。
 
-Since it uses **all** the commits on the branch, you can make several commits
-before sending your changes for review if you prefer.
+由于它使用分支上的**全部**提交，因此如果您愿意，可以在发送更改之前进行多次提交。
 
-You can specify a different commit range instead by running:
+您可以通过运行以下命令来指定不同的提交范围：
 
   $ arc diff <commit>
 
-This means to use the range:
+这意味着使用范围：
 
   `git merge-base <commit> HEAD`..HEAD
 
-However, this is a relatively advanced feature. The default is usually correct
-if you aren't creating branches-on-branches, juggling remotes, etc.
+然而，这是相对高级的功能。 
+如果您不是创建基于分支的分支，远程分支等等，默认范围通常是正确的。
 
-To **update a revision**, just do the same thing:
+要**更新修订**，只需执行相同的操作：
 
-  $ nano source_code.c  # Make more changes.
-  $ git commit -a       # Commit them.
-  $ arc diff            # This prompts you to update revision information.
+  $ nano source_code.c  # 进一步修改
+  $ git commit -a       # 提交修改
+  $ arc diff            # 这将提示您更新修订版本信息。
 
-The `git commit` step is optional. If there are uncommitted changes in the
-working copy then Arcanist will ask you to amend them to the commit.
+`git commit` 步骤是可选的。 
+如果工作副本中有未提交的更改，那么 Arcanist 会要求您将其修改为提交。
 
-When your revision has been accepted, you can usually push it like this:
+当您的修订被接受时，您通常可以这样推送它：
 
-  $ arc land <branch>   # Merges <branch> into master and pushes.
+  $ arc land <branch>   # 将 <branch> 合并到 master，然后推送.
 
-`arc land` makes some assumptions about your workflow which might not be
-true. Consult the documentation before you use it. You should also look at
-`arc amend`, which may fit your workflow better.
+arc land` 对你的工作流做了一些假设，这可能和实际情况不符。
+在使用之前请查阅文档。你也应该看看 `arc amend'，
+这可能更适合您的工作流程。
 
 = Mercurial =
 
-In Mercurial, `arc diff` sends **all commits in a range** for review. By
-default, this range is changes between the first non-outgoing parent of any
-revision in history and the directory state. This is a fancy way of saying
-"every outgoing change since the last merge". It includes any uncommitted
-changes in the working copy, although you will be prompted to include these.
+在 Mercurial 中，`arc diff` 发送**指定范围内的所有提交**以供审核。 
+默认情况下，此范围是在历史记录中的任何修订版本
+的第一个未发布（non-outgoing）父目录和目录状态之间更改。 
+这其实是指 “从上次合并以来的每一个发布的变化”。 
+它包括工作副本中的任何未提交的更改，但将提示您包括这些更改。
 
-To **create a revision** in Mercurial, run:
+要在 Mercurial 中**创建修订版**，请运行：
 
-  $ nano source_code.c  # Make changes.
-  $ hg commit           # Commit changes.
+  $ nano source_code.c  # 进行修改
+  $ hg commit           # 提交修改
   $ arc diff            # Creates a new revision out of ALL outgoing commits
                         # on this branch since the last merge.
 
-The `hg commit` step is optional. If there are uncommitted changes in the
-working copy then Arcanist will ask you to create a commit from them.
+`hg commit` 步骤是可选的。 如果工作副本中有未提交的更改，
+那么 Arcanist 会要求您从它们创建提交。
 
-Since it uses **all** the outgoing commits on the branch, you can make several
-commits before sending your changes for review if you prefer.
+由于它使用在分支上的**全部**传出提交，
+如果您愿意可以在发送您的更改之前进行多个提交。
 
-You can specify a different commit range instead by running:
+您可以通过运行以下命令来指定不同的提交范围：
 
   $ arc diff <commit>
 
-This means to use the range from that commit to the directory state. However,
-this is an advanced feature and the default is usually correct.
+这意味着使用从该提交到目录状态的范围。 
+但是，这是一个高级功能，默认范围通常是正确的。
 
-To **update a revision**, just do the same thing:
+要**更新修订**，只需执行相同的操作：
 
-  $ nano source_code.c  # Make changes.
-  $ hg commit           # Commit changes.
-  $ arc diff            # This prompts you to update revision information.
+  $ nano source_code.c  # 进行修改
+  $ hg commit           # 提交修改
+  $ arc diff            # 这将提示您更新修订版本信息。
 
-The `hg commit` step is optional. If there are uncommitted changes in the
-working copy then Arcanist will ask you to create a commit from them (or amend
-them to the previous commit if supported).
+`hg commit`步骤是可选的。 如果工作副本中有未提交的更改，
+那么 Arcanist 会要求您从中创建提交（如果支持，则将其修改为先前的提交）。
 
-When your revision has been accepted, push it normally. (`arc` does not have
-push integration in Mercurial because it can't force merges and thus can't
-guarantee it will be able to do anything useful.)
+当您的修订版本被接受后，正常推送即可。 
+（`arc` 没有在 Mercurial 中的集成 push 操作，
+因为它不能强制合并，所以无法保证它能够做任何有用的事情。）
 
-= Pushing and Closing Revisions =
+= 推送和关闭修订 =
 
-After changes have been accepted, you generally push them and close the
-revision. `arc` has several workflows which help with this, by:
+接受更改后，您通常会推送它们并关闭修订版本。 
+`arc` 有几个工作流程可以帮助完成这些操作：
 
-  - squashing or merging changes from a feature branch into a master branch
-    (if relevant);
-  - formatting a good commit message with all the information from Differential;
-    and
-  - automatically closing the revision.
+  - 压缩或合并从特征分支到主分支（如果相关）的变化;
+  - 使用来自 Differential 的所有信息格式化以提供一个好的提交信息; 和
+  - 自动关闭修订。
 
-You don't need to use any of these workflows: you can just run `git push`,
-`hg push` or `svn commit` and then manually close the revision from the web.
-However, these workflows can make common development strategies more convenient,
-and give you better commit messages in the repository. The workflows `arc`
-supports are:
+您也可以不使用这些工作流程：您可以运行 `git push`，`hg push` 或 `svn commit`，
+然后从网页上手动关闭修订版本。 但是，这些工作流可以使常见的开发操作更方便，
+并在代码库中为您提供更好的提交消息。 `arc` 支持工作流有：
 
-  - `arc land`: Works in Git if you develop in feature branches. Does a merge
-    or squash-merge from your feature branch into some master branch, provides
-    a detailed commit message, pushes master, and then deletes your branch.
-  - `arc amend`: Works in Git if you can't use `arc land`. Amends HEAD with
-    a detailed commit message.
-  - `arc commit`: Works in Subversion. Runs `svn commit` with a detailed commit
-    message.
-  - `arc close-revision`: Works anywhere, closes a revision from the CLI
-    without going through the web UI.
+  - `arc land`: 在 Git 中工作，如果你在特性分支中开发。 
+    将特性分支合并或压缩合并到某个主分支中，提供详细的提交消息，
+	推送 master 分支，然后删除您的分支。
+  - `arc amend`: 在Git中工作，如果你不能使用 `arc land`。 
+  	使用详细的提交消息修改 HEAD 提交。
+  - `arc commit`: 在 Subversion 中工作。 使用详细的提交消息运行 `svn commit`。
+  - `arc close-revision`: 在任何地方都可以工作，从 CLI 关闭修订，而不是通过网页界面。
 
-You can use `arc help <command>` for detailed help with any of these.
-Differential will make a guess about a next step on accepted revisions, but it
-may not be the best next step for your workflow.
+你可以使用 `arc help <command>` 来获取这些命令的详细帮助。 
+Differential 将猜测接受的修订版本接下来需要的步骤，
+但它可能不是您的工作流程的最佳的下一步。
 
-Phabricator will also automatically close revisions, if the changes are pushed
-to a repository that is tracked in Diffusion. Specifically, it will close
-revisions based on commit and tree hashes, and `Differential Revision`
-identifiers in commit messages. (You can disable this feature by disabling
-"Autoclose" in the Repository configuration.)
+如果更改被推送到 Diffusion 所跟踪的代码库，Phabricator 也将自动关闭修订。 
+具体来说，它将根据提交和目录树哈希值以及提交消息中的 `Differential Revision` 标识符关闭修订。 
+（您可以通过禁用代码库配置中的“自动关闭”来禁用此功能。）
 
-If you push to an untracked repository (or `arc` can't figure out that it's
-tracked), `arc land`, `arc amend` and `arc commit` will implicitly run
-`arc close-revision`.
+如果你推送到一个未跟踪的代码库（或 `arc` 不能弄清它是否被跟踪），
+`arc land`，`arc amend` 和 `arc commit` 将隐式运行 `arc close-revision`。
 
-= General Information =
+= 一般信息 =
 
-This information is not unique to a specific version control system.
+此信息不是特定版本控制系统所特有的。
 
-== Force Diff Only ==
+== 仅使用 Diff  ==
 
-You can create just a diff (rather than a revision) with `--preview` (or
-`--only`, but this disables other features). You can later use it to create
-or update a revision from the web UI.
+你可以使用 `--preview`（或 `--only`， 但是这会禁用其他特性）创建一个 diff（而不是修订），
+您可以稍后使用它从网页上创建或更新修订版本。
 
-== Other Diff Sources ==
 
-You can create a diff out of an arbitrary patch file by using `--raw` and piping
-it to stdin. In most cases this will only create a diff, not a revision. You
-can use the web UI to create a revision from the diff, or update an existing
-revision.
+== 其他 Diff 源 ==
 
-== Force Create / Update ==
+你可以通过使用 `--raw` 参数，从任意补丁文件或标准输入管道创建 diff 。 
+在大多数情况下，这只会创建一个 diff，而不是一个修订。 
+您可以使用网页界面从该 diff 创建修订版本，或更新现有修订版本。
 
-`arc` uses information about the working copy (like the path, branch name, local
-commit hashes, and local tree hashes, depending on which version control system
-you are using) to figure out whether you intend to create or update a revision.
-If it guesses incorrectly, you can force it to either create or update a
-revision with:
 
-  $ arc diff --create             # Force "create".
-  $ arc diff --update <revision>  # Force "update".
+== 强制创建或更新 ==
 
-You can figure out what `arc` believes to be in the working copy with
-`arc which`.
+`arc` 使用有关工作副本的信息（如路径，分支名称，
+本地提交哈希值和本地树哈希值，具体取决于您使用的版本控制系统），
+以确定您是要创建还是更新修订版本。 
+如果猜测不正确，您可以强制它创建或更新修订版本：
+
+  $ arc diff --create             # 强制 "创建".
+  $ arc diff --update <revision>  # 强制 "更新".
+
+`arc which` 可以帮助找出工作副本所属的仓库。

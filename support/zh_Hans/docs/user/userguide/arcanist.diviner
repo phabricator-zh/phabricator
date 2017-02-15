@@ -37,7 +37,7 @@ Differential, linters, 单元测试框架, git, Mercurial, and SVN），
 Arcanist可以让你做以下事情：
 
   - 使用 `arc help` 获得有关可用命令的详细帮助信息
-  - 使用 `arc diff` 将代码发送到 Differential 以供审核  (详情新，请查看 @{article:Arcanist User Guide: arc diff})
+  - 使用 `arc diff` 将代码发送到 Differential 以供审核  (详情新，请查看 @{article:Arcanist 用户指南: arc diff})
   - 使用 `arc list' 显示等待修订信息
   - 使用 `arc cover` 找到适合的审核人
   - 使用 `arc patch` 将修订版本中的更改应用于工作副本 
@@ -156,7 +156,7 @@ Arcanist 使用它遇到的第一个定义作为运行时设置。
 接下来:
 
   - 查看@{article:Arcanist User Guide: Configuring a New Project} 使用 `arc` 设置一个新项目 ; 或
-  - 通过 @{article:Arcanist User Guide: arc diff} 学习如何使用 `arc` 发送修改以供审核。
+  - 通过 @{article:Arcanist 用户指南: arc diff} 学习如何使用 `arc` 发送修改以供审核。
 
 也有一些高级话题。这些是关于如何配置 `arc` ，以重新定义他的功能。
 只是使用 `arc` 无需了解这些。

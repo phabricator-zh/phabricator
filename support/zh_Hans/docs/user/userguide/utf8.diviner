@@ -1,48 +1,40 @@
-@title User Guide: UTF-8 and Character Encoding
+@title 用户指南: UTF-8 和 字符编码
 @group userguide
 
-How Phabricator handles character encodings.
+Phabricator 如何处理字符编码。
 
-= Overview =
+= 概览 =
 
-Phabricator stores all internal text data as UTF-8, processes all text data
-as UTF-8, outputs in UTF-8, and expects all inputs to be UTF-8. Principally,
-this means that you should write your source code in UTF-8. In most cases this
-does not require you to change anything, because ASCII text is a subset of
-UTF-8.
+Phabricator 使用 UTF-8 编码处理内部数据的存储、处理和输出，并期望所有输入为 UTF-8 编码。
+原则上，这意味着您应该使用 UTF-8 编写源代码。 
+在大多数情况下，这不需要您修改任何内容，因为 ASCII 文本是 UTF-8 的子集。
 
-If you have a repository with source files that do not have UTF-8, you have two
-options:
+如果您有一个源文件不是 UTF-8 编码的代码仓库，您有两个选项：
 
-  - Convert all files in the repository to ASCII or UTF-8 (see "Detecting and
-    Repairing Files" below). This is recommended, especially if the encoding
-    problems are accidental.
-  - Configure Phabricator to convert files into UTF-8 from whatever encoding
-    your repository is in when it needs to (see "Support for Alternate
-    Encodings" below). This is not completely supported, and repositories with
-    files that have multiple encodings are not supported.
+  - 将代码仓库中的所有文件转换为 ASCII 或 UTF-8 编码（请参阅下文的“检测和修复文件”）。 
+  	推荐您这样做，特别是如果编码问题是偶然的。
+  - 配置 Phabricator 将文件转换为 UTF-8，无论您的存储库需要什么编码（见下面的“支持备用编码”）。 
+    这并不是完全支持的，并且不支持具有多个不同编码文件的仓库。
 
-= Detecting and Repairing Files =
+= 检测和修复文件 =
 
-It is recommended that you write source files only in ASCII text, but
-Phabricator fully supports UTF-8 source files.
+建议您只使用 ASCII 文本编写源文件，但 Phabricator 完全支持 UTF-8 源文件。
 
-If you have a project which isn't valid UTF-8 because a few files have random
-binary nonsense in them, there is a script in libphutil which can help you
-identify and fix them:
+如果你有一个项目不是有效的 UTF-8 编码，因为一些文件中有随机的二进制字符，
+libphutil 中有一个脚本可以帮助你识别和修复它们：
+
 
   project/ $ libphutil/scripts/utils/utf8.php
 
-Generally, run this script on all source files with "-t" to find files with bad
-byte ranges, and then run it without "-t" on each file to identify where there
-are problems. For example:
+通常，使用 "-t" 在所有源文件上运行此脚本以查找具有错误字节范围的文件，
+然后去掉 "-t" 参数在每个文件上运行它来标识存在问题的位置。 例如：
 
   project/ $ find . -type f -name '*.c' -print0 | xargs -0 -n256 ./utf8 -t
   ./hello_world.c
 
-If this script exits without output, you're in good shape and all the files that
-were identified are valid UTF-8. If it found some problems, you need to repair
-them. You can identify the specific problems by omitting the "-t" flag:
+如果此脚本退出而没有输出，那么您没有编码问题，并且标识的所有文件都是有效的 UTF-8 文件。 
+如果它发现了一些问题，你需要修复它们。 您可以通过省略“-t”标志来识别特定问题：
+
 
   project/ $ ./utf8.php hello_world.c
   FAIL  hello_world.c
@@ -53,28 +45,22 @@ them. You can identify the specific problems by omitting the "-t" flag:
     6  }
     7
 
-This shows the offending bytes on line 5 (in the actual console display, they'll
-be highlighted). Often a codebase will mostly be valid UTF-8 but have a few
-scattered files that have other things in them, like curly quotes which someone
-copy-pasted from Word into a comment. In these cases, you can just manually
-identify and fix the problems pretty easily.
+这显示在第5行上有违规字节（在实际控制台显示中，它们将突出显示）。 
+通常代码库都是有效的 UTF-8 编码，但有一些分散的文件，其中有其他东西，例如卷曲引号，
+有人从 Word 粘贴到评论。 在这些情况下，您可以轻松地手动识别和解决这些问题。
 
-If you have a prohibitively large number of UTF-8 issues in your source code,
-Phabricator doesn't include any default tools to help you process them in a
-systematic way. You could hack up `utf8.php` as a starting point, or use other
-tools to batch-process your source files.
+如果您的源代码中有大量的 UTF-8 编码问题，Phabricator 没有提供
+可以帮助您以系统的方式处理它们的任何默认工具。你可以将 `utf8.php` 作为起点，
+或者使用其他工具批量处理你的源文件。
 
-= Support for Alternate Encodings =
+= 支持其他编码 =
 
-Phabricator has some support for encodings other than UTF-8.
+Phabricator 对 UTF-8 以外的编码有一些支持。
 
-NOTE: Alternate encodings are not completely supported, and a few features will
-not work correctly. Codebases with files that have multiple different encodings
-(for example, some files in ISO-8859-1 and some files in Shift-JIS) are not
-supported at all.
+NOTE: 不完全支持备用编码，一些功能将无法正常工作。 
+不支持具有多种不同编码（例如，有些文件是 ISO-8859-1 编码 和 有些是 Shift-JIS 编码）文件的代码库。
 
-To use an alternate encoding, edit the repository in Diffusion and specify the
-encoding to use.
+要使用备用编码，请在 Diffusion 中编辑代码仓库，并指定要使用的编码。
 
-Optionally, you can use the `--encoding` flag when running `arc`, or set
-`encoding` in your `.arcconfig`.
+可选地，您可以在运行 `arc` 时使用 `--encoding` 标志，或在 `.arcconfig` 中设置 `encoding` 
+来指定编码。

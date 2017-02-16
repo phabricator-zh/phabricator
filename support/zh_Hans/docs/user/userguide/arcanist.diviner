@@ -165,4 +165,4 @@ Arcanist 使用它遇到的第一个定义作为运行时设置。
  - @{article:Arcanist User Guide: Lint}
  - @{article:Arcanist User Guide: Customizing Existing Linters}
  - @{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}
- - @{article:Arcanist User Guide: Code Coverage}
+ - @{article:Arcanist 用户指南: 代码覆盖率}

@@ -1,69 +1,62 @@
-@title Arcanist User Guide: Code Coverage
+@title Arcanist 用户指南: 代码覆盖率
 @group userguide
 
-Explains code coverage features in Arcanist and Phabricator.
+解释 Arcanist 和 Phabricator 中的代码覆盖测试功能。
 
-This is a configuration guide that helps you set up advanced features. If you're
-just getting started, you don't need to look at this yet. Instead, start with
-the @{article:Arcanist 用户指南}.
+这是一个可帮助您设置高级功能的指南。 
+如果你刚刚开始，并不需要查看这个。 
+相反，从 @{article:Arcanist 用户指南} 开始吧。
 
-Before you can configure coverage features, you must set up unit test
-integration. For instructions, see @{article:Arcanist 用户指南: Configuring
-a New Project} and @{article:Arcanist 用户指南: Customizing
-Lint, Unit Tests and Workflows}.
+在配置覆盖功能之前，必须设置单元测试集成。 
+有关说明，请参阅 @{article:Arcanist 用户指南: 配置新项目} 
+和 @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}。
 
-= Using Coverage Features =
+= 使用覆盖率功能 =
 
-If your project has unit tests with coverage integration (see below for
-instructions on setting it up), you can use "arc" to show coverage reports.
+如果你的项目的单元测试具有覆盖率功能（请参阅下面的设置说明），
+可以直接使用 "arc" 显示覆盖率报告。
 
-For example:
+例如:
 
   arc unit --detailed-coverage src/some/file.php
 
-Depending on how your test engine is configured, this will run tests relevant
-to `src/some/file.php` and give you a detailed coverage report.
+根据测试引擎的配置，这将运行与 `src/some/file.php` 相关的测试，
+并提供详细的覆盖率报告。
 
-If the test engine enables coverage by default, it will be uploaded to
-Differential and displayed in the right gutter when viewing diffs.
+如果测试引擎默认启用覆盖来报告功能，
+它将被上传到 Differential ，并在查看差异时显示。
 
-= Enabling Coverage for libphutil, Arcanist and Phabricator =
+= 为 libphutil、 Arcanist 和 Phabricator 启用覆盖率测试 =
 
-If you're contributing, libphutil, Arcanist and Phabricator support coverage if
-you install Xdebug:
+如果你是一个贡献者，安装 Xdebug 后，libphutil、 Arcanist 和 Phabricator 
+可以支持覆盖率测试。
 
 http://xdebug.org/
 
-It should be sufficient to correctly install Xdebug; coverage information will
-be automatically enabled.
+只要正确地安装了 Xdebug，覆盖率测试将自动启用。
 
-= Building Coverage Support =
+= 构建覆盖率报告 =
 
-To add coverage support to a unit test engine, just call `setCoverage()` when
-building @{class@arcanist:ArcanistUnitTestResult} objects. Provide a map of
-file names (relative to the working copy root) to coverage report strings.
-Coverage report strings look like this:
+要为单元测试引擎添加覆盖率支持，只需在构建 @{class@arcanist:ArcanistUnitTestResult} 
+对象时调用 `setCoverage()` 方法即可。提供文件名（相对于工作副本根目录）到覆盖率报告字符串的映射。 
+覆盖报告字符串如下所示：
 
   NNNNNCCCNNNNNNNNCCCCCCNNNUUUNNNNN
 
-Each line in the file is represented by a character. Valid characters are:
+文件中的每一行都由一个字符表示。 有效字符为：
 
-  - **N** Not executable. This is a comment or whitespace which should be
-    ignored when computing test coverage.
-  - **C** Covered. This line has test coverage.
-  - **U** Uncovered. This line is executable but has no test coverage.
-  - **X** Unreachable. If your coverage analysis can detect unreachable code,
-    you can report it here.
+  - **N** 不可执行。 这是一个在计算测试覆盖时应该忽略的注释或空格。
+  - **C** 覆盖。这一行有测试覆盖。
+  - **U** 未覆盖。这一行能运行，但是没有测试覆盖。
+  - **X** 无法到达。如果您的覆盖率分析可以检测到无法访问的代码，您可以在此报告。
 
-This format is intended to be as simple as possible. A valid coverage result
-might look like this:
+此格式旨在尽可能简单。有效的覆盖结果可能如下所示：
 
   array(
     'src/example.php' => 'NNCNNNCNUNNNUNUNUNUNUNC',
     'src/other.php'   => 'NNUNNNUNCNNNUNUNCNCNCNU',
   );
 
-You may also want to filter coverage information to the paths passed to the
-unit test engine. See @{class@arcanist:PhutilTestCase} and
-@{class@arcanist:PhutilUnitTestEngine} for an example of coverage integration
-in PHP using Xdebug.
+您可能还希望将覆盖信息过滤到传递到单元测试引擎的路径。 
+有关使用 Xdebug 在 PHP 中进行覆盖率测试整合的示例，
+请参阅 @{class@arcanist:PhutilTestCase} 和 @{class@arcanist:PhutilUnitTestEngine}。

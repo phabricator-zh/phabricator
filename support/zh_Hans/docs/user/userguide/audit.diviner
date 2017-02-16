@@ -7,7 +7,7 @@ Guide to the Audit (post-push code review) tool and workflow.
 
 Phabricator supports two code review workflows, "review" (pre-push) and
 "audit" (post-push). To understand the differences between the two, see
-@{article:User Guide: Review vs Audit}.
+@{article:用户手册: 代码审查和审计}.
 
 This document summarizes the post-push "audit" workflow implemented by the
 creatively-named //Audit// tool.

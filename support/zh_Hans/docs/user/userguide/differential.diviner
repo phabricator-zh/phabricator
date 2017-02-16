@@ -7,7 +7,7 @@ Differential（推送前代码审查）工具和 工作流程指南。
 
 Phabricator 支持两种代码评审工作流程，“审查”（推送前）和
 “审计”（推送后）。 要了解两者之间的差异，请参阅
-@{article:User Guide: Review vs Audit}。
+@{article:用户手册: 代码审查和审计}。
 
 本文档总结了通过 //Differential// 实现的推送前审查工作流。
 

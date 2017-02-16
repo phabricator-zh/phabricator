@@ -164,5 +164,5 @@ Arcanist 使用它遇到的第一个定义作为运行时设置。
  - @{article:Arcanist User Guide: Commit Ranges}
  - @{article:Arcanist User Guide: Lint}
  - @{article:Arcanist User Guide: Customizing Existing Linters}
- - @{article:Arcanist User Guide: Customizing Lint, Unit Tests and Workflows}
+ - @{article:Arcanist 用户指南: 自定义 Lint，单元测试和工作流}
  - @{article:Arcanist 用户指南: 代码覆盖率}

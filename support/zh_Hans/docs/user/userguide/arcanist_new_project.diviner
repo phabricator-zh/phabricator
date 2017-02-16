@@ -49,7 +49,7 @@ NOTE: 你应该把你的 `.arcconfig` 文件提交到代码库！
   - **lint.engine**: @{class@arcanist:ArcanistLintEngine} 子类的名称，
   	用于将 lint 规则应用于此项目。参见 @{article:Arcanist 用户指南: Lint}。
   - **unit.engine**: @{class@arcanist:ArcanistUnitTestEngine} 子类的名称，
-  	用于将单元测试规则应用于此项目。参见 @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}。
+  	用于将单元测试规则应用于此项目。参见 @{article:Arcanist 用户指南: 自定义 Lint，单元测试和工作流}。
 
 支持这些选项，但不建议使用它们：
 

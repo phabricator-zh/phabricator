@@ -19,7 +19,7 @@ linters for use in new engines.
 
 First, you should set up an engine by following the instructions in
 @{article:Arcanist 用户指南: Lint} and possibly
-@{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}.
+@{article:Arcanist 用户指南: 自定义 Lint，单元测试和工作流}.
 Then, follow this guide to customize linters.
 
 = General Guidelines =

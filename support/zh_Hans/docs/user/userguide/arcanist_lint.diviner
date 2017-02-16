@@ -416,4 +416,4 @@ Continue by:
   - use a linter that hasn't been integrated into Arcanist with
     @{article:Arcanist 用户指南: Script and Regex Linter}; or
   - learning how to add new linters and lint engines with
-    @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}.
+    @{article:Arcanist 用户指南: 自定义 Lint，单元测试和工作流}.

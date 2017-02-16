@@ -9,7 +9,7 @@
 
 在配置覆盖功能之前，必须设置单元测试集成。 
 有关说明，请参阅 @{article:Arcanist 用户指南: 配置新项目} 
-和 @{article:Arcanist 用户指南: Customizing Lint, Unit Tests and Workflows}。
+和 @{article:Arcanist 用户指南: 自定义 Lint，单元测试和工作流}。
 
 = 使用覆盖率功能 =
 

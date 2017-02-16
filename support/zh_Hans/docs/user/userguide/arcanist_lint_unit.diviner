@@ -1,74 +1,66 @@
-@title Arcanist User Guide: Customizing Lint, Unit Tests and Workflows
+@title Arcanist 用户指南: 自定义 Lint，单元测试和工作流
 @group userguide
 
-Explains how to build new classes to control how Arcanist behaves.
+解释如何构建新类来控制 Arcanist 的行为。
 
-This is a configuration guide that helps you set up advanced features. If you're
-just getting started, you don't need to look at this yet. Instead, start with
-the @{article:Arcanist 用户指南}.
 
-= Overview =
+这是一个可帮助您设置高级功能的指南。 
+如果你刚刚开始，并不需要查看这个。 
+相反，从 @{article:Arcanist 用户指南} 开始吧。
 
-Arcanist has some basic configuration options available in the `.arcconfig`
-file (see @{article:Arcanist 用户指南: Configuring a New Project}), but it
-can't handle everything. If you want to customize Arcanist at a deeper level,
-you need to build new classes. For instance:
+= 概览 =
 
-  - if you want to configure linters, or add new linters, you need to create a
-    new class which extends @{class@arcanist:ArcanistLintEngine}.
-  - if you want to integrate with a unit testing framework, you need to create a
-    new class which extends @{class@arcanist:ArcanistUnitTestEngine}.
-  - if you you want to change how workflows behave, or add new workflows, you
-    need to create a new class which extends
-    @{class@arcanist:ArcanistConfiguration}.
+Arcanist 在 `.arcconfig` 文件中有一些基本的配置选项（见 @{article:Arcanist 用户指南: 配置新项目}），
+但它不是万能的。如果你想要在更深的层次上定制 Arcanist，你需要创建新的类。例如：
 
-Arcanist works through a sort of dependency-injection approach. For example,
-Arcanist does not run lint rules by default, but you can set `lint.engine`
-in your `.arcconfig` to the name of a class which extends
-@{class@arcanist:ArcanistLintEngine}. When running from inside your project,
-Arcanist will load this class and call methods on it in order to run lint. To
-make this work, you need to do three things:
+  - 如果要配置 linters 或添加新的 linters，
+  	您需要创建一个扩展 @{class@arcanist:ArcanistLintEngine} 的新类。
+  - 如果你想集成一个单元测试框架，你需要创建一个扩展 
+  	@{class@arcanist:ArcanistUnitTestEngine} 的新类。
+  - 如果你想修改工作流的行为或添加新工作流，你需要创建一个扩展 
+    @{class@arcanist:ArcanistConfiguration} 的新类。
 
-  - actually write the class;
-  - add the library where the class exists to your `.arcconfig`;
-  - add the class name to your `.arcconfig` as the **lint.engine**,
-    **unit.engine**, or **arcanist_configuration**.
+Arcanist 通过一种依赖注入方法工作。例如，Arcanist 默认不运行 lint 规则，
+但是你可以在你的 `.arcconfig` 文件中设置 `lint.engine' 为扩展
+@{class@arcanist:ArcanistLintEngine} 的类的名称。 
+当从项目内部运行时，Arcanist 将加载此类并调用其上的方法以运行 lint。 
+实现此功能，你需要做三件事：
 
-= Create a libphutil Library =
+  - 编写并实现此类;
+  - 将此类所在类库添加到 `.arcconfig` 文件;
+  - 将类名添加到 `.arcconfig` 文件中的 **lint.engine**、**unit.engine**, 或 
+  	**arcanist_configuration** 配置项。
 
-If you haven't created a library for the class to live in yet, you need to do
-that first. Follow the instructions in
-@{article@phabcontrib:Adding New Classes}, then make the library loadable by
-adding it to your `.arcconfig` like this:
+= 创建 libphutil 类库 =
+
+如果你还没有为类创建类库，你需要先创建一个。 
+按照 @{article@phabcontrib:Adding New Classes} 中的说明，
+然后通过将库添加到您的 `.arcconfig` 中以加载它，如下所示：
 
   {
     // ...
     "load" : [
       // ...
-      "/path/to/my/library", // Absolute path
-      "support/arcanist",    // Relative path in this project
+      "/path/to/my/library", // 绝对路径
+      "support/arcanist",    // 项目中的相对路径
       // ...
     ]
     // ...
   }
 
-You can either specify an absolute path, or a path relative to the project root.
-When you run `arc list --trace`, you should see a message to the effect that
-it has loaded your library.
+您可以指定绝对路径或相对于项目根目录的路径。 
+当你运行 `arc list --trace` 时，你应该看到一条消息，表明它已经加载了类库。
 
-For debugging or testing, you can also run Arcanist with the
-`--load-phutil-library` flag:
+对于调试或测试，您还可以使用 `--load-phutil-library' 参数运行 Arcanist：
 
   arc --load-phutil-library=/path/to/library <command>
 
-You can specify this flag more than once to load several libraries. Note that
-if you use this flag, Arcanist will ignore any libraries listed in
-`.arcconfig`.
+您可以多次指定此标志以加载多个库。 
+请注意，如果使用此标志，Arcanist 将忽略 `.arcconfig` 中列出的任何库。
 
-= Use the Class =
+= 使用类 =
 
-This step is easy: just edit `.arcconfig` to specify your class name as
-the appropriate configuration value.
+这个步骤很容易：只需编辑 `.arcconfig` 以指定您的类名作为适当的配置值。
 
   {
     // ...
@@ -76,17 +68,15 @@ the appropriate configuration value.
     // ...
   }
 
-Now, when you run Arcanist in your project, it will invoke your class when
-appropriate.
+现在，当您在项目中运行 Arcanist 时，它会在适当时调用您的类。
 
-For lint and unit tests, you can also use the `--engine` flag override the
-default engine:
+对于 lint 和单元测试，您还可以使用 `--engine` 标志覆盖默认引擎：
 
   arc lint --engine MyCustomArcanistLintEngine
 
-This is mostly useful for debugging and testing.
+这对于调试和测试很有用。
 
-= Next Steps =
+= 下一步 =
 
-  - Learn how to reuse existing linters by reading
-    @{article:Arcanist 用户指南: Customizing Existing Linters}.
+  - 通过阅读
+    @{article:Arcanist 用户指南: Customizing Existing Linters} 了解如何重用现有的 linters。

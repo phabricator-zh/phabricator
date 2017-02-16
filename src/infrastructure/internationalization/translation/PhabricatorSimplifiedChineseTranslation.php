@@ -1,7 +1,7 @@
 <?php
 // autogenerate by tool.
-// created: 2017-02-15 10:29:52
-// done: 18.08% (2525/13962)
+// created: 2017-02-16 10:05:44
+// done: 18.21% (2542/13962)
 
 final class PhabricatorSimplifiedChineseTranslation
     extends PhutilTranslation {
@@ -149,6 +149,7 @@ return array (
   '%s asked a question: %s' => '%s 提了一个问题: %s',
   '%s asked this question.' => '%s 提了这个问题。',
   '%s assigned this task to %s.' => '%s 将此任务分配给 %s.',
+  '%s authored %s.' => '%s 撰写了 %s。',
   '%s awarded %s a %s token.' => '%s 颁发给 %s 一个 『%s』 徽章。',
   '%s awarded a token.' => '%s 颁发了一个徽章。',
   '%s bought a banana.' => '%s 买了一个香蕉。',
@@ -254,7 +255,7 @@ return array (
   '%s created this object in space %s.' => '%s 在 %s 新建了这个对象。',
   '%s created this object with edit policy "%s".' => '%s 应用编辑策略 % 创建了此对象。',
   '%s created this object with join policy "%s".' => '%s 应用加入策略 % 创建了此对象。',
-  '%s created this object with visibility "%s".' => '%s 创建了此对象，并设置对 % 可见。',
+  '%s created this object with visibility "%s".' => '%s 创建了此对象，并设置对 "%s" 可见。',
   '%s created this object.' => '%s 新建了这个对象。',
   '%s created this package.' => '%s 新建了这个套件。',
   '%s created this panel.' => '%s 新建了这个面板。',
@@ -302,6 +303,10 @@ return array (
   '%s left this project.' => '%s 退出了此项目。',
   '%s mentioned this in %s.' => '%s 在 %s 中提到。',
   '%s named this room "%s".' => '%s 给此聊天室取名为：%s',
+  '%s published %s.' => '%s 发布了 %s。',
+  '%s published the blog %s.' => '%s 发布了博客 %s.',
+  '%s published this blog.' => '%s 发布了此博客。',
+  '%s published this post.' => '%s 发布了此文章。 ',
   '%s removed %s commit(s): %s.' => '%s 移除了%s个提交: %s。',
   '%s removed %s task(s): %s.' => '%s 移除了%s个任务：%s。',
   '%s removed the image for %s.' => '%s 删除了 %s 的图片。',
@@ -314,6 +319,7 @@ return array (
   '%s set the image for %s to %s.' => '%s 设置 %s 的图片为： %s。',
   '%s set the topic of this room to "%s".' => '%s 设置此聊天室的话题为：%s。',
   '%s set this blog\'s header image to %s.' => '%s 设置此博客的头图为: %s',
+  '%s set this blog\'s profile image to %s.' => '%s 设置此博客的简介图标为：%s。',
   '%s set this project\'s icon to %s.' => '%s 设置此项目的图标为%s。',
   '%s updated her profile' => '%s 更新了她的资料',
   '%s updated his profile' => '%s 更新了他的资料',
@@ -326,6 +332,10 @@ return array (
   '%s updated the blog\'s parent site to "%s".' => '%s 更新博客的父站点为 "%s".',
   '%s updated the blog\'s subtitle to "%s".' => '%s 更新此博客的副标题为 "%s".',
   '%s updated the image for %s from %s to %s.' => '%s 将 %s 的图片从 %s 修改为 %s.',
+  '%s updated the parent domain for %s.' => '%s 更新了%s 的父域名。',
+  '%s updated the parent site for %s.' => '%s 更新了%s 的父站点。',
+  '%s updated the post\'s name to "%s".' => '%s 更新文章标题为 "%s".',
+  '%s updated the post\'s subtitle to "%s".' => '%s 更新文章副标题为 "%s".',
   '%s updated their profile' => '%s 更新了它的资料',
   '%s updated this countdown to end on %s.' => '%s 将此倒计时的截止时间改为 %s 。',
   '(%d line(s))' => '(%d行)',
@@ -555,6 +565,7 @@ return array (
   'Available Transforms' => '可用转换',
   'Award Token' => '颁发徽章',
   'Award and Acquire Trinkets' => '颁发与获得奖励',
+  'BLOG DETAIL' => '博客详情',
   'BRANCHES' => '分支',
   'Basic Policies' => '基础策略',
   'Batch Edit Selected »' => '批量编辑 »',
@@ -639,6 +650,7 @@ return array (
   'Change status to' => '状态修改为',
   'Change status to: %s.' => '状态修改为 %s 。',
   'Change the name and add your company logo, just to give it a little extra polish.' => '快去修改名称和公司图标，添加一些额外的亮点。',
+  'Changed Policy' => '修改了策略',
   'Changes (%s)' => '变更 (%s)',
   'Changes discarded. ' => '已舍弃更改。',
   'Changes from before your most recent comment are hidden.' => '您最近的评论之前的更改已隐藏。',
@@ -825,6 +837,7 @@ return array (
   'Create Task...' => '新建任务',
   'Create Workboard' => '创建工作台',
   'Create a Blog' => '新建博客',
+  'Create a Poll' => '新建投票',
   'Create a Project' => '新建项目',
   'Create a Repository' => '新建仓库',
   'Create a Task' => '新建任务',
@@ -1470,6 +1483,7 @@ return array (
     1 => 'PHP 同样加载这些配置文件:',
   ),
   'PHP post_max_size Not Configured' => '未设置 PHP post_max_size',
+  'POST DETAIL' => '文章详情',
   'PREVIEW' => '预览',
   'Package' => '包',
   'Page Not Found' => '页面未找到',
@@ -1574,6 +1588,7 @@ return array (
   'Policy' => '策略',
   'Policy Details: %s' => '策略详情: %s',
   'Policy Namespaces' => '策略命名空间',
+  'Poll other users to help facilitate decision making.' => '为其他用户投票，以帮助促进决策。',
   'Ponder Answer' => 'Ponder 答案',
   'Ponder Answers' => 'Ponder 答案',
   'Ponder Question' => 'Ponder 问题',
@@ -1894,6 +1909,8 @@ return array (
     1 => '执行这些命令:',
   ),
   'SECURITY WARNING' => '安全提醒',
+  'SLOWVOTE DESCRIPTION' => 'SLOWVOTE 描述',
+  'SLOWVOTE DETAIL' => 'SLOWVOTE 详情 ',
   'SMS' => '短信发送',
   'SSH KEY DETAIL' => 'SSH 密钥详情',
   'SSH Key' => 'SSH 密钥',

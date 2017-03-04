@@ -1,224 +1,219 @@
-@title Remarkup Reference
+@title Remarkup 参考
 @group userguide
 
-Explains how to make bold text; this makes your words louder so you can win
-arguments.
+解释如何制作粗体文本;  这使你的话更大声，所以你可以赢得争论。
 
-= Overview =
+= 概览 =
 
-Phabricator uses a lightweight markup language called "Remarkup", similar to
-other lightweight markup languages like Markdown and Wiki markup.
+Phabricator 使用称为 “Remarkup” 的轻量级标记语言，类似于
+其他轻量级标记语言，如 Markdown 和 Wiki 标记语言。
 
-This document describes how to format text using Remarkup.
+本文档描述了如何使用Remarkup格式化文本。
 
-= Quick Reference =
+= 快速参考 =
 
-All the syntax is explained in more detail below, but this is a quick guide to
-formatting text in Remarkup.
+下面会更详细地解释所有的语法，这是一个使用 Remarkup 格式化文本的快速指南。
 
-These are inline styles, and can be applied to most text:
+这些是内联样式，并且可以应用于大多数文本：
 
   **bold** //italic// `monospaced` ##monospaced## ~~deleted~~ __underlined__
   !!highlighted!!
-  D123 T123 rX123           # Link to Objects
-  {D123} {T123}             # Link to Objects (Full Name)
-  {F123}                    # Embed Images
-  {M123}                    # Embed Pholio Mock
-  @username                 # Mention a User
-  #project                  # Mention a Project
-  [[wiki page]]             # Link to Phriction
-  [[wiki page | name]]      # Named link to Phriction
-  http://xyz/               # Link to web
-  [[http://xyz/ | name]]    # Named link to web
-  [name](http://xyz/)       # Alternate Link
+  D123 T123 rX123           # 链接到对象
+  {D123} {T123}             # 链接到对象 (全名)
+  {F123}                    # 嵌入图片
+  {M123}                    # 嵌入 Pholio Mock
+  @username                 # 提及用户
+  #project                  # 提及项目
+  [[wiki page]]             # 链接到 Phriction
+  [[wiki page | name]]      # 命名链接到 Phriction
+  http://xyz/               # 链接到网页
+  [[http://xyz/ | name]]    # 命名链接到网页
+  [name](http://xyz/)       # 备用链接
 
-These are block styles, and must be separated from surrounding text by
-empty lines:
+这些是块样式，并且必须通过空行与周围文本分隔开：
 
-  = Large Header =
+  = 大标题 =
 
-  == Smaller Header ==
+  ==  小标题 ==
 
-  ## This is a Header As Well
+  ## 这也是一个标题
 
-  Also a Large Header
+  这也是一个大标题
   ===================
 
-  Also a Smaller Header
+  这也是一个小标题
   ---------------------
 
-  > Quoted Text
+  > 引用文本
 
-  Use `- ` or `* ` for bulleted lists, and `# ` for numbered lists.
-  Use ``` or indent two spaces for code.
-  Use %%% for a literal block.
-  Use | ... | ... for tables.
+  `- ` 或 `* ` 用于项目符号列表, 而 `# ` 用于编号列表.
+  ``` 或锁进两个空格表示代码。
+  对文字块使用 %%%。
+  使用 | ... | ... 表示表格。
 
-= Basic Styling =
+= 基本样式 =
 
-Format **basic text styles** like this:
+按如下方法格式化 **基本文本样式** :
 
-  **bold text**
-  //italic text//
-  `monospaced text`
-  ##monospaced text##
-  ~~deleted text~~
-  __underlined text__
-  !!highlighted text!!
+  **加粗文本**
+  //斜体文本//
+  `等宽文本`
+  ##等宽文本##
+  ~~删除的文本~~
+  __下划线文本__
+  !!高亮显示的文本!!
 
-Those produce **bold text**, //italic text//, `monospaced text`, ##monospaced
-text##, ~~deleted text~~, __underlined text__, and !!highlighted text!!
-respectively.
+这些将分别生成 **加粗文本**, //斜体文本//, `等宽文本`, ##等宽文本##, 
+~~删除的文本~~, __下划线文本__, 和 !!高亮显示的文本!!
+。
 
-= Layout =
+= 布局 =
 
-Make **headers** like this:
+像这样生成 **标题**:
 
-  = Large Header =
+  = 大标题 =
 
-  == Smaller Header ==
+  == 小标题 ==
 
-  ===== Very Small Header =====
+  ===== 非常小的标题 =====
 
-  Alternate Large Header
+  同样是大标题
   ======================
 
-  Alternate Smaller Header
+  同样是小标题
   ------------------------
 
-You can optionally omit the trailing `=` signs -- that is, these are the same:
+您可以选择省略尾随的 `=` 符号 -- 也就是说，这些是相同的：
 
-  == Smaller Header ==
+  == 小标题 ==
 
-  == Smaller Header
+  == 小标题
 
-This produces headers like the ones in this document. Make sure you have an
-empty line before and after the header.
+这会产生类似本文档中的标题。 确保您在标题之前和之后有一个空行。
 
-Lists
+列表
 =====
 
-Make **lists** by beginning each item with a `-` or a `*`:
+通过在每个条目前添加 `-` 或 `*` 可以生成**列表**：
 
   lang=text
-  - milk
-  - eggs
-  - bread
+  - 牛奶
+  - 鸡蛋
+  - 面包
 
-  * duck
-  * duck
-  * goose
+  * 鸭
+  * 鸭
+  * 鹅
 
-This produces a list like this:
+这将产生如下列表：
 
-  - milk
-  - eggs
-  - bread
+  - 牛奶
+  - 鸡蛋
+  - 面包
 
-(Note that you need to put a space after the `-` or `*`.)
+(注意，你需要在 `-` 或 `*` 之后添加一个空格。)
 
-You can make numbered lists with a `#` instead of `-` or `*`:
+可以通过 `#` 替换 `-` 或 `*` 生成有序列表：
 
   # Articuno
   # Zapdos
   # Moltres
 
-Numbered lists can also be started with `1.` or `1)`. If you use a number other
-than `1`, the list will start at that number instead. For example, this:
+有序列表也可以以 `1.` 或 `1)` 开头。 
+如果你使用一个不是`1`的数字，列表将从该数字开始。 例如：
 
 ```
-  200) OK
-  201) Created
-  202) Accepted
+  200) 好
+  201) 已创建
+  202) 已接收
 ```
 
-...produces this:
+...生成:
 
-  200) OK
-  201) Created
-  202) Accepted
+  200) 好
+  201) 已创建
+  202) 已接收
 
-You can also nest lists:
+您还可以嵌套列表:
 
-```- Body
-  - Head
-  - Arm
-    - Elbow
-    - Hand
-      # Thumb
-      # Index
-      # Middle
-      # Ring
-      # Pinkie
-  - Leg
-    - Knee
-    - Foot```
+```- 身体
+  - 头
+  - 手臂
+    - 手肘
+    - 手掌
+      # 拇指
+      # 食指
+      # 中指
+      # 无名指
+      # 小指
+  - 腿
+    - 膝盖
+    - 脚```
 
-...which produces:
+...产生:
 
-  - Body
-  - Head
-  - Arm
-    - Elbow
-    - Hand
-      # Thumb
-      # Index
-      # Middle
-      # Ring
-      # Pinkie
-  - Leg
-    - Knee
-    - Foot
+  - 身体
+    - 头
+    - 手臂
+      - 手肘
+      - 手掌
+        # 拇指
+        # 食指
+        # 中指
+        # 无名指
+        # 小指
+    - 腿
+      - 膝盖
+      - 脚
 
-If you prefer, you can indent lists using multiple characters to show indent
-depth, like this:
+如果愿意，您可以使用多个字符缩进列表以显示缩进深度，如下所示：
 
-```- Tree
--- Branch
---- Twig```
+```- 树
+-- 树枝
+--- 枝条```
 
-As expected, this produces:
+如预期，这产生：
 
-- Tree
--- Branch
---- Twig
+- 树
+-- 树枝
+--- 枝条
 
-You can add checkboxes to items by prefacing them with `[ ]` or `[X]`, like
-this:
+您可以通过使用 `[]` 或 `[X]` 前缀来为项目添加复选框，如下所示：
 
 ```
-  - [X] Preheat oven to 450 degrees.
-  - [ ] Zest 35 lemons.
+  - [X] 预热烤箱至450度。
+  - [ ] 调35柠檬。
 ```
 
-When rendered, this produces:
+当呈现时，这产生:
 
-  - [X] Preheat oven to 450 degrees.
-  - [ ] Zest 35 lemons.
+  - [X] 预热烤箱至450度。
+  - [ ] 调35柠檬。
 
-Make **code blocks** by indenting two spaces:
+过缩进两个空格来创建**代码块**：
 
   f(x, y);
 
-You can also use three backticks to enclose the code block:
+您还可以使用三个反引号包围代码块：
 
   ```f(x, y);
   g(f);```
 
-You can specify a language for syntax highlighting with `lang=xxx`:
+您可以使用`lang = xxx`指定语法高亮的语言：
 
   lang=text
   lang=html
   <a href="#">...</a>
 
-This will highlight the block using a highlighter for that language, if one is
-available (in most cases, this means you need to configure Pygments):
+
+如果有可用的高亮工具，代码块将被高亮为指定的语言。
+（在大多数情况下，这意味着您需要配置 Pygments）
+
 
   lang=html
   <a href="#">...</a>
 
-You can also use a `COUNTEREXAMPLE` header to show that a block of code is
-bad and shouldn't be copied:
+你也可以使用 `COUNTEREXAMPLE` 头来表示一段代码是坏的，不应该被复制：
 
   lang=text
   COUNTEREXAMPLE
@@ -226,21 +221,21 @@ bad and shouldn't be copied:
     global $$variable_variable;
   }
 
-This produces a block like this:
+这将产生一个这样的块：
 
   COUNTEREXAMPLE
   function f() {
     global $$variable_variable;
   }
 
-You can use `lines=N` to limit the vertical size of a chunk of code, and
-`name=some_name.ext` to give it a name. For example, this:
+你可以使用 `lines=N` 限制一段代码的垂直尺寸，
+`name=some_name.ext`来给它一个名字。 例如：
 
   lang=text
   lang=html, name=example.html, lines=12, counterexample
   ...
 
-...produces this:
+...产生这个:
 
   lang=html, name=example.html, lines=12, counterexample
   <p>Apple</p>
@@ -279,114 +274,111 @@ You can use `lines=N` to limit the vertical size of a chunk of code, and
   <p>Mangostine</p>
   <p>Melon</p>
 
+您可以使用 `NOTE:`，`WARNING:` 或 `IMPORTANT:` 生成提醒文本块。
 
-You can use the `NOTE:`, `WARNING:` or `IMPORTANT:` elements to call attention
-to an important idea.
 
-For example, write this:
+例如，写这个：
 
 ```
 NOTE: Best practices in proton pack operation include not crossing the streams.
 ```
 
-...to produce this:
+...生成:
 
 NOTE: Best practices in proton pack operation include not crossing the streams.
 
-Using `WARNING:` or `IMPORTANT:` at the beginning of the line changes the
-color of the callout:
+使用 `WARNING:` 或 `IMPORTANT:` 在行的开头改变
+颜色的标注：
 
 WARNING: Crossing the streams can result in total protonic reversal!
 
 IMPORTANT: Don't cross the streams!
 
-In addition, you can use `(NOTE)`, `(WARNING)`, or `(IMPORTANT)` to get the
-same effect but without `(NOTE)`, `(WARNING)`, or `(IMPORTANT)` appearing in
-the rendered result. For example, this callout uses `(NOTE)`:
+此外, 也可以使用 `(NOTE)`, `(WARNING)`, 或 `(IMPORTANT)` 达到同样的效果
+但是在显示文本中不能出现 `(NOTE)`, `(WARNING)`, 或 `(IMPORTANT)` 。
+例如此标注使用 `(NOTE)`:
 
 (NOTE) Dr. Egon Spengler is the best resource for additional proton pack
  questions.
 
 
-Dividers
+分隔线
 ========
 
-You can divide sections by putting three or more dashes on a line by
-themselves. This creates a divider or horizontal rule similar to an `<hr />`
-tag, like this one:
+您可以通过自己在一行上放置三个或更多的破折号来分割部分。 
+这将创建一个类似于`<hr />` 标签的分隔符或水平分割线，如下所示：
+
 
 ---
 
-The dashes need to appear on their own line and be separated from other
-content. For example, like this:
+短划线需要显示在自己的行上，并与其他内容分开。 例如，像这样：
 
 ```
-This section will be visually separated.
+此部分将在视觉上分开。
 
 ---
 
-On an entirely different topic, ...
+在一个完全不同的主题, ...
 ```
 
 
-= Linking URIs =
+= 链接地址 =
 
-URIs are automatically linked: http://phabricator.org/
+网址会自动生成链接: http://phabricator.org/
 
-If you have a URI with problematic characters in it, like
-"`http://comma.org/,`", you can surround it with angle brackets:
+如果网址里有特殊的字符，如
+"`http://comma.org/,`", 可以使用尖括号包括它:
 
   <http://comma.org/,>
 
-This will force the parser to consume the whole URI: <http://comma.org/,>
+这将强制解析器使用网址: <http://comma.org/,>
 
-You can also use create named links, where you choose the displayed text. These
-work within Phabricator or on the internet at large:
+您还可以创建命名链接，指定需要显示的文本。 Phabricator 内部相对地址或互联网网址都可以：
+
 
   [[/herald/transcript/ | Herald Transcripts]]
   [[http://www.boring-legal-documents.com/ | exciting legal documents]]
 
-Markdown-style links are also supported:
+Markdown 的链接也支持:
 
   [Toil](http://www.trouble.com)
 
-= Linking to Objects =
+= 连接到对象 =
 
-You can link to Phabricator objects, such as Differential revisions, Diffusion
-commits and Maniphest tasks, by mentioning the name of an object:
+您可以通过提及对象的名称来链接到 Phabricator 对象，
+例如 Differential 修订，Diffusion 提交和 Maniphest 任务：
 
-  D123          # Link to Differential revision D123
-  rX123         # Link to SVN commit 123 from the "X" repository
-  rXaf3192cd5   # Link to Git commit "af3192cd5..." from the "X" repository.
-                # You must specify at least 7 characters of the hash.
-  T123          # Link to Maniphest task T123
+  D123          # 链接到 Differential 修订 D123
+  rX123         # 链接到 "X" SVN 仓库的 123 提交
+  rXaf3192cd5   # 链接到 "X" Git 仓库的  "af3192cd5..." 提交
+                # 必须至少指定哈希值中七个字符
+  T123          # 链接到 Maniphest 任务 T123
 
-You can also link directly to a comment in Maniphest and Differential:
+您还可以直接链接到 Maniphest 和 Differential 中的评论：
 
-  T123#4        # Link to comment #4 of T123
+  T123#4        # 链接到 T123 中的 #4 评论
 
-See the Phabricator configuraton setting `remarkup.ignored-object-names` to
-modify this behavior.
+请参阅 Phabricator 配置设置 `remarkup.ignored-object-names` 可以修改此行为。
 
-= Embedding Objects
 
-You can also generate full-name references to some objects by using braces:
+= 嵌入对象
 
-  {D123}        # Link to Differential revision D123 with the full name
-  {T123}        # Link to Maniphest task T123 with the full name
+您还可以使用大括号来生成对某些对象的全名引用：
 
-These references will also show when an object changes state (for instance, a
-task or revision is closed). Some types of objects support rich embedding.
+  {D123}        # 以全名方式链接到 Differential 修订 D123
+  {T123}        # 以全名方式链接到 Maniphest 修订 T123 
 
-== Linking to Project Tags
+这些引用还将显示对象状态变更（例如，任务或修订版本已关闭）。 
+一些类型的对象支持丰富的嵌入。
 
-Projects can be linked to with the use of a hashtag `#`. This works by default
-using the name of the Project (lowercase, underscored). Additionally you
-can set multiple additional hashtags by editing the Project details.
+== 链接到项目标签
+
+项目可以使用＃标签链接。 默认情况下使用项目的名称（小写，下划线）工作。 
+此外，您可以通过编辑项目详细信息设置多个其他主题标签。
 
   #qa, #quality_assurance
 
-== Embedding Mocks (Pholio)
+== 嵌入 Mocks (Pholio)
 
 You can embed a Pholio mock by using braces to refer to it:
 
@@ -401,193 +393,174 @@ You can set the image (or images) to display like this:
   {M123, image=12345}
   {M123, image=12345 & 6789}
 
-== Embedding Pastes
+==  嵌入 Pastes
 
-You can embed a Paste using braces:
+可以使用大括号嵌入 Paste:
 
   {P123}
 
-You can adjust the embed height with the `lines` option:
+您可以使用`lines`选项调整嵌入高度：
 
   {P123, lines=15}
 
-You can highlight specific lines with the `highlight` option:
+可以使用`highlight`选项突出显示特定行：
 
   {P123, highlight=15}
   {P123, highlight="23-25, 31"}
 
-== Embedding Images
+== 嵌入图片
 
-You can embed an image or other file by using braces to refer to it:
+您可以使用大括号来引用图片或其他文件：
 
   {F123}
 
-In most interfaces, you can drag-and-drop an image from your computer into the
-text area to upload and reference it.
+在大多数界面中，您可以将图片从计算机拖放到文本区域，以便上传和引用。
 
-Some browsers (e.g. Chrome) support uploading an image data just by pasting them
-from clipboard into the text area.
+某些浏览器（例如 Chrome）支持通过将图片数据从剪贴板粘贴到文本区域来上传图片数据。
 
-You can set file display options like this:
+您可以像这样设置文件显示选项：
 
   {F123, layout=left, float, size=full, alt="a duckling"}
 
-Valid options for all files are:
+所有文件的有效选项是：
 
-  - **layout** left (default), center, right, inline, link (render a link
-    instead of a thumbnail for images)
-  - **name** with `layout=link` or for non-images, use this name for the link
-    text
-  - **alt** Provide alternate text for assistive technologies.
+  - **layout** left (默认), center, right, inline, link (渲染为图像链接而不是缩略图
+)
+  - **name** 用于 `layout=link` 或非图片文件, 作为链接文本
+  - **alt** 替代文本。
 
-Image files support these options:
+图像文件支持这些选项:
 
-  - **float** If layout is set to left or right, the image will be floated so
-    text wraps around it.
-  - **size** thumb (default), full
-  - **width** Scale image to a specific width.
-  - **height** Scale image to a specific height.
+  - **float** 如果布局设置为左或右，图像将浮动，所以文本环绕它。
+  - **size** thumb (默认), full
+  - **width** 将图像缩放到特定宽度。
+  - **height** 将图像缩放到特定高度。
 
-Audio and video files support these options:
+音频和视频文件支持这些选项:
 
-  - **media**: Specify the media type as `audio` or `video`. This allows you
-    to disambiguate how file format which may contain either audio or video
-    should be rendered.
-  - **loop**: Loop this media.
-  - **autoplay**: Automatically begin playing this media.
+  - **media**: 将媒体类型指定为 `audio` 或 `video`。 
+    这允许您消除可能包含音频或视频的文件格式应如何渲染的歧义。
+  - **loop**: 循环此媒体。
+  - **autoplay**: 自动开始播放此媒体。
 
-== Embedding Countdowns
+== 嵌入 Countdowns
 
-You can embed a countdown by using braces:
+可以使用大括号嵌入 countdown:
 
   {C123}
 
-= Quoting Text =
+= 引用文本 =
 
-To quote text, preface it with an `>`:
+要引用文本，添加 `>` 前缀:
 
-  > This is quoted text.
+  > 这是引用文本
 
-This appears like this:
+这将显示为:
 
-> This is quoted text.
+> 这是引用文本
 
-= Embedding Media =
+= 嵌入媒体 =
 
-If you set a configuration flag, you can embed media directly in text:
+如果您设置了配置标志，则可以直接在文本中嵌入媒体：
 
-  - **remarkup.enable-embedded-youtube**: allows you to paste in YouTube videos
-    and have them render inline.
+  - **remarkup.enable-embedded-youtube**: 允许您粘贴 YouTube 视频，并让他们在线呈现。
 
-This option is disabled by default because it has security and/or
-silliness implications. Carefully read the description before enabling it.
+默认情况下禁用此选项，因为它具有安全性和/或愚蠢的含义。 在启用它之前仔细阅读说明。
 
-= Image Macros =
+= 图片宏 =
 
-You can upload image macros (More Stuff -> Macro) which will replace text
-strings with the image you specify. For instance, you could upload an image of a
-dancing banana to create a macro named "peanutbutterjellytime", and then any
-time you type that string on a separate line it will be replaced with the image
-of a dancing banana.
+您可以上传图片宏（More Stuff -> Macro），将用您指定的图片替换文本字符串。
+例如，您可以上传一张跳舞香蕉的图片以创建一个名为 “peanutbutterjellytime” 的宏，
+然后任何时候您在单独的行上键入该字符串，它将被跳舞的香蕉的图像替换。
 
 = Memes =
 
-You can also use image macros in the context of memes. For example, if you
-have an image macro named `grumpy`, you can create a meme by doing the
-following:
+您还可以在表情的上下文中使用图像宏。 例如，如果你
+有一个名为 `grumpy` 的图像宏，你可以通过如下方式创建一个表情：
+
 
   {meme, src = grumpy, above = toptextgoeshere, below = bottomtextgoeshere}
 
-By default, the font used to create the text for the meme is `tuffy.ttf`. For
-the more authentic feel of `impact.ttf`, you simply have to place the Impact
-TrueType font in the Phabricator subfolder `/resources/font/`. If Remarkup
-detects the presence of `impact.ttf`, it will automatically use it.
+默认情况下，用于创建表情文本的字体是 `tuffy.ttf`。 
+对于 `impact.ttf` 的更真实的感觉，你只需要将 Impact TrueType 字体
+放在 Phabricator 子文件夹 `/resources/font/` 中。 
+如果 Remarkup 检测到 `impact.ttf` 的存在，它会自动使用它。
 
-= Mentioning Users =
+= 提及用户 =
 
-In Differential and Maniphest, you can mention another user by writing:
+在 Differential 和 Maniphest 中，你可以按如下方式提及另一个用户 ：
 
   @username
 
-When you submit your comment, this will add them as a CC on the revision or task
-if they aren't already CC'd.
+当您提交您的评论时，如果他们没在 CC 列表中，它会将它们添加到修订或任务的 CC 列表中。
 
-Icons
+图标
 =====
 
-You can add icons to comments using the `{icon ...}` syntax. For example:
+您可以使用`{icon ...}`语法将图标添加到评论。 例如：
 
   {icon camera}
 
-This renders: {icon camera}
+渲染为: {icon camera}
 
-You can select a color for icons:
+您可以为图标选择颜色：
 
   {icon camera color=blue}
 
-This renders: {icon camera color=blue}
+渲染为: {icon camera color=blue}
 
-For a list of available icons and colors, check the UIExamples application.
-(The icons are sourced from
-[[ http://fortawesome.github.io/Font-Awesome/ | FontAwesome ]], so you can also
-browse the collection there.)
+有关可用图标和颜色的列表，请查看 UIExamples 应用程序。 
+（图标来源于[[http://fortawesome.github.io/Font-Awesome/ | FontAwesome]]，所以你也可以浏览那里的集合。）
 
-You can add `spin` to make the icon spin:
+你可以添加 `spin` 使图标旋转：
 
   {icon cog spin}
 
-This renders: {icon cog spin}
+渲染为: {icon cog spin}
 
 
-= Phriction Documents =
+= Phriction 文档 =
 
-You can link to Phriction documents with a name or path:
+您可以使用名称或路径链接到 Phriction 文档：
 
   Make sure you sign and date your [[legal/Letter of Marque and Reprisal]]!
 
-By default, the link will render with the document title as the link name.
-With a pipe (`|`), you can retitle the link. Use this to mislead your
-opponents:
+默认情况下，链接将显示文档标题作为链接名称。 
+使用管道（`|`），您可以重命名链接。 使用它来误导你的对手：
 
   Check out these [[legal/boring_documents/ | exciting legal documents]]!
 
-Links to pages which do not exist are shown in red. Links to pages which exist
-but which the viewer does not have permission to see are shown with a lock
-icon, and the link will not disclose the page title.
+指向不存在的页面的链接以红色显示。 
+指向存在但是查看者没有权限查看的页面的链接显示有锁定图标，并且该链接不会显示页面标题。
 
-If you begin a link path with `./` or `../`, the remainder of the path will be
-evaluated relative to the current wiki page. For example, if you are writing
-content for the document `fruit/` a link to `[[./guava]]` is the same as a link
-to `[[fruit/guava]]` from elsewhere.
+如果你使用 `./` 或 `../` 开始一个链接路径，路径的其余部分将相对于当前的 wiki 页面。 
+例如，如果您正在为文档 `fruit/` 编写内容，
+则链接到 `[[./guava]]` 的链接与来自其他地方的 `[[fruit/guava]]` 链接相同。
 
-Relative links may use `../` to transverse up the document tree. From the
-`produce/vegetables/` page, you can use `[[../fruit/guava]]` to link to the
-`produce/fruit/guava` page.
+相对链接可以使用 `../` 来指向上级路径。 
+从 `produce/vegetables/` 页面，
+您可以使用 `[[../fruit/guava]]` 链接到 `produce/fruit/guava` 页面。
 
-Relative links do not work when used outside of wiki pages. For example,
-you can't use a relative link in a comment on a task, because there is no
-reasonable place for the link to start resolving from.
+当在 wiki 页面之外使用时，相对链接不工作。 
+例如，您不能在任务的注释中使用相对链接，因为没有合理的位置让链接开始解析。
 
-When documents are moved, relative links are not automatically updated: they
-are preserved as currently written. After moving a document, you may need to
-review and adjust any relative links it contains.
+当移动文档时，相对链接不会自动更新：它们保留为当前写入的。 
+移动文档后，您可能需要查看和调整文档包含的任何相关链接。
 
 
-= Literal Blocks =
+= 文字块 =
 
-To place text in a literal block use `%%%`:
+要在文字块中放置文本，请使用`%%%`：
 
-  %%%Text that won't be processed by remarkup
+  %%%文本不会被 remarkup 处理
   [[http://www.example.com | example]]
   %%%
 
-Remarkup will not process the text inside of literal blocks (other than to
-escape HTML and preserve line breaks).
+Remarkup 不会处理文本块中的文本（除了转义 HTML 并保留换行符）。
 
-= Tables =
+= 表格 =
 
-Remarkup supports simple table syntax. For example, this:
-
+Remarkup 支持简单的表格法。 例如：
 ```
 | Fruit  | Color  | Price   | Peel?
 | -----  | -----  | -----   | -----
@@ -595,15 +568,14 @@ Remarkup supports simple table syntax. For example, this:
 | Banana | yellow | `$0.19` | **YES**
 ```
 
-...produces this:
+...生成:
 
 | Fruit  | Color  | Price   | Peel?
 | -----  | -----  | -----   | -----
 | Apple  | red    | `$0.93` | no
 | Banana | yellow | `$0.19` | **YES**
 
-Remarkup also supports a simplified HTML table syntax. For example, this:
-
+Remarkup 还支持简化的 HTML 表格语法，例如：
 ```
 <table>
   <tr>
@@ -650,27 +622,25 @@ Remarkup also supports a simplified HTML table syntax. For example, this:
   </tr>
 </table>
 
-Some general notes about this syntax:
+关于此语法的一些说明：
 
   - your tags must all be properly balanced;
-  - your tags must NOT include attributes (`<td>` is OK, `<td style="...">` is
-    not);
-  - you can use other Remarkup rules (like **bold**, //italics//, etc.) inside
-    table cells.
+  - 标签不能包含属性 (`<td>` 可以, `<td style="...">` 不可以);
+  - 可以在单元格中使用其他的 Remarkup 规则，（像 **bold**, //italics// 等）
 
-Navigation Sequences
+导航序列
 ====================
 
-You can use `{nav ...}` to render a stylized navigation sequence when helping
-someone to locate something. This can be useful when writing documentation.
-For example, you could give someone directions to purchase lemons:
+你可以使用`{nav ...}`来渲染一个风格化的导航序列，
+以帮助某人定位某个东西。 这在编写文档时很有用。 
+例如，您可以给某人指示购买柠檬：
 
 {nav icon=home, name=Home >
 Grocery Store >
 Produce Section >
 icon=lemon-o, name=Lemons}
 
-To render this example, use this markup:
+要渲染此示例，请使用此标记:
 
 ```
 {nav icon=home, name=Home >
@@ -679,43 +649,40 @@ Produce Section >
 icon=lemon-o, name=Lemons}
 ```
 
-In general:
+一般来说:
 
-  - Separate sections with `>`.
-  - Each section can just have a name to add an element to the navigation
-    sequence, or a list of key-value pairs.
-  - Supported keys are `icon`, `name`, `type` and `href`.
-  - The `type` option can be set to `instructions` to indicate that an element
-    is asking the user to make a choice or follow specific instructions.
+  - 用 `>` 分隔各个节点
+  - 每个部分只需要一个名称即可将元素添加到导航序列中，或者键值对的列表。
+  - 支持 `icon`, `name`, `type` 和 `href` 属性
+  - `type` 选项可以设置为 `instructions` 来表示一个元素要求用户做出选择或者遵循特定的指令。
 
-Keystrokes
+按键
 ==========
 
-You can use `{key ...}` to render a stylized keystroke. For example, this:
+可以用 `{key ...}` 渲染一个按键样式。比如:
 
 ```
 Press {key M} to view the starmap.
 ```
 
-...renders this:
+...渲染为:
 
 > Press {key M} to view the starmap.
 
-You can also render sequences with modifier keys. This:
+您还可以使用修饰键来渲染序列，这样：
 
 ```
-Use {key command option shift 3} to take a screenshot.
+使用 {key command option shift 3} 截图.
 Press {key down down-right right LP} to activate the hadoken technique.
 ```
 
-...renders this:
+...渲染:
 
-> Use {key command option shift 3} to take a screenshot.
+> 使用 {key command option shift 3} 截图.
 > Press {key down down-right right LP} to activate the hadoken technique.
 
 
-= Fullscreen Mode =
+= 全屏模式 =
 
-Remarkup editors provide a fullscreen composition mode. This can make it easier
-to edit large blocks of text, or improve focus by removing distractions. You can
-exit **Fullscreen** mode by clicking the button again or by pressing escape.
+Remarkup 编辑器提供全屏幕写作模式。 这可以使编辑大块文本变得更容易，
+或者通过排除干扰来提高注意力。 您可以再次点击按钮或按退出键，退出**全屏模式**。

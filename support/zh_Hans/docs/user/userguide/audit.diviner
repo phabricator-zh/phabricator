@@ -1,104 +1,78 @@
-@title Audit User Guide
+@title 审计用户指南
 @group userguide
 
-Guide to the Audit (post-push code review) tool and workflow.
+Audit 代码审计（推送后代码审查）工具和工作流程指南。
 
-= Overview =
+= 概览 =
 
-Phabricator supports two code review workflows, "review" (pre-push) and
-"audit" (post-push). To understand the differences between the two, see
-@{article:用户手册: 代码审查和审计}.
+Phabricator 支持两个代码审查工作流程，“审查”（推送前）和“审计”（推送后）。 
+要了解两者之间的区别，请参见 @{article:用户手册: 代码审查和审计}。
 
-This document summarizes the post-push "audit" workflow implemented by the
-creatively-named //Audit// tool.
+本文档总结了由 //Audit// 工具实现的推送后 “审计” 工作流。
 
-= How Audit Works =
+= 审计是怎样工作的 =
 
-Using auditing allows you to push and deploy code without waiting for code
-review, while still doing code review eventually. The Audit tool primarily keeps
-track of two things:
+使用审计允许您直接推送和部署代码，而无需等待代码审查完成。 
+审计工具主要保持跟踪两件事：
 
-  - **Commits** and their audit state (like "Not Audited", "Approved", or
-    "Concern Raised").
-  - **Audit Requests** which ask a user (or some other entity) to audit a
-    commit. These can be triggered in a number of ways (see below).
+  - **提交** 以及它们的审计状态 (如 "未审计", "已批准", 或者 "提出疑虑")。
+  - **审计请求** 请求用户 (或其他实体) 审计提交。
+  	 可以通过多种方式触发 (查看下文)。
 
-In the Audit tool's home screen and on the homepage you can see commits and
-requests that require your action:
+在审核工具的主页和首页上，您可以看到需要您采取行动的提交和请求：
 
-  - **Required Audits** are open audit requests that require you, a project
-    you are a member of, or a package you own to audit a commit. An audit
-    request is closed when you approve the associated commit.
-  - **Problem Commits** are commits you authored which someone has raised a
-    concern about in audit. Problem commits go away when you satisfy all the
-    auditors and get them to "Approve" the commit.
+  - **必需审核** 是要求您、您所参与的项目或者您所拥有的包进行审计的请求。 
+  	审核请求在您批准相关提交时关闭。
+  - *问题提交**是您撰写的提交，有人在审核中提出了疑虑。 
+    当您满足了所有审核员的要求并获得了“批准”时，问题提交就会消失。
 
-For example:
+举例:
 
-  - Evan creates commit `abcdef1234` and pushes it to the remote.
-  - This triggers an audit request to Bob through some mechanism (see below for
-    a description of trigger mechanisms).
-  - Later, Bob logs into Phabricator and sees the audit request on his homepage.
-  - Bob clicks through and examines the commit. He notices a problem, so he
-    selects "Raise Concern" and describes the issue in a comment.
-  - Evan receives an email that Bob has raised a concern about his commit. He
-    opts not to deal with it immediately.
-  - Later, Evan logs into Phabricator and sees the commit on his homepage
-    under "Problem Commits".
-  - Evan resolves the issue somehow (e.g., by discussing it with Bob, or fixing
-    it in another commit).
-  - Now satisfied, Bob "Accepts" the original commit.
-  - This causes the request to disappear from Bob's queue, and the commit to
-    disappear from Evan's queue.
+  - Evan 创建了提交 `abcdef1234` ，并推送到了远端服务器
+  - 通过某种机制（查看下文对触发机制的描述）触发了对 Bob 审计请求。
+  - 稍后，Bob 登录 Phabricator 后，在自己的首页看到了此审计请求。
+  - Bob 点击查验了此提交。他注意到了一个问题，选择 “提出疑虑” 选项，并在评论中描述了问题。
+  - Evan 收到了 Bob 提出疑虑的邮件。他选择不立即处理它。
+  - 稍后， Evan 登录 Phabricator，在自己的首页的 “问题提交” 中看了此提交。
+  - Evan 以某种方式解决了问题（例如，通过与 Bob 讨论，或者在另一个提交中修复了它）。
+  - Bob 很满意，并“接受”了原来的提交。
+  - 这导致请求从 Bob 的队列中消失，提交从 Evan 的队列中消失。
 
-= Audit Triggers =
+= 审计触发器 =
 
-Audit requests can be triggered in a number of ways:
+审核请求可以通过多种方式触发：
 
-  - If you put `Auditors: username1, username2` in your commit message, it will
-    trigger an audit request to those users when you push it to a tracked
-    branch.
-  - You can create rules in Herald that trigger audits based on properties
-    of the commit -- like the files it touches, the text of the change, the
-    author, etc.
-  - You can create an audit request for yourself by commenting on any commit.
-  - You can create an Owners package and select "Enable Auditing" (this is an
-    advanced feature which is only likely to be useful for very large teams).
+  - 如果您在提交消息中插入 `Auditors: username1, username2` ，
+  	那么当您将它推送到跟踪分支时，它会向这些用户发送审核请求。
+  - 您可以在 Herald 中创建根据提交的属性（如修改的文件，更改的文本，作者等）触发审核的规则。
+  - 您可以通过在任意提交添加评论来进行审计。
+  - 您可以创建一个 Owners 包，选择 “启用审计”。这是一个高级功能，只有非常大的团队才可能用到。
 
-= Audits in Small Teams =
+= 小团队中的审计 =
 
-If you have a small team and don't need complicated trigger rules, you can set
-up a simple audit workflow like this:
+如果你有一个小团队，并且不需要复杂的触发规则，你可以设置一个简单的审计工作流程：
 
-  - Create a new Project, "Code Audits".
-  - Create a new global Herald rule for Commits, which triggers an audit by
-    the "Code Audits" project for every commit where "Differential Revision"
-    "does not exist" (this will allow you to transition partly or fully to
-    review later if you want).
-  - Have every engineer join the "Code Audits" project.
+  - 创建一个新项目 “代码审计” 
+  - 为提交创建一个新的全局 Herald 规则，对于没有 “Differential 修订”的每个提交，
+  	触发由 “代码审计” 项目进行的审计（这将允许您部分或全部转换成审查）。
+  - 让所有的工程师加入到 “代码审计” 项目。
 
-This way, everyone will see an audit request for every commit, but it will be
-dismissed if anyone approves it. Effectively, this enforces the rule "every
-commit should have //someone// look at it".
+这样，每个人都将看到每个提交的审计请求，但如果有人批准了它，请求将会消失。 
+实际上，这强制实现了 “每个提交都应该//有人//检查” 的规则。
 
-Once your team gets bigger, you can refine this ruleset so that developers see
-only changes that are relevant to them.
+一旦您的团队规模扩大，您可以优化此规则集，以便开发人员只看到与他们相关的更改。
 
-= Audit Tips =
+= 审计建议 =
 
-  - When viewing a commit, audit requests you are responsible for are
-    highlighted. You are responsible for a request if it's a user request
-    and you're that user, or if it's a project request and you're a member
-    of the project, or if it's a package request and you're a package owner.
-    Any action you take will update the state of all the requests you're
-    responsible for.
-  - You can leave inline comments by clicking the line numbers in the diff.
-  - You can leave a comment across multiple lines by dragging across the line
-    numbers.
-  - Inline comments are initially saved as drafts. They are not submitted until
-    you submit a comment at the bottom of the page.
-  - Press "?" to view keyboard shortcuts.
+  - 查看提交时，将突出显示您负责的审核请求相关的提交。 
+  	如果请求是用户请求并且您是该用户，或者是项目请求并且是项目成员，
+	或者是包请求并且您是包所有者，则您需要对该请求负责。 
+	您采取的任何操作都会更新您负责的请求的状态。
+  - 您可以通过单击差异对比中的行号留下内嵌评论。
+  - 您可以通过拖动行号跨多行留下评论。
+  - 内嵌评论开始会保存为草稿。 只有当您在网页底部提交评论时，它们才会被提交。
+  - 按 "?" 查看快捷键
 
-= Next Steps =
+= 下一步 =
 
-  - Learn more about Herald at @{article:Herald User Guide}.
+  - 通过 @{article:Herald User Guide} 了解有关 Herald 的更多信息。

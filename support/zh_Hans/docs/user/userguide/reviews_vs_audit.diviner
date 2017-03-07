@@ -10,7 +10,7 @@ Phabricator支持两个类似但独立的代码评审工作流程：
   - **Differential**用于代码推送前审查，在文档的其他地方称为 “审查”。 
   	您可以在 @{article:Differential 用户指南} 中了解更多。
   - **Audit** 用于代码推送后审核，在文档的其他地方称为 “审计”。 
-  	您可以在 @{article:Audit User Guide} 中了解更多。
+  	您可以在 @{article:审计用户指南} 中了解更多。
 
 （使用 “推送前”，意味着阻止更改部署的审核， 而“推送后”，意味着在更改部署之后发生的审核。）
 
@@ -83,4 +83,4 @@ Phabricator支持两个类似但独立的代码评审工作流程：
 = 下一步 =
 
   - 通过 @{article:Differential 用户指南} 更多地了解代码审查; 或
-  - 阅读 @{article:Audit User Guide} 更多地了解代码审计。
+  - 阅读 @{article:审计用户指南} 更多地了解代码审计。

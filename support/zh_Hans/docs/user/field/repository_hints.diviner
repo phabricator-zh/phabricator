@@ -1,37 +1,32 @@
-@title Repository Hints and Rewriting Commits
+@title 代码库提示和重写提交
 @group fieldmanual
 
-Dealing with rewrites of published repositories and other unusual problems.
+处理已发布的代码库的重写和 其他不寻常的问题。
 
-Overview
+概览
 ========
 
-Some repositories have unusual commits. You can provide "hints" to Phabricator
-about these commits to improve behavior.
+一些存储库有特殊的提交。 您可以向 Phabricator 提供关于这些提交的“提示”以改善行为。
 
 Supported hints are:
 
-  - **Rewritten Commits**: If you have rewritten the history of a published
-    repository, you can provide hints about the mapping from old commits to
-    new commits so it can redirect users who visit old pages to the proper
-    new pages.
-  - **Unreadable Commits**: If some commits are not readable (which is rare,
-    but can happen in some cases if they are generated with an external tool)
-    you can provide hints so that Phabricator doesn't try to read them.
+  - **重写的提交**: 如果您已重写已发布的仓库的历史记录，
+  	则可以提供有关从旧提交到新提交的映射的提示，以便它可以将访问旧页面的用户重定向到正确的新页面。
+  - **不可读的提交**: 如果一些提交不可读（这是罕见的，但在某些情况下可能会发生，
+  	比如它们是使用外部工具生成的），您可以提供提示，告诉 Phabricator 不要尝试阅读它们。
+  
+本文档的其余部分说明如何创建和删除提示，以及如何指定每种类型的提示。
 
-The remainder of this document explains how to create and remove hints, and how
-to specify each type of hint.
-
-Creating Hints
+创建提示
 ==============
 
-To create hints, pipe a JSON list of hints to `bin/repository hint`:
+要创建提示，将一个 JSON 提示列表的重定向到 `bin/repository hint` 命令：
 
 ```
 phabricator/ $ cat hints.json | ./bin/repository hint
 ```
 
-The hints should be a list of objects like this:
+提示应该是这样的对象列表：
 
 ```lang=json
 [
@@ -46,25 +41,21 @@ The hints should be a list of objects like this:
 ]
 ```
 
-Each hint may have these keys:
+每个提示可以有这些键：
 
-  - `repository`: A repository identifier (ID, PHID, callsign or short name).
-  - `hint`: The hint type, see below.
-  - `old`: The full identifier or commit hash of the commit you want to
-    provide a hint for.
-  - `new`: For hints which specify a new commit, the full identifier or commit
-    hash of the new commit.
+  - `repository`: 仓库标识符（ID，PHID，代号或短名称）。
+  - `hint`: 提示类型，见下文。
+  - `old`: 你想提供一个提示的提交的完整标识符或提交哈希。
+  - `new`: 对于指定新提交的提示，新提交的完整标识符或提交哈希。
 
-See below for exactly how to specify each type of hint.
+请参阅下面的具体如何指定每种类型的提示。
 
-
-Removing Hints
+删除提示
 ==============
 
-To remove a hint, create a hint of type `"none"`. This will remove any existing
-hint.
+要删除提示，请创建一个类型为 `"none"` 的提示。这将删除任何现有的提示。
 
-For example, use a hint specification like this:
+例如，使用如下的提示规范：
 
 ```lang=json
 [
@@ -75,23 +66,19 @@ For example, use a hint specification like this:
   }
 ]
 ```
+Phabricator 将不会处理没有任何提示的提交。
 
-Phabricator won't treat commits without any hint specially.
 
-
-Hint: Rewritten Commits
+提示: 重写提交
 =======================
 
-The `"rewritten"` hint allows you to redirect old commits to new commits after
-a rewrite of published history. You should normally avoid rewriting published
-commits, but sometimes this is necessary: for example, if a repository has
-become unwieldy because it contains large binaries, you may strip them from
-history.
+`"rewritten"` 提示允许您在重写已发布的历史记录后将旧提交重定向到新提交。 
+您通常应避免重写已发布的提交，但有时这是必要的：例如，如果仓库库变得笨重，
+因为它包含大型二进制文件，则可以从历史记录中删除它们。
 
-To provide this kind of hint, pass the `"old"` commit hash (from before the
-rewrite) and the `"new"` commit hash (from after the rewrite).
+要提供这种提示，传递`"old"` 提交哈希（重写之前）和`"new"`commit hash（重写后）。
 
-For example, a hint might look like this:
+例如，提示可能如下所示：
 
 ```lang=json
 [
@@ -104,21 +91,17 @@ For example, a hint might look like this:
 ]
 ```
 
-Phabricator will show users that the commit was rewritten in the web UI.
+Phabricator 将在Web UI中向用户显示提交已被重写。
 
-
-Hint: Unreadable Commits
+提示: 不可读提交
 ========================
 
-The `"unreadable"` hint allows you to tell Phabricator that it should not
-bother trying to read the changes associated with a particular commit. In
-some rare cases, repositories can contain commits which aren't readable
-(for example, if they were created by external tools during an import or
-merge process).
+`"unreadable"` 提示允许你告诉 Phabricator 它不应该尝试读取与特定提交相关的更改。 
+在少数情况下，代码库可以包含不可读的提交（例如，如果它们是在导入或合并过程中由外部工具创建的）。
 
-To provide this kind of hint, pass the `"old"` commit which is affected.
+要提供这种提示，传递受影响的 `"old"` commit。
 
-For example, a hint might look like this:
+例如，提示可能如下所示：
 
 ```lang=json
 [
@@ -130,5 +113,4 @@ For example, a hint might look like this:
 ]
 ```
 
-Phabricator won't try to read, parse, import, or display the changes associated
-with this commit.
+Phabricator 不会尝试读取，解析，导入或显示与此提交相关的更改。

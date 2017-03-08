@@ -1,45 +1,51 @@
-@title 用户指南：配置外部编辑器
+@title User Guide: Configuring an External Editor
 @group userguide
 
-设置外部编辑器以与 Diffusion 和 Differential 集成。
+Setting up an external editor to integrate with Diffusion and Differential.
 
-= 概览 =
+= Overview =
 
-您可以配置链接处理程序，以允许您从首选文本编辑器中打开Differential 和 Diffusion的文件。
+You can configure a URI handler to allow you to open files from Differential
+and Diffusion in your preferred text editor.
 
-= 配置编辑器 =
+= Configuring Editors =
 
-要配置外部编辑器，请转到{nav 设置>应用程序>显示偏好}，
-并将“编辑器链接”设置为URI模式（见下文）。 
-这将启用 Differential 中的“在编辑器中打开”链接，以及 Diffusion 中的“编辑”按钮。
+To configure an external editor, go to {nav Settings > Application Settings >
+Display Preferences} and set "Editor Link" to a URI pattern (see below). This
+will enable an "Open in Editor" link in Differential, and an "Edit" button in
+Diffusion.
 
-一般来说，您将此字段设置为：
+In general, you'll set this field to something like:
 
   lang=uri
   editor://open/?file=%f
 
-有些编辑器支持用空格分隔文件名以打开多个文件。如果编辑器支持此功能，
-请将“编辑多个文件”设置为“支持”。 否则，您可以将其设置为“不支持”以禁用界面中的“全部打开”按钮。
+Some editors support opening multiple files at once when filenames are separated
+by spaces. If your editor supports this feature, set "Edit Multiple Files" to
+"Supported". Otherwise, you can set it to "Not Supported" to disable "Open All"
+buttons in the interface.
 
-== 配置: OS X 上的 TextMate ==
+== Configuring: TextMate on OS X ==
 
-TextMate 默认安装一个`txmt://`处理程序，因此如果使用 TextMate，很容易配置此功能。
+TextMate installs a `txmt://` handler by default, so it's easy to configure
+this feature if you use TextMate.
 
-首先，为每个代码仓库代号创建一个具有符号链接的本地目录。 
-例如，如果您正在开发 Phabricator，它可能看起来像这样：
+First, create a local directory with symlinks for each repository callsign. For
+example, if you're developing Phabricator, it might look like this:
 
   /Users/alincoln/editor_links/ $ ls -l
   ... ARC -> /Users/alincoln/workspace/arcanist/
   ... P -> /Users/alincoln/workspace/phabricator/
   ... PHU -> /Users/alincoln/workspace/libphutil/
 
-然后将“编辑器链接”设置为：
+Then set your "Editor Link" to:
 
   lang=uri
   txmt://open/?url=file:///Users/alincoln/editor_links/%r/%f&line=%l
 
-== 配置:  其他编辑器 ==
+== Configuring: Other Editors ==
 
-有关配置其他编辑器和环境的一般说明，请参见：
+General instructions for configuring some other editors and environments can be
+found here:
 
 http://wiki.nette.org/en/howto-editor-link

@@ -71,7 +71,7 @@ in @{article:Drydock Blueprints}.
 For help on configuring specific application features:
 
   - to configure server-side merges from Differential, see
-    @{article:Differential User Guide: Automated Landing}.
+    @{article:Differential 用户指南: 自动应用修订}.
 
 You should also understand the Drydock security model before deploying it
 in a production environment. See @{article:Drydock User Guide: Security}.

@@ -1,53 +1,46 @@
-@title Differential User Guide: Automated Landing
+@title Differential 用户指南: 自动应用修订
 @group userguide
 
-Configuring Phabricator so you can "Land Revision" from the web UI.
+配置 Phabricator，以便您可以从 Web UI "应用修订"。
 
-
-Overview
+概览
 ========
 
-IMPORTANT: This feature is a prototype and has substantial limitations.
+IMPORTANT: 这个特征处于原型中并且具有实质性的限制。
 
-Phabricator can be configured so that approved revisions may be published
-directly from the web interface. This can make publishing changes more
-convenient, particularly for open source projects where authors may not have
-commit access to the repository. This document explains the workflow and how to
-configure it.
+Phabricator 可以配置，以便批准的修订可以直接从Web界面发布。 
+这可以使发布更改更方便，特别是对于开放源项目，
+作者可能没有对代码库的提交访问权限。 
+本文档说明了工作流程以及如何配置它。
 
-When properly configured, a {nav Land Revision} action will appear in
-Differential. This action works like `arc land` on the command line, and
-merges and publishes the revision.
+正确配置后，Differential 中将显示{nav Land Revision}操作。 
+此操作像在命令行中使用 `arc land` 一样，合并和发布修订版本。
 
-This feature has significant limitations:
+这个功能有很大的局限性：
 
-  - This feature is a prototype.
-  - This feature is only supported in Git.
-  - This feature always lands changes onto `master`.
+  - 这个特性处于原型中。
+  - 此功能仅在 Git 中受支持。
+  - 这个特性总是把变更应用在 `master` 分支上。
   - This feature does not currently provide chain of custody, and what lands
     may be arbitrarily different than what is shown in Differential.
 
-To be landable, a revision must satisfy these requirements:
+能够应用的修订必须满足下列要求:
 
-  - It must belong to a repository which is tracked in Diffusion
-    (both hosted and imported repositories will work).
-  - The repository must have a **Staging Area** configured.
-  - The repository must have **Repository Automation** configured. For
-    details, see @{article:Drydock User Guide: Repository Automation}.
-  - The revision must have been created with `arc diff` and pushed to the
-    configured staging area at creation time.
-  - The user clicking the "Land Revision" button must have permission to push
-    to the repository.
+  - 它必须属于在 Diffusion 中跟踪的代码库（托管和导入的代码库都可以工作）。
+  - 存储库必须配置了 **暂存区域**。
+  - 代码库必须配置 **仓库自动化**。 详细信息，请参阅
+  	 @{article:Drydock User Guide: Repository Automation}.
+  - 必须使用 `arc diff` 创建修订版本，并在创建时将其推送到已配置的暂存区域。
+  - 单击“应用修订”按钮的用户必须具有代码仓库的推送权限。
 
-If these requirements are met, the {nav Land Revision} action should be
-available in the UI.
+如果满足这些要求，则应在用户界面中看到 {nav 应用修订} 操作按钮。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - configuring repository automation with
-    @{article:Drydock User Guide: Repository Automation}; or
-  - returning to the @{article:Differential 用户指南}.
+  - 参阅
+    @{article:Drydock User Guide: Repository Automation}配置仓库自动
+  - 返回到 @{article:Differential 用户指南}.

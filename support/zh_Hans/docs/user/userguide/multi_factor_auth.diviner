@@ -1,134 +1,111 @@
-@title User Guide: Multi-Factor Authentication
+@title 用户指南: 多重身份验证
 @group userguide
 
-Explains how multi-factor authentication works in Phabricator.
+说明多因素认证如何在 Phabricator 中工作。
 
-Overview
+概览
 ========
 
-Multi-factor authentication allows you to add additional credentials to your
-account to make it more secure.
+多重身份验证可让您向帐户添加其他凭证信息，以增加账户安全性。
 
-This sounds complicated, but in most cases it just means that Phabricator will
-make sure you have your mobile phone (by sending you a text message or having
-you enter a code from a mobile application) before allowing you to log in or
-take certain "high security" actions (like changing your password).
+这听起来很复杂，但在大多数情况下，它只是意味着 Phabricator 将要求
+你有一部自己的手机（通过发送一个短信或从移动应用程序输入代码），
+然后才允许您登录或采取某些“高风险”的操作（例如更改密码）。
 
-Requiring you to prove you're really you by asking for something you know (your
-password) //and// something you have (your mobile phone) makes it much harder
-for attackers to access your account. The phone is an additional "factor" which
-protects your account from attacks.
+通过要求提供你知道的东西（你的密码）//和//你拥有（你的手机）的东西来证明你确实是您自己，
+从而使攻击者很难访问你的帐户。手机作为一个额外的“因素”，保护您的帐户免受攻击。
 
-Requiring re-authentication before performing high security actions further
-limits the damage an attacker can do even if they manage to compromise a
-login session.
+在执行高安全性操作之前进行二次验证，这样即使攻击者能够伪造登录会话，它们能造成
+的破坏也将受到很大的限制。
 
 
-How Multi-Factor Authentication Works
+多重身份验证的工作原理
 =====================================
 
-If you've configured multi-factor authentication and try to log in to your
-account or take certain high security actions (like changing your password),
-you'll be stopped and asked to enter additional credentials.
+如果您已配置多重身份验证，当尝试登录帐户或执行某些高安全性操作（例如更改密码），
+系统会要求您输入其他凭证。
 
-Usually, this means you'll receive an SMS with a security code on your phone, or
-you'll open an app on your phone which will show you a security code.
-In both cases, you'll enter the security code into Phabricator.
+通常情况下，这意味着您会在手机上收到带有安全码的短信，
+或者您将在手机上打开一个会显示安全码的应用。 
+在这两种情况下，您都将在 Phabricator 输入安全码。
 
-If you're logging in, Phabricator will log you in after you enter the code.
+如果您正在登录，Phabricator 将在您输入验证码后完成登录。
 
-If you're taking a high security action, Phabricator will put your account in
-"high security" mode for a few minutes. In this mode, you can take high security
-actions like changing passwords or SSH keys freely without entering any more
-credentials. You can explicitly leave high security once you're done performing
-account management, or your account will naturally return to normal security
-after a short period of time.
+如果您在执行高风险操作，Phabricator 会把您的帐户置于“高安全”模式几分钟。 
+在此模式下，您可以执行高安全性操作，例如更改密码或 SSH 密钥，
+而无需输入任何其他凭证。完成帐户管理后，您可以明确地保留“高安全”模式，
+否则您的帐户会很快恢复正常的安全性。
 
-While your account is in high security, you'll see a notification on screen
-with instructions for returning to normal security.
+当您的账户处于 “高安全”模式中时，你会在屏幕上看到一个如何返回
+到一般安全模式的说明。
 
 
-Configuring Multi-Factor Authentication
+配置多重身份验证
 =======================================
 
-To manage authentication factors for your account, go to
-Settings > Multi-Factor Auth. You can use this control panel to add or remove
-authentication factors from your account.
+要管理您帐户的身份验证因素，请打开 设置>多重身份验证 页面。 
+您可以使用此控制台在帐户中添加或删除身份验证因素。
 
-You can also rename a factor by clicking the name. This can help you identify
-factors if you have several similar factors attached to your account.
+您也可以通过单击名称来重命名验证因素。 
+如果您的帐户有多个类似的验证因素，这可以帮助您分辨它们。
 
-For a description of the available factors, see the next few sections.
+有关可用因素的说明，请参见后面几节。
 
-
-Factor: Mobile Phone App (TOTP)
+因素: 手机应用程序 (TOTP)
 ===============================
 
-TOTP stands for "Time-based One-Time Password". This factor operates by having
-you enter security codes from your mobile phone into Phabricator. The codes
-change every 30 seconds, so you will need to have your phone with you in order
-to enter them.
+TOTP 表示 “Time-based One-Time Password”（基于时间的一次性密码）。 
+此因素通过从您的手机输入安全代码到 Phabricator 完成操作。 
+安全代码每30秒更改一次，因此您需要将手机随身携带才能输入。
 
-To use this factor, you'll download an application onto your smartphone which
-can compute these codes. Two applications which work well are **Authy** and
-**Google Authenticator**. These applications are free, and you can find and
-download them from the appropriate store on your device.
+要使用此因子，您需要下载一个可以计算这些代码的应用程序到您的智能手机。 
+两个运行良好的应用程序是 **Authy** 和 **Google Authenticator**。 
+这些应用程序是免费的，您可以从设备上的相应商店中找到并下载这些应用程序。
 
-Your company may have a preferred application, or may use some other
-application, so check any in-house documentation for details. In general, any
-TOTP application should work properly.
+您的公司可能有一个自己喜欢的应用程序，或可能使用一些其他应用程序，
+所以检查任何内部文档的详细信息。 一般来说，任何 TOTP 应用程序都应该正常工作。
 
-After you've downloaded the application onto your phone, use the Phabricator
-settings panel to add a factor to your account. You'll be prompted to enter a
-master key into your phone, and then read a security code from your phone and
-type it into Phabricator.
+将应用程序下载到手机上后，使用 Phabricator 设置面板为您的帐户添加验证因子。 
+系统将提示您在手机中输入主密钥，然后从手机中读取安全代码，并将其输入 Phabricator。
 
-Later, when you need to authenticate, you'll follow this same process: launch
-the application, read the security code, and type it into Phabricator. This will
-prove you have your phone.
+稍后，当您需要验证时，您将遵循相同的过程：启动应用程序，读取安全代码，
+并将其输入到 Phabricator。这将证明你拥有自己的手机。
 
-Don't lose your phone! You'll need it to log into Phabricator in the future.
+不要弄丢了手机！以后登录 Phabricator 都将需要它啦～。
 
-
-Recovering from Lost Factors
+从失去的因素中恢复
 ============================
 
-If you've lost a factor associated with your account (for example, your phone
-has been lost or damaged), an administrator can strip the factor off your
-account so that you can log in without it.
+如果您失去了与帐户相关联的因素（例如，您的手机已丢失或损坏），
+管理员可以删除您帐户中的因素，这样您可以无需二次验证直接登录账户。
 
-IMPORTANT: Before stripping factors from a user account, be absolutely certain
-that the user is who they claim to be!
+IMPORTANT: 在从用户帐户剥离因素之前，一定要先验明用户的身份！
 
-It is important to verify the user is who they claim they are before stripping
-factors because an attacker might pretend to be a user who has lost their phone
-in order to bypass multi-factor authentication. It is much easier for a typical
-attacker to spoof an email with a sad story in it than it is for a typical
-attacker to gain access to a mobile phone.
+在从用户帐户剥离因素之前验明用户的身份是很重要的，
+因为攻击者可能假装自己是一个丢失了手机的用户请求删除
+验证要素，从而绕过多重身份验证。对于典型的攻击者来说，
+用一个包含悲伤故事的电子邮件来欺骗要比获得对手机的访问更容易。
 
-A good way to verify user identity is to meet them in person and have them
-solemnly swear an oath that they lost their phone and are very sorry and
-definitely won't do it again. You can also work out a secret handshake in
-advance and require them to perform it. But no matter what you do, be certain
-the user (not an attacker //pretending// to be the user) is really the one
-making the request before stripping factors.
+验证用户身份的一个好方法是与他们见面，并让他们庄严宣誓：
+他们弄丢了自己的手机，非常抱歉，保证此事以后绝不会再发生。 
+您还可以提前制定暗号，并要求他们提供。 
+但无论你做什么，确定用户（不是//假装//是用户的攻击者）
+真正是在剥离因素之前提出请求的用户。
 
-After verifying identity, administrators can strip authentication factors from
-user accounts using the `bin/auth strip` command. For example, to strip all
-factors from the account of a user who has lost their phone, run this command:
+验证身份后，管理员可以使用`bin/auth strip`命令从用户帐户剥离身份验证因素。 
+例如，要从失去手机的用户的帐户中删除所有因素，请运行以下命令：
 
 ```lang=console
-# Strip all factors from a given user account.
+# 删除给定用户帐户中的所有因子。
 phabricator/ $ ./bin/auth strip --user <username> --all-types
 ```
+您可以运行 `bin/auth help strip` 获取更多详细信息和所有可用的标志和参数。
 
-You can run `bin/auth help strip` for more detail and all available flags and
-arguments.
-
-This command can selectively strip types of factors. You can use
-`bin/auth list-factors` for a list of available factor types.
+此命令可以选择性地剥离某种因素。
+ 
+您可以使用`bin/auth list-factors` 获取可用验证因子类型的列表。
 
 ```lang=console
-# Show supported factor types.
+# 显示支持的因子类型。
 phabricator/ $ ./bin/auth list-factors
 ```

@@ -1,52 +1,40 @@
-@title Diffusion User Guide: Commit Hooks
+@title Diffusion 用户指南: 提交钩子
 @group userguide
 
-Guide to commit hooks in hosted repositories.
+在托管代码库中使用提交钩子的 指南。
 
-= Overview =
+= 概览 =
 
-Phabricator installs pre-receive/pre-commit hooks in hosted repositories
-automatically. They enforce a few rules automatically (like preventing
-dangerous changes unless a repository is configured to allow them). They can
-also enforce more complex rules via Herald, using the "Commit Hook:
-Branches/Tags/Bookmarks" and "Commit Hook: Commit Content" rule types.
+Phabricator 会自动在托管代码库中安装 pre-receive/pre-commit 挂钩。 
+它们自动强制执行一些规则（例如防止危险的更改，除非将代码库配置为允许它们）。 
+他们还可以通过 Herald 使用 "Commit Hook:Branches/Tags/Bookmarks" 和
+"Commit Hook: Commit Content" 规则类型强制执行更复杂的规则。
 
-Herald rules are flexible, and can express many of the most common hooks that
-are often installed on repositories (like protecting branches, restricting
-access to repositories, and requiring review).
+Herald 规则是灵活的，并且可以表示许多通常安装在仓库上的最常见的钩子
+（例如保护分支，限制对存储库的访问，以及请求审查）。
 
-However, if Herald isn't powerful enough to enforce everything you want to
-check, you can install additional custom hooks. These work mostly like normal
-hooks, but with a few differences.
+但是，如果 Herald 并不能满足您的所有需求时，你可以安装额外的自定义钩子。
+除了极少区别外， 这些钩子和普通钩子一样工作。
 
-= Installing Custom Hooks =
 
-With hosted repositories, you can install hooks by dropping them into the
-relevant directory of the repository on disk:
+= 安装自定义钩子 =
 
-  - **SVN** Put hooks in `hooks/pre-commit-phabricator.d/`.
-  - **Git** Put hooks in `hooks/pre-receive-phabricator.d/`.
-  - **Mercurial** Phabricator does not currently support custom hooks in
-    Mercurial.
+使用托管代码库，您可以通过将挂接放置到磁盘上的仓库的相关目录中来安装钩子：
 
-These hooks act like normal `pre-commit` or `pre-receive` hooks:
+  - **SVN** 将钩子放在 `hooks/pre-commit-phabricator.d/`。
+  - **Git** 将钩子放在 `hooks/pre-receive-phabricator.d/`。
+  - **Mercurial** Phabricator 还不支持在 Mercurial中使用自定义钩子。
 
-  - Executables in these directories will be run one at a time, in alphabetical
-    order.
-  - They'll be passed the arguments and environment that normal hooks are
-    passed.
-  - They should emit output and return codes like normal hooks do.
-  - These hooks will run only after all the Herald rules have passed and
-    Phabricator is otherwise ready to accept the commit or push.
+这些钩子和普通 `pre-commit` 或 `pre-receive` 钩子一样:
 
-These additional variables will be available in the environment, in addition
-to the variables the VCS normally provides:
+  - 这些目录中的可执行文件将按字母顺序执行。
+  - 它们将被传递正常钩子传递的参数和环境变量。
+  - 它们应该像正常钩子一样进行输出和返回代码。
+  - 这些钩子只有在所有 Herald 规则通过后才会运行，而 Phabricator 则准备接受提交或推送。
 
-  - `PHABRICATOR_REPOSITORY` The PHID of the repository the hook is
-    executing for.
-  - `PHABRICATOR_USER` The Phabricator username that the session is
-    authenticated under.
-  - `PHABRICATOR_REMOTE_ADDRESS` The connection's remote address (that is,
-    the IP address of whoever is pushing or committing).
-  - `PHABRICATOR_REMOTE_PROTOCOL` The protocol the connection is using (for
-    example, "ssh" or "http").
+除了 VCS 通常提供的变量之外，还有一些附加环境变量可以可用：
+
+  - `PHABRICATOR_REPOSITORY` 钩子执行所在仓库的 PHID 
+  - `PHABRICATOR_USER` 会话被认证的 Phabricator 用户名。
+  - `PHABRICATOR_REMOTE_ADDRESS` 连接的远程地址（即，正在推送或提交的人的 IP 地址）。
+  - `PHABRICATOR_REMOTE_PROTOCOL` 连接正在使用的协议（例如，“ssh”或“http”）。

@@ -1,94 +1,77 @@
-@title Diffusion User Guide
+@title Diffusion 用户指南
 @group userguide
 
-Guide to Diffusion, the Phabricator application for hosting and browsing
-repositories.
+Diffusion （Phabricator 应用程序用于托管和浏览代码仓库） 指南
 
-Overview
+
+概述
 ========
 
-Diffusion allows you to create repositories so that you can browse them from
-the web and interact with them from other applications.
+Diffusion 允许您创建仓库，以便您可以从 Web 浏览它们并与其他应用程序进行交互。
 
-Diffusion can host repositories locally, or observe existing remote
-repositories which are hosted elsewhere (for example, on GitHub, Bitbucket, or
-other existing hosting). Both types of repositories can be browsed and
-interacted with, but hosted repositories support some additional triggers
-and access controls which are not available for observed repositories.
+Diffusion 可以在本地托管仓库，或者观察托管在其他位置（例如，在 GitHub，Bitbucket 或其他现有托管）
+上的现有远程仓库。这两种类型的仓库都可以被浏览和交互，
+但是托管仓库支持一些额外的触发器和访问控制，这些不可用于观察的仓库。
 
-Diffusion is integrated with the other tools in the Phabricator suite. For
-instance:
+Diffusion 与 Phabricator 套件中的其他工具集成。 例如：
 
-  - when you commit Differential revisions to a tracked repository, they are
-    automatically updated and linked to the corresponding commits;
-  - you can add Herald rules to notify you about commits that match certain
-    rules;
-  - for hosted repositories, Herald can enforce granular access control rules;
-  - in all the tools, commit names are automatically linked.
+  - 当您向跟踪的仓库提交 Differential 修订时，它们会自动更新并链接到相应的提交;
+  - 您可以添加 Herald 规则以通知您有关符合某些规则的提交;
+  - 对于托管仓库，Herald 可以实施精细的访问控制规则;
+  - 在所有工具中，提交名称都会自动链接。
 
-The remainder of this document walks through creating, configuring, and
-managing repositories.
+本文档的剩余部分将介绍如何创建，配置和管理仓库。
 
 
-Adding Repositories
+添加仓库
 ===================
 
-Repository administration is accomplished through Diffusion. You can use the
-web interface in Diffusion to observe an external repository or create a new
-hosted repository.
+通过 Diffusion 对仓库进行管理。您可以使用 Diffusion 中的 Web 界面
+观察外部仓库或创建新的托管仓库。
 
-  - For hosted repositories, make sure you go through the setup instructions
-    in @{article:Diffusion User Guide: Repository Hosting} first.
-  - For all repositories, you'll need to be running the daemons. If you have
-    not set them up yet, see @{article:用 phd 管理后台进程}.
+  - 对于托管仓库，请务必先阅读 @{article:Diffusion 用户指南: Repository Hosting}中的设置说明。
+  - 对于所有的仓库，你需要运行守护进程。如果您尚未设置它们，请参阅 @{article:用 phd 管理后台进程}。
 
-By default, you must be an administrator to create a new repository. You can
-change this in the application settings.
+默认情况下，只有管理员才能创建新仓库。 您可以在应用程序设置中更改此设置。
 
 
-Managing Repositories
+管理仓库
 =====================
 
-Diffusion repositories have an array of configurable options and behaviors. For
-details on the available options and guidance on managing and administrating
-repositories, see @{article:Diffusion User Guide: Managing Repositories}.
+Diffusion 仓库具有可配置选项。 
+有关管理仓库的可用选项和指导的详细信息，请参阅 @{article:Diffusion 用户指南: Managing Repositories}。
 
-Repositories can also be managed via the API. For an overview on using the
-API to create and edit repositories, see
-@{article:Diffusion User Guide: Repositories API}.
+仓库也可以通过API进行管理。 有关使用 API 创建和编辑仓库的概述，请参阅
+@{article:Diffusion 用户指南: Repositories API}.
 
 
-Repository Clustering
+仓库集群
 =====================
 
-Phabricator repository hosts can be set up in a cluster configuration so you
-can lose hosts with minimal downtime and data loss. This is an advanced feature
-which most installs do not need to pursue.
+Phabricator 仓库主机可以在群集配置中设置，
+这样在发生主机故障时，可以保证最少的停机时间和数据丢失。 
+这是一个高级功能，大多数安装不需要这样设置。
 
-To get started with clustering, see @{article:Clustering Introduction}. For
-details on repository clustering, see @{article:Cluster: Repositories}.
+关于集群的简介，请查看 @{article:Clustering Introduction}。 
+有关集群仓库，请查看 @{article:Cluster: Repositories}。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - learning how to creating a symbol index at
-    @{article:Diffusion User Guide: Symbol Indexes}; or
-  - setting up repository hosting with
-    @{article:Diffusion User Guide: Repository Hosting}; or
-  - managing repository hooks with
-    @{article:Diffusion User Guide: Commit Hooks}; or
-  - understanding daemons in more detail with
-    @{article:用 phd 管理后台进程}.
+  - 通过 @{article:Diffusion 用户指南: Symbol Indexes} 学习如何创建符号索引
+  - 参照
+    @{article:Diffusion 用户指南: Repository Hosting} 设置托管仓库
+  - 通过 
+    @{article:Diffusion 用户指南: 提交钩子} 学习仓库钩子
+  - 通过
+    @{article:用 phd 管理后台进程} 更好的了解后台进程。
 
-If you're having trouble getting things working, these topic guides may be
-helpful:
+如果您遇到问题，这些可能对你有帮助：
 
-  - get details about automatically closing tasks and revisions in response
-    to commits in @{article:Diffusion User Guide: Autoclose}; or
-  - understand how Phabricator updates repositories with
-    @{article:Diffusion User Guide: Repository Updates}; or
-  - fix issues with repository imports with
-    @{article:Troubleshooting Repository Imports}.
+  - 查看 @{article:Diffusion 用户指南: Autoclose} 获取有关自动关闭任务和修订以响应提交的详细信息
+  - 查看 @{article:Diffusion 用户指南: Repository Updates} 了解 Phabricator 如何更新仓库
+  - 参照
+    @{article:Troubleshooting Repository Imports} 修复仓库导入过程中遇到的问题。

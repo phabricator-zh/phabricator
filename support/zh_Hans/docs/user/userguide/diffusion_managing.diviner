@@ -1,385 +1,323 @@
-@title Diffusion User Guide: Managing Repositories
+@title Diffusion 用户指南: 管理仓库
 @group userguide
 
-Guide to configuring and managing repositories in Diffusion.
+在 Diffusion 中配置和管理仓库的指南。
 
-Overview
+概览
 ========
 
-After you create a new repository in Diffusion or select **Manage Repository**
-from the main screen if an existing repository, you'll be taken to the
-repository management interface for that repository.
+在 Diffusion 中的新建仓库或现有仓库的主屏幕中选择“管理仓库”，
+您将转到该仓库的管理界面。
 
-On this interface, you'll find many options which allow you to configure the
-behavior of a repository. This document walks through the options.
+在此界面上，您将找到可以配置仓库行为的许多选项。本文档将逐个介绍这些选项。
 
-Basics
+基础
 ======
 
-The **Basics** section of the management interface allows you to configure
-the repository name, description, and identifiers. You can also activate or
-deactivate the repository here, and configure a few other miscellaneous
-settings.
+管理界面的“基础”部分允许您配置仓库名称，描述和标识符。 
+您还可以在此处激活或停用仓库，并配置其他一些其他设置。
 
-Basics: Name
+基础: 名称
 ============
 
-The repository name is a human-readable primary name for the repository. It
-does not need to be unique
+仓库名称是仓库的可读主名称。它不需要是唯一的。
 
-Because the name is not unique and does not have any meaningful restrictions,
-it's fairly ambiguous and isn't very useful as an identifier. The other basic
-information (primarily callsigns and short names) gives you control over
-repository identifiers.
+因为名称不是唯一的，也没有任何有意义的限制，且相当含糊，
+作为标识符不是非常有用。 其他基本信息（主要是代号和短名称）使您可以控制仓库标识符。
 
 
-Basics: Callsigns
+基础: 代号
 =================
 
-Each repository can optionally be identified by a "callsign", which is a short
-uppercase string like "P" (for Phabricator) or "ARC" (for Arcanist).
+每个仓库可以用“代号”（callsign）标识，“代号”是诸如 “P”（对于 Phabricator）
+或 “ARC”（对于 Arcanist）的比较短的由大写字母组成的字符串。
 
-The primary goal of callsigns is to namespace commits to SVN repositories: if
-you use multiple SVN repositories, each repository has a revision 1, revision 2,
-etc., so referring to them by number alone is ambiguous.
+代号的主要目标是给 SVN 仓库的提交提供命名空间：如果您使用多个 SVN 仓库，
+则每个仓库都有一个修订版本1，修订版本2等，因此通过编号单独引用它们是不明确的。
 
-However, even for Git and Mercurial they impart additional information to human
-readers and allow parsers to detect that something is a commit name with high
-probability (and allow distinguishing between multiple copies of a repository).
+然而，即使对于 Git 和 Mercurial，它们可以向人类读者传递额外的信息，
+并允许解析器以高概率检测某事物是一个提交名（并允许在仓库的多个副本之间进行区分）。
 
-Configuring a callsign can make interacting with a commonly-used repository
-easier, but you may not want to bother assigning one to every repository if you
-have some similar, templated, or rarely-used repositories.
+配置一个代号可以使与一个常用的仓库的交互更容易，
+但如果你有一些类似的，模板化或很少使用的仓库，你可能不想麻烦地为每个仓库指定一个代号。
 
-If you choose to assign a callsign to a repository, it must be unique within an
-install but do not need to be globally unique, so you are free to use the
-single-letter callsigns for brevity. For example, Facebook uses "E" for the
-Engineering repository, "O" for the Ops repository, "Y" for a Yum package
-repository, and so on, while Phabricator uses "P", "ARC", "PHU" for libphutil,
-and "J" for Javelin. Keeping callsigns brief will make them easier to use, and
-the use of one-character callsigns is encouraged if they are reasonably
-evocative.
+如果选择为仓库分配一个代号的话，则要求代号必须是唯一的，
+但不需要是全局（全球？）唯一的，因此为了简洁，您可以自由使用单字母呼号。 
+例如，Facebook 对于工程仓库使用 “E”，对于 Ops 仓库使用 “O”，
+对于 Yum 软件包仓库使用 “Y”，而 Phabricator 使用 “P”，“ARC”，对 libphutil 使用 “PHU” ，
+“J” 表示 Javelin。 保持代号的简短将使他们更容易使用，
+并且鼓励使用单字符代号，如果他们是合理的唤起。
 
-If you configure a callsign like `XYZ`, Phabricator will activate callsign URIs
-and activate the callsign identifier (like `rXYZ`) for the repository. These
-more human-readable identifiers can make things a little easier to interact
-with.
+如果你配置一个像 “XYZ” 的代号，Phabricator 将激活代号 URI 和仓库的代号标识符（如`rXYZ`）。 
+这些人类更易读的标识符可以使交互变得更容易。
 
 
-Basics: Short Name
+基础: 短名称
 ==================
 
-Each repository can optionally have a unique short name. Short names must be
-unique and have some minor restrictions to make sure they are unambiguous and
-appropriate for use as directory names and in URIs.
+每个仓库可以配置唯一的短名称。 
+短名称必须是唯一的，并且有一些小的限制，
+以确保它们是明确的，适合用作目录名称和 URI。
 
-
-Basics: Description
+基础: 描述
 ===================
 
-You may optionally provide a brief (or, at your discretion, excruciatingly
-long) human-readable description of the repository. This description will be
-shown on the main repository page.
+您可以为仓库提供简要（或您自行决定，冗长的也可以）人类可读的描述。 
+此描述将显示在主仓库页面上。
 
-You can also create a `README` file at the repository root (or in any
-subdirectory) to provide information about the repository. These formats are
-supported:
+您还可以在仓库根目录（或任何子目录）中创建一个`README`文件，以提供有关仓库的信息。 
+支持以下格式：
 
-| File Name         | Rendered As...
+
+| 文件名         | 渲染为...
 |-------------------|---------------
-| `README`          | Plain Text
-| `README.txt`      | Plain Text
+| `README`          | 纯文本
+| `README.txt`      | 纯文本
 | `README.remarkup` | Remarkup
 | `README.md`       | Remarkup
 | `README.rainbow`  | Rainbow
 
 
-Basics: Encoding
+基础: 编码
 ================
 
-Before content from the repository can be shown in the web UI or embedded in
-other contexts like email, it must be converted to UTF-8.
+在仓库内容显示在网页或邮件中之前，必须先转换成 UTF-8 编码。
 
-Most source code is written in UTF-8 or a subset of UTF-8 (like plain ASCII)
-already, so everything will work fine. The majority of repositories do not need
-to adjust this setting.
+大多数源代码是用 UTF-8 或 UTF-8 的子集（如普通 ASCII）编写的，
+所以一切都会正常工作。 大多数仓库不需要调整此设置。
 
-If your repository is primarily written in some other encoding, specify it here
-so Phabricator can convert from it properly when reading content to embed in
-a webpage or email.
+如果您的仓库用其他编码编写，请在此处指定，
+以便 Phabricator 在读取内容嵌入到网页或电子邮件时进行正确转换。
 
 
-Basics: Dangerous Changes
+基础: 危险变更
 =========================
 
-By default, repositories are protected against dangerous changes. Dangerous
-changes are operations which rewrite or destroy repository history (for
-example, by deleting or rewriting branches). Normally, these take the form
-of `git push --force` or similar.
+默认情况下，为了保护仓库，不能进行危险更改。 
+危险更改是指重写或破坏仓库历史记录的操作（例如，通过删除或重写分支）。
+通常，这些操作通过 `git push --force` 或类似的形式执行。
 
-It is normally a good idea to leave this protection enabled because most
-scalable workflows rarely rewrite repository history and it's easy to make
-mistakes which are expensive to correct if this protection is disabled.
+通常最好保留此保护，因为在大多数可扩展工作流中很少重写仓库历史记录，
+这中操作很容易犯错误，如果禁用此保护，修正这些错误操作是很昂贵的。
 
-If you do occasionally need to rewite published history, you can treat this
-option like a safety: disable it, perform required rewrites, then enable it
-again.
+如果偶尔需要重写发布的历史记录，可以将此选项视为安全：禁用它，执行所需的重写，然后再次启用它。
 
-If you fully disable this at the repository level, you can still use Herald to
-selectively protect certain branches or grant this power to a limited set of
-users.
+如果在仓库级别完全禁用此功能，您仍然可以使用 Herald 选择性地保护某些分支或将此权力授予有限的用户。
 
-This option is only available in Git and Mercurial, because it is impossible
-to make dangerous changes in Subversion.
+此选项仅在 Git 和 Mercurial 中可用，因为不可能在 Subversion 中进行危险的更改。
 
-This option has no effect if a repository is not hosted because Phabricator
-can not prevent dangerous changes in a remote repository it is merely
-observing.
+如果不托管仓库，则此选项不起作用，因为 Phabricator 无法阻止只是观察的远程仓库中的危险更改。
 
 
-Basics: Deactivate Repository
+基础: 停用仓库
 =============================
 
-Repositories can be deactivated. Deactivating a repository has these effects:
+可以停用仓库。 停用仓库会产生以下影响：
 
-  - the repository will no longer be updated;
-  - users will no longer be able to clone/fetch/checkout the repository;
-  - users will no longer be able to push to the repository; and
-  - the repository will be hidden from view in default queries.
+  - 仓库将不再更新;
+  - 用户将无法再克隆/获取/检出（clone/fetch/checkout）仓库;
+  - 用户将无法再推送到仓库
+  - 在默认查询中，仓库将不可见。
 
-When repositories are created for the first time, they are deactivated. This
-gives you an opportuinty to customize settings, like adjusting policies or
-configuring a URI to observe. You must activate a repository before it will
-start working normally.
+当首次创建仓库时，它们将被停用。 这为您提供了自定义设置的机会，
+例如调整策略或配置观察 URI。您必须先激活仓库才能开始正常工作。
 
 
-Basics: Delete Repository
+基础: 删除仓库
 =========================
 
-Repositories can not be deleted from the web UI, so this option is always
-disabled. Clicking it gives you information about how to delete a repository.
+无法从网页界面中删除仓库，因此此选项始终是禁用的。 
+单击它可以提供有关如何删除仓库的信息。
 
-Repositories can only be deleted from the command line, with `bin/remove`:
+仓库只能在命令行中使用 `bin/remove` 删除：
 
 ```
 $ ./bin/remove destroy <repository>
 ```
 
-WARNING: This command will issue you a dire warning about the severity of the
-action you are taking. Heed this warning. You are **strongly discouraged** from
-destroying repositories. Instead, deactivate them.
+WARNING: 此命令将向您发出关于您正在执行的操作的严重性的可靠警告。 
+注意这个警告。 强烈反对您**销毁仓库**。请选择停用它们，而不是删除。
 
 
-Policies
+策略
 ========
 
-The **Policies** section of the management interface allows you to review and
-manage repository access policies.
+管理界面的**策略**部分允许您查看和管理仓库访问策略。
 
-You can configure granular access policies for each repository to control who
-can view, clone, administate, and push to the repository.
+您可以为每个仓库配置访问策略，以控制谁可以查看，克隆，管理和推送到仓库。
 
 
-Policies: View
+策略: 查看
 ==============
 
-The view policy for a repository controls who can view the repository from
-the web UI and clone, fetch, or check it out from Phabricator.
+仓库的查看策略控制谁可以从网页中查看仓库，
+并从 Phabricator 克隆，获取或检出它。
 
-Users who can view a repository can also access the "Manage" interface to
-review information about the repository and examine the edit history, but can
-not make any changes.
+可以查看仓库的用户还可以访问“管理”界面
+以查看有关仓库的信息并检查编辑历史记录，但不能进行任何更改。
 
 
-Policies: Edit
+策略: 编辑
 ==============
 
-The edit policy for a repository controls who can change repository settings
-using the "Manage" interface. In essence, this is permission to administrate
-the repository.
+仓库的编辑策略控制谁可以使用“管理”界面更改仓库设置。 
+实质上，这是管理仓库的权限。
 
-You must be able to view a repository to edit it.
+您必须能够查看仓库才能对其进行编辑。
 
-You do not need this permission to push changes to a repository.
+推送更改到仓库不需要此权限。
 
 
-Policies: Push
+策略: 推送
 ==============
 
-The push policy for a repository controls who can push changes to the
-repository.
+仓库的推送策略控制谁可以将更改推送到仓库。
 
-This policy has no effect if Phabricator is not hosting the repository, because
-it can not control who is allowed to make changes to a remote repository it is
-merely observing.
+如果 Phabricator 不托管仓库，则此策略没有效果，
+因为它无法对只是观察的远程仓库的更改进行控制。
 
-You must also be able to view a repository to push to it.
+要进行推送还必须要有此仓库的查看权限。
 
-You do not need to be able to edit a repository to push to it.
+推送不需要具有编辑权限。
 
-Further restrictions on who can push (and what they can push) can be configured
-for hosted repositories with Herald, which allows you to write more
-sophisticated rules that evaluate when Phabricator receives a push. To get
-started with Herald, see @{article:Herald User Guide}.
+可以使用 Herald 为托管仓库配置对谁可以推送的进一步限制（以及他们可以推送的内容），
+这允许您编写更复杂的规则来评估 Phabricator 何时收到推送。 
+要开始使用 Herald，请参阅 @{article:Herald User Guide}。
 
-Additionally, Git and Mercurial repositories have a setting which allows
-you to **Prevent Dangerous Changes**. This setting is enabled by default and
-will prevent any users from pushing changes which rewrite or destroy history.
+此外，Git 和 Mercurial 仓库有一个设置，允许您**防止危险更改**。 
+此设置默认情况下启用，并且将阻止任何用户推送重写或销毁历史记录的更改。
 
 
-URIs
+网址
 ====
 
-The **URIs** panel allows you to add and manage URIs which Phabricator will
-fetch from, serve from, and push to.
+**网址**面板允许您添加和管理 Phabricator 将从中提取、推送的网址。
 
-These options are covered in detail in @{article:Diffusion User Guide: URIs}.
+这些选项的详细介绍在 @{article:Diffusion User Guide: URIs}。
 
 
-Staging Area
+暂存区
 ============
 
-The **Staging Area** panel configures staging areas, used to make proposed
-changes available to build and continuous integration systems.
+**暂存区** 面板配置暂存区域，用于构建和持续集成系统应用更改。
 
-For more details, see @{article:Harbormaster User Guide}.
+有关详情，请查看 @{article:Harbormaster User Guide}。
 
 
-Automation
+自动化
 ==========
 
-The **Automation** panel configures support for allowing Phabricator to make
-writes directly to the repository, so that it can perform operations like
-automatically landing revisions from the web UI.
+**自动化** 面板配置支持允许 Phabricator 直接写入仓库，
+以便它可以执行诸如从网页自动应用修订版本等操作。
 
-For details on repository automation, see
-@{article:Drydock User Guide: Repository Automation}.
+关于仓库自动化的详细信息, 请查看
+@{article:Drydock User Guide: Repository Automation}。
 
 
-Symbols
+符号
 ======
 
-The **Symbols** panel allows you to customize how symbols (like class and
-function names) are linked when viewing code in the repository, and when
-viewing revisions which propose code changes to the repository.
-
-To take advantage of this feature, you need to do additional work to build
-symbol indexes. For details on configuring and populating symbol indexes, see
-@{article:User Guide: Symbol Indexes}.
+**符号**面板允许您在查看仓库中的代码时以及查看建议
+对仓库进行代码更改的修订版本时自定义符号（如类和函数名称）的链接方式。
 
 
-Branches
+要利用此功能，您需要执行额外的工作来构建符号索引。有关配置和填充符号索引的详细信息，请参阅
+@{article:User Guide: Symbol Indexes}。
+
+
+分支
 ========
 
-The **Branches** panel allows you to configure how Phabricator interacts with
-branches.
+**分支**面板允许您配置 Phabricator 如何与分支进行交互。
 
-This panel is not available for Subversion repositories, because Subversion
-does not have formal branches.
+此面板不适用于 Subversion 仓库，因为 Subversion 没有正式的分支。
 
-You can configure **Default Branch**. This controls which branch is shown by
-default in the UI. If no branch is provided, Phabricator will use `master` in
-Git and `default` in Mercurial.
+您可以配置**默认分支**。这控制默认情况下在用户界面中显示的分支。
+如果没有提供分支，Phabricator 将使用 Git 中的 `master` 和 Mercurial 中的 `default`。
 
-If you want Diffusion to ignore some branches in the repository, you can
-configure **Track Only**. Other branches will be ignored. If you do not specify
-any branches, all branches are tracked.
+如果要让 Diffusion 忽略仓库中的某些分支，
+您可以配置为 **仅跟踪**。其他分支将被忽略。
+如果不指定任何分支，将跟踪所有分支。
 
-When specifying branches, you should enter one branch name per line. You can
-use regular expressions to match branches by wrapping an expression in
-`regexp(...)`. For example:
+指定分支时，应该每行输入一个分支名称。 
+你可以使用正则表达式来匹配分支，通过在` regexp(...)` 中包装一个表达式。 
+例如：
 
-| Example | Effect |
+| 示例 | 效果 |
 |---------|--------|
-| `master` | Track only `master`.
-| `regexp(/^release-/)` | Track all branches which start with `release-`.
-| `regexp(/^(?!temp-)/)` | Do not track branches which start with `temp-`.
+| `master` | 仅跟踪 `master`
+| `regexp(/^release-/)` | 跟踪所有以 `release-` 开头的分支
+| `regexp(/^(?!temp-)/)` | 不跟踪以 `temp-` 开头的分支
 
 
-Actions
+操作
 ======
 
-The **Actions** panel can configure notifications and publishing behavior.
+**操作**面板可以配置通知和发布行为。
 
-Normally, Phabricator publishes notifications when it discovers new commits.
-You can disable publishing for a repository by turning off **Publish/Noitfy**.
-This will disable notifications, feed, and Herald (including audits and build
-plans) for this repository.
+通常，Phabricator 在发现新提交时发布通知。 
+您可以通过关闭 **发布/通知** 来禁用仓库的发布。 
+这将禁用此仓库的通知，Feed 和 Herald（包括审核和构建计划）。
 
-When Phabricator discovers a new commit, it can automatically close associated
-revisions and tasks. If you don't want Phabricator to close objects when it
-discovers new commits, disable **Autoclose** for the repository.
+当 Phabricator 发现新的提交时，它可以自动关闭相关的修订和任务。 
+如果您不希望 Phabricator 在发现新提交时关闭对象，请对仓库禁用**自动关闭**功能。
 
 
-Repository Identifiers and Names
+仓库标识符和名称
 ================================
 
-Repositories have several short identifiers which you can use to refer to the
-repository. For example, if you use command-line administrative tools to
-interact with a repository, you'll provide one of these identifiers:
+仓库有几个短标识符，您可以使用它们来引用仓库。 
+例如，如果使用命令行管理工具与仓库进行交互，则您可以提供以下标识符之一：
 
 ```
 $ ./bin/repository update <identifier>
 ```
+可用于仓库的标识符取决于配置的选项。 每个仓库可以具有多个标识符
 
-The identifiers available for a repository depend on which options are
-configured. Each repository may have several identifiers:
+  -  **ID** 标识符, 如 `R123`。这种所有仓库都可以使用。
+  -  **代号** 标识符, 如 `rXY`。 配置了代号的仓库可以使用。
+  -  **短名称** 标识符, 如 `xylophone`。 配置了短名称的仓库可以使用。
 
-  - An **ID** identifier, like `R123`. This is available for all repositories.
-  - A **callsign** identifier, like `rXY`. This is available for repositories
-    with a callsign.
-  - A **short name** identifier, like `xylophone`. This is available for
-    repositories with a short name.
+所有三个标识符可用于在意图明确的情况下引用仓库，
+但前两种形式在不明确的上下文中也可以工作。
 
-All three identifiers can be used to refer to the repository in cases where
-the intent is unambiguous, but only the first two forms work in ambiguous
-contexts.
+例如，如果在注释中键入 `R123` 或 `rXY`，
+Phabricator 将会将它们识别为对版本库的引用。 
+如果你输入`xylophone'，它假设你的意思是就是 “xylophone” 这个单词。
 
-For example, if you type `R123` or `rXY` into a comment, Phabricator will
-recognize them as references to the repository. If you type `xylophone`, it
-assumes you mean the word "xylophone".
-
-Only the `R123` identifier is immutable: the others can be changed later by
-adjusting the callsign or short name for the repository.
+只有`R123`标识符是不可变的：代号和短名称可以进行修改。
 
 
-Commit Identifiers
+提交标识符
 ==================
 
-Diffusion uses repository identifiers and information about the commit itself
-to generate globally unique identifers for each commit, like `rE12345`.
+Diffusion 使用仓库标识符和关于提交本身的信息为每个提交生成全局唯一标识符，如`rE12345`。
 
-Each commit may have several identifiers:
+每个提交可以具有多个标识符：
 
-  - A repository **ID** identifier, like `R123:abcdef123...`.
-  - A repository **callsign** identifier, like `rXYZabcdef123...`. This only
-    works if a repository has a callsign.
-  - Any unique prefix of the commit hash.
+  - 仓库 **ID** 标识符, 如 `R123:abcdef123...`.
+  - 仓库 **代号** 标识符, 如 `rXYZabcdef123...`。仅在仓库设置了代号时可以使用。
+  - 任何提交哈希值的唯一前缀
 
-Git and Mercurial use commit hashes to identify commits, and Phabricator will
-recognize a commit if the hash prefix is unique and sufficiently long. Commit
-hashes qualified with a repository identifier must be at least 5 characters
-long; unqualified commit hashes must be at least 7 characters long.
+Git 和 Mercurial 使用提交哈希来标识提交，如果哈希前缀是唯一且足够长的，
+Phabricator 将会识别提交。使用仓库标识符限定的提交哈希值必须至少为5个字符长; 
+不严格的提交哈希值必须至少为7个字符长。
 
-In Subversion, commit identifiers are sequential integers and prefixes can not
-be used to identify them.
+在 Subversion 中，提交标识符是顺序整数，不能使用前缀来标识它们。
 
-When rendering the name of a Git or Mercurial commit hash, Phabricator tends to
-shorten it to 12 characters. This "short length" is relatively long compared to
-Git itself (which often uses 7 characters). See this post on the LKML for a
-historical explanation of Git's occasional internal use of 7-character hashes:
+当渲染 Git 或 Mercurial 提交哈希的名称时，Phabricator 倾向于将其缩短为12个字符。 
+这个“短长度” 是与 Git 本身（通常使用7个字符）使用的标识符比较的。 
+查看 LKML 的这篇关于 “Git 偶然在内部使用 7 字符哈希的历史”的解释文章：
 
 https://lkml.org/lkml/2010/10/28/287
 
-Because 7-character hashes are likely to collide for even moderately large
-repositories, Diffusion generally uses either a 12-character prefix (which makes
-collisions very unlikely) or the full 40-character hash (which makes collisions
-astronomically unlikely).
+因为7个字符的散列对于中等大小的仓库很可能会发生冲突，
+所以 Diffusion 通常使用12个字符的前缀（这使得冲突几乎不可能）或完整的40个字符的散列
+（这使得冲突完全不太可能发生）。
 
-
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - returning to the @{article:Diffusion User Guide}.
+  - 返回到 @{article:Diffusion 用户指南}.

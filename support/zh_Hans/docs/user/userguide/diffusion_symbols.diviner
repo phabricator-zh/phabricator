@@ -1,97 +1,88 @@
-@title Diffusion User Guide: Symbol Indexes
+@title Diffusion 用户指南: 符号索引
 @group userguide
 
-Guide to configuring and using the symbol index.
+配置和使用符号索引的 指南。
 
-= Overview =
+= 概览 =
 
-Phabricator can maintain a symbol index, which keeps track of where classes
-and functions are defined in the codebase. Once you set up indexing, you can
-use the index to do things like:
+Phabricator 可以维护一个符号索引，
+它跟踪在代码库中定义的类和函数的位置。 
+设置索引后，您可以使用索引执行以下操作：
 
-  - jump to symbol definitions from Differential code reviews and Diffusion
-    code browsing by ctrl-clicking (cmd-click on Mac) symbols
-  - search for symbols from the quick-search
-  - let the IRC bot answer questions like "Where is SomeClass?"
+  - 通过 ctrl+点击（Mac 上 cmd+点击）符号从 Differential 代码审查
+  	和 Diffusion 代码浏览跳转到符号定义
+  - 从快速搜索中搜索符号
+  - 让 IRC 机器人回答像 “SomeClass 在哪里” 的问题
 
-NOTE: Because this feature depends on the syntax highlighter, it will work
-better for some languages than others. It currently works fairly well for PHP,
-but your mileage may vary for other languages.
+NOTE: 因为此功能依赖于语法高亮，所以对于某些语言，它将比其他语言工作的更好。 
+目前工作最好的是 PHP，但你的旅途可能会因其他语言而有所不同。
 
-= Populating the Index =
 
-To populate the index, you need to write a script which identifies symbols in
-your codebase and set up a cronjob which pipes its output to:
+= 填充索引 =
+
+要填充索引，您需要编写一个脚本，在代码库中标识符号，并设置一个 cronjob，
+将其输出管道：
 
   ./scripts/symbols/import_repository_symbols.php
 
-Phabricator includes a script which can identify symbols in PHP projects:
+Phabricator 包含一个脚本，可以识别 PHP 项目中的符号：
 
   ./scripts/symbols/generate_php_symbols.php
 
-Phabricator also includes a script which can identify symbols in any
-programming language that has classes and/or functions, and is supported by
-Exuberant Ctags (http://ctags.sourceforge.net):
+Phabricator 还包括一个脚本，可以识别任何编程语言中具有类和/或功能的符号，
+并且由 Exuberant Ctags（http://ctags.sourceforge.net）支持：
 
   ./scripts/symbols/generate_ctags_symbols.php
 
-If you want to identify symbols from another language, you need to write a
-script which can export them (for example, maybe by parsing a `ctags` file).
+如果你想从另一种语言中识别符号，你需要编写一个脚本，
+它可以导出它们（例如，也许通过解析一个` ctags` 文件）。
 
-The output format of the script should be one symbol per line:
+脚本的输出格式应该每行一个符号：
 
   <context> <name> <type> <lang> <line> <path>
 
-For example:
+例如：
 
   ExampleClass exampleMethod function php 13 /src/classes/ExampleClass.php
 
-Context is, broadly speaking, the scope or namespace where the symbol is
-defined. For object-oriented languages, this is probably a class name. The
-symbols with that context are class constants, methods, properties, nested
-classes, etc. When printing symbols without a context (those that are defined
-globally, for instance), the `<context>` field should be empty (that is, the
-line should start with a space).
+上下文在广义上用来定义符号的范围或命名空间。 对于面向对象的语言，这可能是一个类名。 
+具有该上下文的符号是类常量，方法，属性，嵌套类等。
+当打印没有上下文的符号（例如那些全局定义的符号）时，
+`<context>` 字段应该为空（即， 行应以空格开头）。
 
-Your script should enumerate all the symbols in your project, and provide paths
-from the project root (where ".arcconfig" is) beginning with a "/".
+您的脚本应枚举项目中的所有符号，并提供从项目根（“.arcconfig” 所在目录）开始的路径，以“/”开头。
 
-You can look at `generate_php_symbols.php` for an example of how you might
-write such a script, and run this command to see its output:
+你可以看一下 `generate_php_symbols.php` 来获得一个例子，了解如何编写这样一个脚本，
+并运行这个命令来查看它的输出：
 
   $ cd phabricator/
   $ find . -type f -name '*.php' | ./scripts/symbols/generate_php_symbols.php
 
-To actually build the symbol index, pipe this data to the
-`import_repository_symbols.php` script, providing the repository callsign:
+要实际构建符号索引，请将此数据通过管道定向到 `import_repository_symbols.php` 脚本，
+提供存储库呼号：
 
   $ ./scripts/symbols/import_repository_symbols.php REPO < symbols_data
 
-Then just set up a cronjob to run that however often you like.
+然后设置一个 cronjob 运行这个脚本。
 
-You can test that the import worked by querying for symbols using the Conduit
-method `diffusion.findsymbols`. Some features (like that method, and the
-IRC bot integration) will start working immediately. Others will require more
-configuration.
+您可以通过使用 Conduit 方法 `diffusion.findsymbols` 查询符号来测试导入是否正常。 
+一些功能（如该方法 和 IRC 机器人集成）将立即开始工作。其他将需要更多的配置。
 
-= Advanced Configuration =
+= 高级配置 =
 
-You can configure some more options by going to {nav Diffusion > (Select
- repository) > Edit Repository > Edit Symbols}, and filling out these fields:
+您可以通过打开 {nav Diffusion>选择存储库>编辑存储库>编辑符号} 来配置一些其他选项，填写以下字段：
 
-  - **Indexed Languages**: Fill in all the languages you've built indexes for.
-    You can leave this blank for "All languages".
-  - **Uses Symbols From**: If this project depends on other repositories, add
-    the other repositories which symbols should be looked for here. For example,
-    Phabricator lists "Arcanist" and "libphutil" because it uses classes and
-    functions from these repositories.
+  - **索引语言**: 填写您为其构建索引的所有语言。 您可以将此字段留空为“所有语言”。
+  - **符号来源**: 如果此项目依赖于其他存储库，请添加其他应在此处查找符号的存储库。
+  	 例如，Phabricator 列出了 “Arcanist” 和 “libphutil”，因为它使用了这些存储库中的类和函数。
 
-== External Symbols ==
+== 外部符号 ==
 
-By @{article@phabcontrib:Adding New Classes}, you can teach Phabricator
-about symbols from the outside world.
-Extend @{class:DiffusionExternalSymbolsSource}; Once loaded, your new
-implementation will be used any time a symbol is queried.
+通过 @{article@phabcontrib:Adding New Classes}，
+你可以教 Phabricator 关于来自外部世界的符号。 
+扩展 @{class:DiffusionExternalSymbolsSource}; 
+加载后，您的新实现将在任何查询符号时使用。
 
-See @{class:DiffusionPhpExternalSymbolsSource} and
-@{class:DiffusionPythonExternalSymbolsSource} for example implementations.
+
+查看 @{class:DiffusionPhpExternalSymbolsSource} 和
+@{class:DiffusionPythonExternalSymbolsSource} 的实现示例。

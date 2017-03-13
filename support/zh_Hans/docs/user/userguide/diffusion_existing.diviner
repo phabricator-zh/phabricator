@@ -1,68 +1,60 @@
-@title Diffusion User Guide: Existing Repositories
+@title Diffusion 用户指南: 已有仓库
 @group userguide
 
-Quick guide for importing or observing existing repositories.
+用于导入或观察现有仓库的 快速指南。
 
-
-Overview
+概览
 ========
 
-If you have an existing repository, you can observe or import it into
-Diffusion.
+如果您有现有的仓库，您可以观察或将其导入 Diffusion。
 
-Observing a repository creates a read-only copy in Phabricator that is kept
-up to date by continuously importing new changes.
+观察仓库在 Phabricator 中创建只读副本，通过不断导入新更改来保持最新版本。
 
-Importing a repository creates a read-write copy.
+导入仓库会创建读写副本。
 
-This document is a quick guide to getting started. For an overview of
-Diffusion, see @{article:Diffusion User Guide}. For a more detailed guide
-about managing repositories and URIs in Diffusion, see
-@{article:Diffusion User Guide: URIs}.
+本文档是入门快速指南。 有关 Diffusion 的概述，请参阅 @{article:Diffusion 用户指南}。 
+有关在 Diffusion 中管理仓库和 URI 的更详细的指南，请参阅 @{article:Diffusion User Guide: URIs}。
 
-
-Observing Repositories
+观察仓库
 ======================
 
-To observe an existing repository:
+观察现有的仓库：
 
-  - Create a repository in Diffusion, but do not activate it yet.
-  - Add the URI for the existing repository you wish to observe in the
-    **URIs** section, in **Observe** mode.
-  - Activate the repository in Diffusion.
+  - 在 Diffusion 中创建仓库，但不要激活它。
+  - 在你想要观察的仓库的 **网址** 部分，添加网址，并设置为**观察**模式。
+  	在**观察**模式中的 ** URIs **部分中添加要观察的现有仓库的URI。
+  - 在 Diffusion 激活仓库
 
-This creates a read-only copy of the repository in Phabricator. Phabricator
-will keep its copy in sync with the remote by periodically polling the remote
-for changes.
-
-For more details, see @{article:Diffusion User Guide: URIs}.
+这将在 Phabricator 中创建仓库的只读副本。 
+Phabricator 将通过定期轮询远程的更改来保持其副本与远程同步。
 
 
-Importing Repositories
+更多详情，请查看 @{article:Diffusion User Guide: URIs}。
+
+
+导入仓库
 ======================
 
-There are two primary ways to import an existing repository:
+导入现有仓库有两种主要方法：
 
-**Observe First**: In Git or Mercurial, you can observe the repository first.
-Once the import completes, disable the **Observe** URI to automatically convert
-it into a hosted repository.
+**先观察**: 在 Git 或 Mercurial 中，您可以首先观察仓库。 
+导入完成后，禁用 **观察** 网址以自动将其转换为托管仓库。
 
-**Push to Empty Repository**: Create an activate an empty repository, then push
-all of your changes to empty the repository.
+**推送到空仓库**: 创建一个空的激活仓库，然后推
+所有更改以清空仓库。
 
-In Git and Mercurial, you can do this with `git push` or `hg push`.
+在 Git 和 Mercurial 中可以使用 `git push` 或 `hg push` 完成此操作。
 
-In Subversion, you can do this with `svnsync`.
+在 Subversion, 可以通过 `svnsync` 实现。
 
-For more details, see @{article:Diffusion User Guide: URIs}.
+更多详情，查看 @{article:Diffusion User Guide: URIs}。
 
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来:
 
-  - reading an overview of Diffusion in
-    @{article:Diffusion User Guide}; or
-  - learning more about managing remote repository URIs in
-    @{article:Diffusion User Guide: URIs}.
+  - 通过 @{article:Diffusion 用户指南} 整体了解 Diffusion
+  - 通过
+    @{article:Diffusion User Guide: URIs} 了解更多关于管理远程仓库网址的信息。

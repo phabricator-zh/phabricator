@@ -26,7 +26,7 @@ then creates stub objects for them. These stub objects primarily serve to
 assign various internal IDs to each commit.
 
 Commit discovery occurs in the update phase, and you can learn more about
-updates in @{article:Diffusion User Guide: Repository Updates}.
+updates in @{article:Diffusion 用户指南: 仓库更新}.
 
 After commits are discovered, background tasks are queued to actually import
 commits. These tasks do things like look at commit messages, trigger mentions

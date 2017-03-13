@@ -1,123 +1,99 @@
-@title Diffusion User Guide: Repository Updates
+@title Diffusion 用户指南: 仓库更新
 @group userguide
 
-Explains how Diffusion updates repositories to discover new changes.
+说明 Diffusion 如何更新仓库以发现新的更改。
 
-Overview
+概览
 ========
 
-When Phabricator is configured to import repositories which are hosted
-elsewhere, it needs to poll those repositories for changes. If it polls too
-frequently, it can create too much load locally and on remote services. If it
-polls too rarely, it may take a long time for commits to show up in the web
-interface.
+当 Phabricator 配置为导入托管在其他位置的仓库时，它需要轮询这些仓库以进行更改。 
+如果它太频繁地轮询，可能在本地和远程服务上产生过多的负载。 
+如果它太少的轮询，提交可能需要很长时间才能显示在 Web 界面。
 
-This document describes the rules around polling and how to understand and
-adjust the behavior. In general:
+本文档描述了轮询的规则以及如何理解和调整。 一般来说：
 
-  - Phabricator chooses a default poll interval based on repository
-    activity. These intervals range from every 15 seconds (for active
-    repositories) to every 6 hours (for repositories with no commits in two
-    months).
-  - If you use `arc` to push commits, or you host repositories on Phabricator,
-    repositories automatically update after changes are pushed.
-  - If you don't use `arc` and your repository is hosted elsewhere, this
-    document describes ways you can make polling more responsive.
+  - Phabricator 根据仓库活跃情况选择默认轮询间隔。 
+  	这些时间间隔范围从 15秒（对于活跃仓库）到6小时（对于在两个月内没有提交的仓库）。
+  - 如果使用 `arc` 推送提交，或者在 Phabricator 上托管仓库，
+  	仓库在推送更改后自动更新。
+  - 如果不使用 `arc` 并且您的仓库托管在其他地方，本文档描述了您可以使轮询提高响应性的方法。
 
 
-Default Behavior
+默认行为
 ================
 
-By default, Phabricator determines how frequently to poll repositories by
-examining how long it has been since the last commit. In most cases this is
-fairly accurate and produces good behavior. In particular, it automatically
-reduces the polling frequency for rarely-used repositories. This dramatically
-reduces load for installs with a large number of inactive repositories, which
-is common.
+默认情况下，Phabricator 通过检查自上次提交以来的时间长度来确定轮询仓库的频率。 
+在大多数情况下，这是相当准确的，可以产生良好的行为。 
+特别地，它自动减少了很少使用的仓库的轮询频率。 
+这大大减少了大量非活动仓库的带来的负载。
 
-For repositories with activity in the last 3 days, we wait 1 second for every
-10 minutes without activity. The table below has some examples.
+对于在过去3天内具有活动的仓库，我们每10分钟无活动等待1秒钟。 
+下面的表格有一些例子。
 
-| Time Since Commit | Poll Interval    |
+| 自提交以来的时间 | 拉取间隔   |
 |-------------------|------------------|
-| //Minimum//       | 15 seconds       |
-| 6h                | about 30 seconds |
-| 12h               | about 1 minute   |
-| 1 day             | about 2 minutes  |
-| 2 days            | about 5 minutes  |
-| 3 days            | about 7 minutes  |
+| //最小值//       | 15 秒       |
+| 6 小时           | 大约 30 秒 |
+| 12 小时          | 大约 1 分钟   |
+| 1 天            | 大约 2 分钟  |
+| 2 天            | 大约 5 分钟  |
+| 3 天            | 大约 7 分钟  |
 
-This means that you may need to wait about 2 minutes for the first commit to
-be imported in the morning, and about 5 minutes after a long weekend, but other
-commits to active repositories should usually be recognized in 30 seconds or
-less.
+这意味着您在早上导入第一个提交，可能需要等待大约2分钟，在周末提交后大约要等5分钟，
+但是通常应在30秒或更少时间内识别对活动知识库的其他提交。
 
-For repositories with no activity in the last 3 days, we wait longer between
-updates (1 second for every 4 minutes without activity). The table below has
-some examples.
+对于在过去3天没有活动的仓库，我们在更新之间等待更长时间（每4分钟无活动1秒）。 
+下面的表格有一些例子。
 
-| Time Since Commit | Poll Interval    |
+| 自提交以来的时间 | 拉取间隔    |
 |-------------------|------------------|
-| 4 days            | about 30 minutes |
-| 7 days            | about 45 minutes |
-| 10 days           | about 1 hour     |
-| 20 days           | about 2 hours    |
-| 30 days           | about 3 hours    |
-| //Maximum//       | 6 hours          |
+| 4 天            | 大约 30 分钟 |
+| 7 天            | 大约 45 分钟 |
+| 10 天           | 大约 1 小时     |
+| 20 天           | 大约 2 小时    |
+| 30 天           | 大约 3 小时    |
+| //最大值//       | 6 小时          |
 
-You can find the exact default poll frequency of a repository in
-Diffusion > (Choose a Repository) > Edit Repository, under "Update Frequency".
-You can also see the time when the repository was last updated in this
-interface.
+您可以在“更新频率”下的 “Diffusion>（选择仓库）>编辑仓库”中找到仓库的确切默认轮询频率。 
+您还可以在此界面中查看仓库上次更新的时间。
 
-Repositories that are currently importing are always updated at the minimum
-update frequency so the import finishes as quickly as possible.
+当前导入的仓库始终以最小更新频率更新，因此导入将尽快完成。
 
 
-Triggering Repository Updates
+触发仓库更新
 =============================
 
-If you want Phabricator to update a repository more quickly than the default
-update frequency (for example, because you just pushed a commit to it), you can
-tell Phabricator that it should schedule an update as soon as possible.
+如果您希望 Phabricator 以比默认更新频率更快的速度更新仓库（例如，因为您刚刚提交了一个提交），
+您可以告诉 Phabricator 它应该尽快安排更新。 
 
-There are several ways to do this:
+有几种方法可以做到这一点：
 
-  - If you push changes with `arc land` or `arc commit`, this will be done
-    for you automatically. These commits should normally be recognized within
-    a few seconds.
-  - If your repository is hosted on Phabricator, this will also be done for you
-    automatically.
-  - You can schedule an update from the web interface, in Diffusion >
-    (Choose a Repository) > Manage Repository > Status > Update Now.
-  - You can make a call to the Conduit API method `diffusion.looksoon`. This
-    hints to Phabricator that it should poll a repository as soon as it can.
-    All of the other mechanisms do this under the hood.
+  - 如果你用 `arc land `或 `arc commit` 推送更改，这将是自动完成的。 
+  	这些提交通常应在几秒钟内被识别。
+  - 如果您的仓库托管在 Phabricator 上，这也将为您自动完成。
+  - 您可以点击 Web界面中的 Diffusion>（选择仓库）>管理仓库>状态>立即更新 中立即执行计划更新。
+  - 你可以调用 Conduit API 方法 `diffusion.looksoon`。 
+  	这提示 Phabricator 它应该尽快轮询仓库。所有其他机制都是通过此接口实现的。
 
-In particular, you may be able to add a commit hook to your external repository
-which calls `diffusion.looksoon`. This should make an external repository about
-as responsive as a hosted repository.
+特别是，你可以添加一个提交钩子到你的外部仓库，调用 `diffusion.looksoon`。 
+这应该使外部仓库与托管仓库一样响应。
 
-If a repository has an update scheduled, the Diffusion > (Choose a
-Repository) > Edit Repository interface will show that the repository is
-prioritized and will be updated soon.
+如果仓库安排了更新，则 Diffusion>（选择仓库）>编辑仓库 接口将显示仓库已确定优先级，
+并将很快更新。
 
-
-Troubleshooting Updates
+更新故障排除
 =======================
 
-You can manually run a repository update from the command line to troubleshoot
-issues, using the `--trace` flag to get full details:
+您可以从命令行手动运行仓库更新以解决问题，使用 `--trace` 标志获取完整的详细信息：
 
   phabricator/ $ ./bin/repository update --trace <repository>
 
-To catch potential issues with permissions, run this command as the same user
-that the daemons run as.
+要捕获潜在的权限问题，请以与守护程序运行的用户相同的用户身份运行此命令。
 
-Next Steps
+下一步
 ==========
 
-Continue by:
+接下来：
 
-  - troubleshooting in greater depth with
-    @{article:Troubleshooting Repository Imports}.
+  - 通过
+    @{article:Troubleshooting Repository Imports} 深入了解故障排除。

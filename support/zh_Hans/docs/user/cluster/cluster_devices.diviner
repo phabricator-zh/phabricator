@@ -231,7 +231,7 @@ Note that a copy of the active private key is stored in the `conf/keys/`
 directory permanently.
 
 When converting a host into a cluster host, you may need to revisit
-@{article:Diffusion User Guide: Repository Hosting} and double check the `sudo`
+@{article:Diffusion 用户指南: 仓库托管} and double check the `sudo`
 permission for the host. In particular, cluster hosts need to be able to run
 `ssh` via `sudo` so they can read the device private key.
 

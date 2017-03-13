@@ -57,7 +57,7 @@ and push changes to Phabricator.
 
 If you haven't already, you may need to configure Phabricator for hosting
 before you can create your first hosted repository. For a detailed guide,
-see @{article:Diffusion User Guide: Repository Hosting}.
+see @{article:Diffusion 用户指南: 仓库托管}.
 
 This is the default mode for new repositories. To host a repository:
 
@@ -306,4 +306,4 @@ Next Steps
 Continue by:
 
   - configuring Phabricator to host repositories with
-    @{article:Diffusion User Guide: Repository Hosting}.
+    @{article:Diffusion 用户指南: 仓库托管}.

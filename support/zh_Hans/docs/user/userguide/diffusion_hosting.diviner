@@ -1,344 +1,288 @@
-@title Diffusion User Guide: Repository Hosting
+@title Diffusion 用户指南: 仓库托管
 @group userguide
 
-Guide to configuring Phabricator repository hosting.
+配置 Phabricator 仓库托管指南。
 
-Overview
+概览
 ========
 
-Phabricator can host repositories and provide authenticated read and write
-access to them over HTTP and SSH. This document describes how to configure
-repository hosting.
+Phabricator 可以托管仓库，并通过 HTTP 和 SSH 提供经过身份验证的读写访问。 
+本文档介绍如何配置仓库托管。
 
-Understanding Supported Protocols
+
+了解支持的协议
 =================================
 
-Phabricator supports hosting over these protocols:
+Phabricator 支持通过这些协议托管：
 
 | VCS | SSH | HTTP |
 |-----|-----|------|
-| Git | Supported | Supported |
-| Mercurial | Supported | Supported |
-| Subversion | Supported | Not Supported |
+| Git | 支持 | 支持 |
+| Mercurial | 支持 | 支持 |
+| Subversion | 支持 | 不支持 |
 
-All supported protocols handle reads (pull/checkout/clone) and writes
-(push/commit). Of the two protocols, SSH is generally more robust, secure and
-performant, but HTTP is easier to set up and supports anonymous access.
+所有支持的协议均可处理读取（pull/checkout/clone）和写入（push/commit）。 
+在这两种协议中，SSH 通常更加健壮，安全和高效，但 HTTP 更易于设置并支持匿名访问。
 
 | | SSH | HTTP |
 | |-----|------|
-| Reads | Yes | Yes |
-| Writes | Yes | Yes |
-| Authenticated Access | Yes | Yes |
-| Push Logs | Yes | Yes |
-| Commit Hooks | Yes | Yes |
-| Anonymous Access | No | Yes |
-| Security | Better (Asymmetric Key) | Okay (Password) |
-| Performance | Better | Okay |
-| Setup | Hard | Easy |
+| 读 | 是 | 是 |
+| 写 | 是 | 是 |
+| 授权访问 | 是 | 是 |
+| 推送日志 | 是 | 是 |
+| Commit 钩子 | 是 | 是 |
+| 匿名访问 | 否 | 是 |
+| 安全性 | 更好 (非对称密钥) | 还好 (密码) |
+| 性能 | 更好 | 还好 |
+| 设置 | 困难 | 简单 |
 
-Each repository can be configured individually, and you can use either
-protocol, or both, or a mixture across different repositories.
+每个仓库可以单独配置，您可以使用任意一个协议，或两者都用。
 
-SSH is recommended unless you need anonymous access, or are not able to
-configure it for technical reasons.
+建议使用 SSH，除非您需要匿名访问，或者由于技术原因而无法对其进行配置。
 
 
-Creating System User Accounts
+创建系统用户帐户
 =============================
 
-Phabricator uses two system user accounts, plus a third account if you
-configure SSH access. This section will guide you through creating and
-configuring them. These are system user accounts on the machine Phabricator
-runs on, not Phabricator user accounts.
+Phabricator 使用两个系统用户帐户，如果您配置 SSH 访问还需要第三个帐户，。 
+本节将指导您完成创建和配置它们。这些是 Phabricator 运行的系统上的用户帐户，
+而不是 Phabricator 系统中的帐户。
 
-The system accounts Phabricator uses are:
+Phabricator 使用的系统用户有:
 
-  - The user the webserver runs as. We'll call this `www-user`.
-  - The user the daemons run as. We'll call this `daemon-user`. This
-    user is the only user which will interact with the repositories directly.
-    Other accounts will `sudo` to this account in order to perform repository
-    operations.
-  - The user that humans will connect over SSH as. We'll call this `vcs-user`.
-    If you do not plan to make repositories available over SSH, you do not need
-    to create or configure this user.
+  - web 服务器运行用的用户，我们叫 `www-user`。
+  - 守护进程运行用的用户。 我们叫 `daemon-user`。
+  	该用户是将直接与仓库交互的唯一用户。 
+	其他帐户将 `sudo` 到此帐户以执行仓库操作。
+  - SSH 连接的用户。 我们称之为 `vcs-user`。 
+  	如果您不打算通过 SSH 提供仓库，则无需创建或配置此用户。
 
-To create these users:
+创建这些用户:
 
-  - Create a `www-user` if one does not already exist. In most cases, this
-    user will already exist and you just need to identify which user it is. Run
-    your webserver as this user.
-  - Create a `daemon-user` if one does not already exist (you can call this user
-    whatever you want, or use an existing account). Below, you'll configure
-    the daemons to start as this user.
-  - Create a `vcs-user` if one does not already exist and you plan to set up
-    SSH. When users clone repositories, they will use a URI like
-    `vcs-user@phabricator.yourcompany.com`, so common names for this user are
-    `git` or `hg`.
+  - 创建一个 `www-user`，如果它不存在。 在大多数情况下，此用户已经存在，您只需要确定它是哪个用户。 
+  	以此用户身份运行 Web 服务器。
+  - 创建一个 `daemon-user`， 如果还不存在的话。（用户名可以随便定义，或者使用现有的帐户）。 
+  	下面，您将配置守护程序以此用户身份启动。
+  - 创建 `vcs-user`（如果尚不存在并且计划设置 SSH）。 
+  	当用户克隆仓库时，他们将使用像 `vcs-user@phabricator.yourcompany.com` 这样的 URI，
+	因此该用户的常用名称是 `git` 或 `hg`。
 
-Continue below to configure these accounts.
+请在下面继续配置这些帐户。
 
-
-Configuring Phabricator
+配置 Phabricator
 =======================
 
-Now that you have created or identified these accounts, update the Phabricator
-configuration to specify them.
+现在您已创建或识别这些帐户，更新 Phabricator 配置以指定它们。
 
-First, set `phd.user` to the `daemon-user`:
+首先, 设置 `phd.user` 为 `daemon-user`:
 
 ```
 phabricator/ $ ./bin/config set phd.user daemon-user
 ```
 
-Restart the daemons to make sure this configuration works properly. They should
-start as the correct user automatically.
+重新启动守护程序以确保此配置正常工作。他们应该作为正确的用户自动启动。
 
-If you're using a `vcs-user` for SSH, you should also configure that:
+如果 SSH 使用 `vcs-user` 用户，需要这样配置：
 
 ```
 phabricator/ $ ./bin/config set diffusion.ssh-user vcs-user
 ```
-
-Next, you'll set up `sudo` permissions so these users can interact with one
-another.
+接下来，您将设置 `sudo` 权限，以便这些用户可以相互交互。
 
 
-Configuring Sudo
+配置 Sudo
 ================
 
-The `www-user` and `vcs-user` need to be able to `sudo` as the `daemon-user`
-so they can interact with repositories.
+`www-user` 和 `vcs-user` 需要能够通过 `sudo` 切换为 `daemon-user' 用户，
+这样他们就可以与仓库进行交互了。
 
-To grant them access, edit the `sudo` system configuration. On many systems,
-you will do this by modifying the `/etc/sudoers` file using `visudo` or
-`sudoedit`. In some cases, you may add a new file to `/etc/sudoers.d` instead.
+要授予它们访问权限，请编辑 `sudo` 系统配置。在许多系统上，
+您将使用 `visudo` 或 `sudoedit` 修改 `/etc/sudoers` 文件。 
+在某些情况下，您可以添加一个新文件到 `/etc/sudoers.d` 目录。
 
-To give a user account `sudo` access to run a list of binaries, add a line like
-this to the configuration file (this example would grant `vcs-user` permission
-to run `ls` as `daemon-user`):
+为了给用户帐户 `sudo` 配置可运行二进制文件列表，
+在配置文件中添加一行（这个例子将授予 `vcs-user` 权限以 `daemon-user` 用户身份运行 `ls`）：
 
 ```
 vcs-user ALL=(daemon-user) SETENV: NOPASSWD: /path/to/bin/ls
 ```
 
-The `www-user` needs to be able to run these binaries as the `daemon-user`:
+`www-user` 需要能够像 `daemon-user` 那样运行这些二进制文件：
 
-  - `git` (if using Git)
-  - `git-http-backend` (if using Git)
-  - `hg` (if using Mercurial)
-  - `ssh` (if configuring clusters)
+  - `git` (如果使用 Git)
+  - `git-http-backend` (如果使用  Git)
+  - `hg` (如果使用  Mercurial)
+  - `ssh` (如果配置了集群)
 
-If you plan to use SSH, the `vcs-user` needs to be able to run these binaries
-as the `daemon-user`:
+如果打算使用 SSH， `vcs-user` 需要能够以 `daemon-user` 用户身份运行这些命令：
 
-  - `git` (if using Git)
-  - `git-upload-pack` (if using Git)
-  - `git-receive-pack` (if using Git)
-  - `hg` (if using Mercurial)
-  - `svnserve` (if using Subversion)
-  - `ssh` (if configuring clusters)
+  - `git` (如果使用 Git)
+  - `git-upload-pack` (如果使用 Git)
+  - `git-receive-pack` (如果使用 Git)
+  - `hg` (如果使用 Mercurial)
+  - `svnserve` (如果使用 Subversion)
+  - `ssh` (如果配置了集群)
 
-Identify the full paths to all of these binaries on your system and add the
-appropriate permissions to the `sudo` configuration.
+标识系统上所有这些二进制文件的完整路径，并向 `sudo` 配置中添加适当的权限。
 
-Normally, you'll add two lines that look something like this:
+通常，你会添加类似如下的两行配置：
 
 ```
 www-user ALL=(daemon-user) SETENV: NOPASSWD: /path/to/x, /path/to/y, ...
 vcs-user ALL=(daemon-user) SETENV: NOPASSWD: /path/to/x, /path/to/y, ...
 ```
 
-This is just a template. In the real configuration file, you need to:
+这只是一个模板。 在真实的配置文件中，您需要：
 
-  - Replace `www-user`, `dameon-user` and `vcs-user` with the correct
-    usernames for your system.
-  - List every binary that these users need access to, as described above.
-  - Make sure each binary path is the full path to the correct binary location
-    on your system.
+  - 替换 `www-user`, `dameon-user` 和 `vcs-user` 为你系统上正确的用户名。
+  - 列出这些用户需要访问的每个二进制文件，如上所述。
+  - 确保每个二进制路径是系统上正确的完整路径。
 
-Before continuing, look for this line in your `sudo` configuration:
+在继续之前，在你的 `sudo` 配置中寻找这行：
 
   Defaults    requiretty
 
-If it's present, comment it out by putting a `#` at the beginning of the line.
-With this option enabled, VCS SSH sessions won't be able to use `sudo`.
+如果它存在，通过在行的开头放一个 `＃` 来注释掉。 
+启用此选项后，VCS SSH 会话将无法使用 `sudo`。
 
 
-Additional SSH User Configuration
+其他 SSH 用户配置
 =================================
 
-If you're planning to use SSH, you should also edit `/etc/passwd` and
-`/etc/shadow` to make sure the `vcs-user` account is set up correctly.
+如果你计划使用 SSH，你还应该编辑 `/etc/passwd` 和 `/etc/shadow`，
+以确保 `vcs-user` 帐户设置正确。
 
-**`/etc/shadow`**: Open `/etc/shadow` and find the line for the `vcs-user`
-account.
+**`/etc/shadow`**: 打开 `/etc/shadow` 找到 `vcs-user` 用户所在行。
 
-The second field (which is the password field) must not be set to `!!`. This
-value will prevent login. If it is set to `!!`, edit it and set it to `NP` ("no
-password") instead.
+第二个字段（即密码字段）不能设置为 `!!`。 
+此值将阻止登录。 如果设置为 `!!`，则编辑它并将其设置为 `NP`（“无密码”）。
 
-**`/etc/passwd`**: Open `/etc/passwd` and find the line for the `vcs-user`
-account.
+**`/etc/passwd`**: 打开 `/etc/passwd` 找到 `vcs-user` 用户所在行。
 
-The last field (which is the login shell) must be set to a real shell. If it is
-set to something like `/bin/false`, then `sshd` will not be able to execute
-commands. Instead, you should set it to a real shell, like `/bin/sh`.
+最后一个字段（即登录 shell）必须设置为一个真实的 shell。 
+如果它被设置为像 `/bin/false`，那么 `sshd` 将不能执行命令。 
+相反，你应该将它设置为一个真正的 shell，如 `/bin/sh`。
 
 
-Configuring HTTP
+配置 HTTP
 ================
 
-If you plan to serve repositories over authenticated HTTP, you need to set
-`diffusion.allow-http-auth` in Config. If you don't plan to serve repositories
-over HTTP (or plan to use only anonymous HTTP) you can leave this setting
-disabled.
+如果计划通过经过身份验证的 HTTP 提供仓库，则需要在 Config 中设置 `diffusion.allow-http-auth`。 
+如果您不打算通过 HTTP 提供仓库（或计划仅使用匿名 HTTP），则可以禁用此设置。
 
-If you plan to use authenticated HTTP, you (and all other users) also need to
-configure a VCS password for your account in {nav Settings > VCS Password}.
+如果计划使用经过身份验证的 HTTP，您（和所有其他用户）还需要在 {nav 设置> VCS 密码}中为您的帐户配置 VCS 密码。
 
-Your VCS password must be a different password than your main Phabricator
-password because VCS passwords are very easy to accidentally disclose. They are
-often stored in plaintext in world-readable files, observable in `ps` output,
-and present in command output and logs. We strongly encourage you to use SSH
-instead of HTTP to authenticate access to repositories.
+您的 VCS 密码必须是与 Phabricator 密码不同的密码，因为 VCS 密码很容易被意外泄露。 
+它们通常以纯文本存储在可读的文件中，在 ps 输出中可观察到，并存在于命令输出和日志中。 
+我们强烈建议您使用 SSH 而不是 HTTP 来验证对仓库的访问。
 
-Otherwise, if you've configured system accounts above, you're all set. No
-additional server configuration is required to make HTTP work. You should now
-be able to fetch and push repositories over HTTP. See "Cloning a Repository"
-below for more details.
+否则，如果您已在上面配置系统帐户，则全部设置已经完成。 
+不需要其他服务器配置来使 HTTP 工作。您现在应该能够通过 HTTP 提取和推送仓库。 
+有关详细信息，请参阅下面的“克隆仓库”。
 
-If you're having trouble, see "Troubleshooting HTTP" below.
+如果遇到问题，请参阅下面的“排查HTTP”。
 
 
-Configuring SSH
+配置 SSH
 ===============
 
-SSH access requires some additional setup. You will configure and run a second,
-restricted copy of `sshd` on the machine, on a different port from the standard
-`sshd`. This special copy of `sshd` will serve repository requests and provide
-other Phabricator SSH services.
+SSH 访问需要一些额外的设置。您将在机器上用不同于标准 `sshd` 端口的配置和
+运行 `sshd` 的第二个限制副本。
+`sshd` 的这个特殊副本将提供仓库请求并提供其他 Phabricator SSH 服务。
 
-NOTE: The Phabricator `sshd` service **MUST** be 6.2 or newer, because
-Phabricator relies on the `AuthorizedKeysCommand` option.
+NOTE:  Phabricator 的 `sshd` 服务 **必须** 是 6.2 或更新版本, 因为
+Phabricator 依赖于 `AuthorizedKeysCommand` 选项.
 
-Before continuing, you must choose a strategy for which port each copy of
-`sshd` will run on. The next section lays out various approaches.
+在继续之前，您必须选择一个策略，指定 sshd 的不同副本将运行在哪个端口。 
+下一节阐述了各种方法。
 
 
-SSHD Port Assignment
+SSHD 端口分配
 ====================
 
-The normal `sshd` that lets you administrate the host and the special `sshd`
-which serves repositories can't run on the same port. In particular, only one
-of them can run on port `22`, which will make it a bit inconvenient to access
-the other one.
+正常情况下，不允许管理主机和提供仓库的 `sshd` 在同一个端口上运行。 
+特别是，其中只有一个可以运行在端口 `22`，这将使它有点不方便访问另一个。
 
-These instructions will walk you through configuring the alternate `sshd` on
-port `2222`. This is easy to configure, but if you run the service on this port
-users will clone and push to URIs like `ssh://git@host.com:2222/`, which is a
-little ugly.
+这些指令将引导您配置 `sshd` 在端口 “2222” 运行。 
+这个配置很容易，但如果你在这个端口上运行服务，
+用户将克隆并推送到像 `ssh://git@host.com:2222/` 这样有点丑的 URI。
 
-There are several different approaches you can use to mitigate or eliminate
-this problem.
+有几种不同的方法可以用来减轻或消除这个问题。
 
-**Run on Port 2222**: You can do nothing, and just run the repository `sshd` on
-port `2222` and accept the explicit port in the URIs. This is the simplest
-approach, and you can always start here and clean things up later if you grow
-tired of dealing with the port number.
+**在 2222 端口运行**：你可以什么也不做，只是在端口 `2222` 运行 `sshd` ，
+并在 URI 中指明端口。这是最简单的方法，你可以先这样使用。
+如果以后厌倦了，再处理端口号。
 
-**Use a Load Balancer**: You can configure a load balancer in front of the host
-and have it forward TCP traffic on port `22` to port `2222`. Then users can
-clone from `ssh://git@host.com/` without an explicit port number and you don't
-need to do anything else.
+**使用负载平衡器**：您可以在主机前配置负载平衡器，并将端口 `22` 上的 TCP 流量转发到端口 `2222`。 
+然后用户可以从 `ssh://git@host.com/` 克隆而不用显式指明端口号。
 
-This may be very easy to set up, particularly if you are hosted in AWS, and
-is often the simplest and cleanest approach.
+这可能非常容易设置，特别是如果您托管在 AWS 中，通常也是最简单和最干净的方法。
 
-**Swap Ports**: You can move the administrative `sshd` to a new port, then run
-Phabricator `sshd` on port 22. This is somewhat complicated and can be a bit
-risky if you make a mistake. See "Moving the sshd Port" below for help.
+**交换端口**：您可以将管理 `sshd` 移动到一个新的端口，然后在端口 22 上运行 Phabricator`sshd`。
+这有点复杂，如果你犯了错误可能有点冒险。有关帮助，请参阅下面的“移动sshd端口”。
 
-**Change Client Config**: You can run on a nonstandard port, but configure SSH
-on the client side so that `ssh` automatically defaults to the correct port
-when connecting to the host. To do this, add a section like this to your
-`~/.ssh/config`:
+**更改客户端配置**：您可以在非标准端口上运行，但在客户端配置 SSH，
+以便 `ssh` 在连接到主机时自动默认为正确的端口。 
+要做到这一点，添加一个这样的部分到你的 `〜/.ssh/config` 文件中：
 
 ```
 Host phabricator.corporation.com
   Port 2222
 ```
 
-(If you want, you can also add a default `User`.)
+（如果你愿意的话，你也可以添加一个默认的 `User`。）
 
-Command line tools like `ssh`, `git` and `hg` will now default to port
-`2222` when connecting to this host.
+在连接到此主机时，像 `ssh`，`git` 和 `hg` 命令行工具现在将默认使用端口 `2222`。
 
-A downside to this approach is that your users will each need to set up their
-`~/.ssh/config` files individually.
+这种方法的一个缺点是，你的用户每个需要单独设置他们的 `~/.ssh/config` 文件。
 
-This file also allows you to define short names for hosts using the `Host` and
-`HostName` options. If you choose to do this, be aware that Phabricator uses
-remote/clone URIs to figure out which repository it is operating in, but can
-not resolve host aliases defined in your `ssh` config. If you create host
-aliases they may break some features related to repository identification.
+此文件还允许您使用 `Host` 和 `HostName` 选项为主机定义短名称。 
+如果你选择这样做，请注意，Phabricator 使用 remote/clone URI来确定它运行在哪个仓库，
+但不能解决在你的 `ssh` 配置中定义的主机别名。如果创建主机别名，
+它们可能会破坏与仓库标识相关的一些功能。
 
-If you use this approach, you will also need to specify a port explicitly when
-connecting to administrate the host. Any unit tests or other build automation
-will also need to be configured or use explicit port numbers.
+如果使用此方法，则还需要在连接以管理主机时明确指定端口。 
+任何单元测试或其他构建自动化也将需要配置或使用显式端口号。
 
-**Port Multiplexing**: If you have hardware access, you can power down the host
-and find the network I/O pins on the motherboard (for onboard networking) or
-network card.
+**端口复用**：如果您可以访问硬件，您可以关闭主机，找到主板上的网络 I/O 引脚（用于板载网络）或网卡。
 
-Carefully strip and solder a short piece of copper wire between the pins for
-the external interface `22` and internal `2222`, so the external interface can
-receive traffic for both services.
+在外部接口 `22` 和内部 `2222` 的引脚之间小心剥离和焊接一小段铜线，
+因此外部接口可以接收这两种服务的流量。
 
-(Make sure not to desolder the existing connection between external `22` and
-internal `22` or you won't be able to connect normally to administrate the
-host.)
+（确保不要拆除外部 `22` 和内部 `22` 之间的现有连接，否则将无法正常连接来管理主机。）
 
-The obvious downside to this approach is that it requires physical access to
-the machine, so it won't work if you're hosted on a cloud provider.
+这种方法的明显缺点是，它需要物理访问机器，所以如果你托管在云提供商，就不好办了。
 
-
-SSHD Setup
+SSHD 设置
 ==========
 
-Now that you've decided how you'll handle port assignment, you're ready to
-continue `sshd` setup.
+现在你已经决定如何处理端口分配，你准备继续设置 `sshd`。
 
-If you plan to connect to a port other than `22`, you should set this port
-as `diffusion.ssh-port` in your Phabricator config:
+如果你打算连接到一个不是 `22` 的端口，
+你应该在你的 Phabricator 配置里把 `diffusion.ssh-port` 设置为这个端口：
 
 ```
 $ ./bin/config set diffusion.ssh-port 2222
 ```
 
-This port is not special, and you are free to choose a different port, provided
-you make the appropriate configuration adjustment below.
+此端口不是特殊的，您可以自由选择不同的端口，只要您进行相应的配置调整如下。
 
-**Configure and Start Phabricator SSHD**: Now, you'll configure and start a
-copy of `sshd` which will serve Phabricator services, including repositories,
-over SSH.
+**配置和启动 Phabricator SSHD**：现在，您将配置和启动 `sshd` 的副本，
+它将通过 SSH 为 Phabricator（包括仓库）提供服务。
 
-This instance will use a special locked-down configuration that uses
-Phabricator to handle authentication and command execution.
+此实例将使用一个特殊的锁定配置，使用 Phabricator 处理身份验证和命令执行。
 
-There are three major steps:
+有三个主要步骤：
 
-  - Create a `phabricator-ssh-hook.sh` file.
-  - Create a `sshd_phabricator` config file.
-  - Start a copy of `sshd` using the new configuration.
+  - 创建 `phabricator-ssh-hook.sh` 文件
+  - 创建 `sshd_phabricator` 配置文件
+  - 使用新配置启动一个新 `sshd` 副本
 
-**Create `phabricator-ssh-hook.sh`**: Copy the template in
-`phabricator/resources/sshd/phabricator-ssh-hook.sh` to somewhere like
-`/usr/libexec/phabricator-ssh-hook.sh` and edit it to have the correct
-settings.
+**创建 `phabricator-ssh-hook.sh`**: 复制模版文件
+`phabricator/resources/sshd/phabricator-ssh-hook.sh` 到像
+`/usr/libexec/phabricator-ssh-hook.sh` 这样的位置，然后修改为正确的设置。
 
-Both the script itself **and** the parent directory the script resides in must
-be owned by `root`, and the script must have `755` permissions:
+脚本本身和脚本所在的父目录必须由 `root` 用户所有，脚本文件权限必须为 `755`：
 
 ```
 $ sudo chown root /path/to/somewhere/
@@ -346,116 +290,94 @@ $ sudo chown root /path/to/somewhere/phabricator-ssh-hook.sh
 $ sudo chmod 755 /path/to/somewhere/phabricator-ssh-hook.sh
 ```
 
-If you don't do this, `sshd` will refuse to execute the hook.
+不这样设置的话，`sshd` 将拒绝执行钩子。
 
-**Create `sshd_config` for Phabricator**: Copy the template in
-`phabricator/resources/sshd/sshd_config.phabricator.example` to somewhere like
-`/etc/ssh/sshd_config.phabricator`.
+**为 Phabricator 创建 `sshd_config`**: 复制模版文件
+`phabricator/resources/sshd/sshd_config.phabricator.example` 到
+`/etc/ssh/sshd_config.phabricator`。
 
-Open the file and edit the `AuthorizedKeysCommand`,
-`AuthorizedKeysCommandUser`, and `AllowUsers` settings to be correct for your
-system.
+打开文件修改 `AuthorizedKeysCommand`,
+`AuthorizedKeysCommandUser`, 和 `AllowUsers` 设置为系统的正确值。
 
-This configuration file also specifies the `Port` the service should run on.
-If you intend to run on a non-default port, adjust it now.
+此配置文件还指定服务应该运行的`端口`。 如果您打算在非默认端口上运行，请立即进行调整。
 
-**Start SSHD**: Now, start the Phabricator `sshd`:
+**启动 SSHD**: 现在，启动 Phabricator `sshd`:
 
   sudo /path/to/sshd -f /path/to/sshd_config.phabricator
 
-If you did everything correctly, you should be able to run this command:
+如果一切设置正确，你应该能够运行这个命令：
 
 ```
 $ echo {} | ssh vcs-user@phabricator.yourcompany.com conduit conduit.ping
 ```
 
-...and get a response like this:
+...响应如下:
 
 ```lang=json
 {"result":"phabricator.yourcompany.com","error_code":null,"error_info":null}
 ```
 
-If you get an authentication error, make sure you added your public key in
-{nav Settings > SSH Public Keys}. If you're having trouble, check the
-troubleshooting section below.
+如果您遇到身份验证错误，请务必在{nav 设置> SSH 公钥}中添加您的公开密钥。 
+如果您遇到问题，请查看下面的问题排查部分。
 
-Authentication Over SSH
+通过 SSH 进行身份验证
 =======================
 
-To authenticate over SSH, users should add their public keys under
-{nav Settings > SSH Public Keys}.
+要通过 SSH 进行身份验证，用户应该在 {nav 设置> SSH 公钥} 下添加其公钥。
 
-
-Cloning a Repository
+克隆仓库
 ====================
 
-If you've already set up a hosted repository, you can try cloning it now. To
-do this, browse to the repository's main screen in Diffusion. You should see
-clone commands at the top of the page.
+如果您已经设置了托管仓库，则可以尝试立即克隆它。
+为此，请浏览到 Diffusion 中的仓库的主页面。 您应该在页面顶部看到克隆命令。
 
-To clone the repository, just run the appropriate command.
+要克隆仓库，只需运行相应的命令。
 
-If you don't see the commands or running them doesn't work, see below for tips
-on troubleshooting.
+如果没有看到命令或运行它们不起作用，请参阅下面的故障排除提示。
 
-
-Troubleshooting HTTP
+HTTP 故障排除
 ====================
 
-Some general tips for troubleshooting problems with HTTP:
+有关解决 HTTP 问题的一些常见提示：
 
-  - Make sure `diffusion.allow-http-auth` is enabled in your Phabricator config.
-  - Make sure HTTP serving is enabled for the repository you're trying to
-    clone. You can find this in {nav Edit Repository > Hosting}.
-  - Make sure you've configured a VCS password. This is separate from your main
-    account password. You can configure this in {nav Settings > VCS Password}.
-  - Make sure the main repository screen in Diffusion shows a clone/checkout
-    command for HTTP. If it doesn't, something above isn't set up correctly:
-    double-check your configuration. You should see a `svn checkout http://...`,
-    `git clone http://...` or `hg clone http://...` command. Run that command
-    verbatim to clone the repository.
+  - 确保在您的 Phabricator 配置中启用了 `diffusion.allow-http-auth`
+  - 确保您要尝试克隆的仓库启用了 HTTP 。您可以在 {nav 编辑仓库 > 托管}中找到它。
+  - 确保您已配置 VCS 密码。这与您的主要帐户密码是分开的。 您可以在{nav 设置> VCS 密码}中进行配置。
+  - 确保 Diffusion 中的主仓库页面显示 HTTP的 克隆/检出 命令。 
+  	如果没有，表明以上的东西设置不正确：仔细检查你的配置。 
+	你应该看到一个 `svn checkout http://...`，`git clone http://...` 或 `hg clone http://...`命令。 
+	逐字运行该命令以克隆仓库。
 
-If you're using Git, using `GIT_CURL_VERBOSE` may help assess login failures.
-To do so, specify it on the command line before the `git clone` command, like
-this:
+如果您使用 Git，则使用 `GIT_CURL_VERBOSE' 可能有助于评估登录失败。 
+为此，请在命令行上 `git clone`命令之前指定它，如下所示：
 
   $ GIT_CURL_VERBOSE=1 git clone ...
 
-This will make `git` print out a lot more information. Particularly, the line
-with the HTTP response is likely to be useful:
+这将使 `git` 打印出更多的信息。 特别地，具有 HTTP 响应的行可能是有用的：
 
   < HTTP/1.1 403 Invalid credentials.
 
-In many cases, this can give you more information about what's wrong.
+在许多情况下，这可以为您提供有关错误的更多信息。
 
-Troubleshooting SSH
+SSH 故障排除
 ===================
 
-Some general tips for troubleshooting problems with SSH:
+有关解决 SSH 问题的一些常见提示：
 
-  - Check that you've configured `diffusion.ssh-user`.
-  - Check that you've configured `phd.user`.
-  - Make sure SSH serving is enabled for the repository you're trying to clone.
-    You can change this setting from a main repository screen in Diffusion by
-    {nav Edit Repository >
-    Edit Hosting >
-    Host Repository on Phabricator >
-    Save and Continue >
-    SSH Read Only or Read/Write >
-    Save Changes}.
-  - Make sure you've added an SSH public key to your account. You can do this
-    in {nav Settings > SSH Public Keys}.
-  - Make sure the main repository screen in Diffusion shows a clone/checkout
-    command for SSH. If it doesn't, something above isn't set up correctly.
-    You should see an `svn checkout svn+ssh://...`, `git clone ssh://...` or
-    `hg clone ssh://...` command. Run that command verbatim to clone the
-    repository.
-  - Check your `phabricator-ssh-hook.sh` file for proper settings.
-  - Check your `sshd_config.phabricator` file for proper settings.
+  - 检查您是否配置了 `diffusion.ssh-user`
+  - 检查您是否配置了 `phd.user`
+  - 确保您要尝试克隆的仓库启用了 SSH 服务。 
+  	您可以在 Diffusion 中的主仓库页面中通过{nav 编辑仓库>编辑主机> 托管在 Phabricator 上的仓库>保存并继续> SSH 只读或读/写>保存更改）更改此设置。
+  - 请确保您已在帐户中添加 SSH 公钥。 您可以在{nav 设置> SSH 公钥}中执行此操作。
+  - 确保 Diffusion 中的主仓库页面显示 SSH 的克隆/检出命令。 
+  	如果不是，则表明以上的东西设置不正确。 你应该看到一个 `svn checkout http://...`，`git clone http://...` 或 `hg clone http://...`命令。 
+	逐字运行该命令以克隆仓库。
+  - 检查你的 `phabricator-ssh-hook.sh` 文件是否有正确的设置。
+  - 检查你的 `sshd_config.phabricator` 文件是否有正确的设置。
 
-To troubleshoot SSH setup: connect to the server with `ssh`, without running a
-command. You may need to use the `-T` flag, and will need to use `-p` if you
-are running on a nonstandard port. You should see a message like this one:
+要解决 SSH 设置问题：使用 `ssh` 连接到服务器，而不运行命令。 
+您可能需要使用 `-T` 标志，如果您在非标准端口上运行，则需要使用 `-p` 指定端口。 
+您应该会看到类似这样的消息：
 
   $ ssh -T -p 2222 vcs-user@phabricator.yourcompany.com
   phabricator-ssh-exec: Welcome to Phabricator.
@@ -472,141 +394,114 @@ are running on a nonstandard port. You should see a message like this one:
   Supported commands are: conduit, git-receive-pack, git-upload-pack, hg,
   svnserve.
 
-If you see this message, all your SSH stuff is configured correctly. **If you
-get a login shell instead, you've missed some major setup step: review the
-documentation above.** If you get some other sort of error, double check these
-settings:
+如果您看到此消息，则说明您的所有 SSH 都已正确配置。
+ **如果你得到一个登录shell，你可能错过了一些主要的设置步骤：
+ 查看上面的文档**，如果你得到一些其他类型的错误，请仔细检查这些设置：
 
-  - You're connecting as the `vcs-user`.
-  - The `vcs-user` has `NP` in `/etc/shadow`.
-  - The `vcs-user` has `/bin/sh` or some other valid shell in `/etc/passwd`.
-  - Your SSH private key is correct, and you've added the corresponding
-    public key to Phabricator in the Settings panel.
+  - 你正在用 `vcs-user` 连接
+  - 用户 `vcs-user` 在 `/etc/shadow` 设置为 `NP`
+  - 用户 `vcs-user` 在 `/etc/passwd` 文件有 `/bin/sh` 或其他有效的 shell 
+  - 您的 SSH 私钥是正确的，您已在“设置”面板中将相应的公钥添加到 Phabricator
 
-If you can get this far, but can't execute VCS commands like `git clone`, there
-is probably an issue with your `sudoers` configuration. Check:
+如果你能走到这儿，但不能执行像 `git clone` 这样的 VCS 命令，
+你的 `sudoers` 配置可能有一个问题。 请检查：
 
-  - Your `sudoers` file is set up as instructed above.
-  - You've commented out `Defaults requiretty` in `sudoers`.
-  - You don't have multiple copies of the VCS binaries (like `git-upload-pack`)
-    on your system. You may have granted sudo access to one, while the VCS user
-    is trying to run a different one.
-  - You've configured `phd.user`.
-  - The `phd.user` has read and write access to the repositories.
+  - 你的 `sudoers` 文件是按照上面介绍设置的
+  - 已在 `sudoers` 文件中注释掉 `Defaults requiretty`
+  - 您的系统上没有 VCS 二进制文件的多个副本（如 `git-upload-pack'）
+  	您可能已授予 sudo 访问权限，而 VCS 用户尝试运行其他访问权限
+  - 已经配置了 `phd.user`
+  - `phd.user` 有仓库的读写权限
 
-It may also be helpful to run `sshd` in debug mode:
+在调试模式下运行 `sshd` 也是有帮助的：
 
   $ /path/to/sshd -d -d -d -f /path/to/sshd_config.phabricator
 
-This will run it in the foreground and emit a large amount of debugging
-information when you connect to it.
+这将在前台运行它，并在连接到它时发出大量的调试信息。
 
-Finally, you can usually test that `sudoers` is configured correctly by
-doing something like this:
+最后，你通常可以通过这样做来测试 'sudoers' 是否配置正确：
 
   $ su vcs-user
   $ sudo -E -n -u daemon-user -- /path/to/some/vcs-binary --help
 
-That will try to run the binary via `sudo` in a manner similar to the way that
-Phabricator will run it. This can give you better error messages about issues
-with `sudoers` configuration.
+这将尝试以类似于 Phabricator 运行它的方式通过 `sudo` 运行二进制文件。 
+这可以给你关于 `sudoers` 配置问题的更好错误消息。
 
 
-Miscellaneous Troubleshooting
+其他故障排除
 =============================
 
-  - If you're getting an error about `svnlook` not being found, add the path
-    where `svnlook` is located to the Phabricator configuration
-    `environment.append-paths` (even if it already appears in PATH). This issue
-    is caused by SVN wiping the environment (including PATH) when invoking
-    commit hooks.
-
-
-Moving the sshd Port
+  - 如果你得到一个关于 `svnlook` 没有找到的错误，添加 `svnlook` 所在的路径到 
+  	Phabricator 配置`environment.append-paths`（即使它已经出现在 PATH 中）。 
+	此问题是由 SVN 在调用提交钩子时擦除环境（包括 PATH）引起的。
+ 
+交换 sshd 端口
 ====================
 
-If you want to move the standard (administrative) `sshd` to a different port to
-make Phabricator repository URIs cleaner, this section has some tips.
+如果你想将标准（管理）`sshd` 移动到不同的端口
+使 Phabricator 仓库的 URI 更简洁，本节有一些提示。
 
-This is optional, and it is normally easier to do this by putting a load
-balancer in front of Phabricator and having it accept TCP traffic on port 22
-and forward it to some other port.
+这是可选的，通常通过在 Phabricator 前面放置负载均衡器并使其在端口 22 上接受 TCP 流量
+并将其转发到某个其他端口来执行此操作通常更容易。
 
-When moving `sshd`, be careful when editing the configuration. If you get it
-wrong, you may lock yourself out of the machine. Restarting `sshd` generally
-will not interrupt existing connections, but you should exercise caution. Two
-strategies you can use to mitigate this risk are: smoke-test configuration by
-starting a second `sshd`; and use a `screen` session which automatically
-repairs configuration unless stopped.
+当移动 `sshd` 时，在编辑配置时要小心。 如果你错了，你可能会把自己锁在机器之外。 
+重新启动 `sshd` 一般不会中断现有的连接，但是你应该小心。 
+您可以使用两种策略来减轻这种风险：通过启动第二个 `sshd` 来进行烟雾测试配置; 
+并使用 `screen` 会话，它会自动修复配置，除非停止。
 
-To smoke-test a configuration, just start another `sshd` using the `-f` flag:
+要对配置进行烟雾测试，只需使用 `-f` 标志启动另一个`sshd`：
 
   sudo /path/to/sshd -f /path/to/config_file.edited
 
-You can then connect and make sure the edited config file is valid before
-replacing your primary configuration file.
+然后，可以在替换主配置文件之前连接并确保编辑的配置文件有效。
 
-To automatically repair configuration, start a `screen` session with a command
-like this in it:
+要自动修复配置，使用这样的命令启动一个 `screen` 会话：
 
   sleep 60 ; mv sshd_config.good sshd_config ; /etc/init.d/sshd restart
 
-The specific command may vary for your system, but the general idea is to have
-the machine automatically restore configuration after some period of time if
-you don't stop it. If you lock yourself out, this can fix things automatically.
+具体命令可能会因系统而异，但一般的想法是让机器在一段时间后自动恢复配置（如果不停止）。 
+如果你不小心锁定了自己，这可以自动修复。
 
-Now that you're ready to edit your configuration, open up your `sshd` config
-(often `/etc/ssh/sshd_config`) and change the `Port` setting to some other port,
-like `222` (you can choose any port other than 22).
+现在你已经准备好编辑你的配置了，打开你的 `sshd` 配置（通常是`/etc/ssh/sshd_config`），
+把 `Port` 设置改成其他端口，比如 `222` （可以选择除 22 端口以外的任何端口）。
 
   Port 222
 
-Very carefully, restart `sshd`. Verify that you can connect on the new port:
+一定要非常小心，重新启动 `sshd`。 验证您是否可以在新端口上连接：
 
   ssh -p 222 ...
 
-Now you can move the Phabricator `sshd` to port 22, then adjust the value
-for `diffusion.ssh-port` in your Phabricator configuration.
+现在，您可以将 Phabricator `sshd` 移动到端口 22，
+然后在 Phabricator 配置中调整 `diffusion.ssh-port` 的值。
 
-
-No Direct Pushes
+不能直接推送
 ================
 
-You may get an error about "No Direct Pushes" when trying to push. This means
-you are pushing directly to the repository instead of pushing through
-Phabricator. This is not supported: writes to hosted repositories must go
-through Phabricator so it can perform authentication, enforce permissions,
-write logs, proxy requests, apply rewriting, etc.
+在尝试推送时，您可能会收到关于“不能直接推送”的错误。 
+这意味着您直接推送到仓库，而不是通过 Phabricator 推送。 
+这是不支持的：对托管仓库的写入必须通过 Phabricator，
+以便它可以执行身份验证，强制执行权限，写入日志，代理请求，应用重写等。
 
-One way to do a direct push by mistake is to use a `file:///` URI to interact
-with the repository from the same machine. This is not supported. Instead, use
-one of the repository URIs provided in the web interface, even if you're
-working on the same machine.
+在同一台机器上不小心使用 `file:///` 这样的 URI 与仓库进行直接推送。
+这不受支持。而应使用 Web 界面中提供的仓库 URI 之一，即使您在同一台计算机上工作。
 
-Another way to do a direct push is to misconfigure SSH (or not configure it at
-all) so that none of the logic described above runs and you just connect
-normally as a system user. In this case, the `ssh` test described above will
-fail (you'll get a command prompt when you connect, instead of the message you
-are supposed to get, as described above).
+直接推送的另一种方法是错误配置 SSH（或根本不配置它），以使上述逻辑都不运行，
+并且只是作为系统用户正常连接。在这种情况下，上面描述的 `ssh` 测试将失败
+（当你连接时，你会得到一个命令提示符，而不会得道上面所说的提示信息）。
 
-If you encounter this error: make sure you're using a remote URI given to
-you by Diffusion in the web interface, then run through the troubleshooting
-steps above carefully.
+如果您遇到此错误：请确保您正在使用 Diffusion 在 Web 界面中为您提供的远程 URI，
+然后仔细执行上述故障排除步骤。
 
-Sometimes users encounter this problem because they skip this whole document
-assuming they don't need to configure anything. This will not work, and you
-MUST configure things as described above for hosted repositories to work.
+有时用户会遇到这个问题，因为他们完全跳过了整个文档，假设他们不需要配置任何东西。 
+这将不工作，你必须按照上面说明进行配置，才能使托管仓库正确工作。
 
-The technical reason this error occurs is that the `PHABRICATOR_USER` variable
-is not defined in the environment when commit hooks run. This variable is set
-by Phabricator when a request passes through the authentication layer that this
-document provides instructions for configuring. Its absence indicates that the
-request did not pass through Phabricator.
+这个错误发生的技术原因是当提交钩子运行 `PHABRICATOR_USER` 环境变量没有定义。 
+当请求通过身份验证层时，此变量由 Phabricator 设置，本文档提供了配置说明。 
+找不到此变量表示请求没有通过 Phabricator。
 
-
-Next Steps
+下一步
 ==========
 
-Once hosted repositories are set up:
+设置托管仓库后：
 
-  - learn about commit hooks with @{article:Diffusion User Guide: Commit Hooks}.
+  - 通过 @{article:Diffusion User Guide: Commit Hooks} 学习钩子。

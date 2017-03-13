@@ -81,7 +81,7 @@ Repository hosts must run a complete, fully configured copy of Phabricator,
 including a webserver. They must also run a properly configured `sshd`.
 
 If you are converting existing hosts into cluster hosts, you may need to
-revisit @{article:Diffusion User Guide: Repository Hosting} and make sure
+revisit @{article:Diffusion 用户指南: 仓库托管} and make sure
 the system user accounts have all the necessary `sudo` permissions. In
 particular, cluster devices need `sudo` access to `ssh` so they can read
 device keys.

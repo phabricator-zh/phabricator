@@ -30,6 +30,8 @@ final class PhabricatorUser
   protected $passwordSalt;
   protected $passwordHash;
   protected $profileImagePHID;
+  protected $defaultProfileImagePHID;
+  protected $defaultProfileImageVersion;
   protected $availabilityCache;
   protected $availabilityCacheTTL;
 
@@ -227,6 +229,8 @@ final class PhabricatorUser
         'isEnrolledInMultiFactor' => 'bool',
         'availabilityCache' => 'text255?',
         'availabilityCacheTTL' => 'uint32?',
+        'defaultProfileImagePHID' => 'phid?',
+        'defaultProfileImageVersion' => 'text64?',
       ),
       self::CONFIG_KEY_SCHEMA => array(
         'key_phid' => null,
@@ -385,7 +389,7 @@ final class PhabricatorUser
     // Generate a token hash to mitigate BREACH attacks against SSL. See
     // discussion in T3684.
     $token = $this->getRawCSRFToken();
-    $hash = PhabricatorHash::digest($token, $salt);
+    $hash = PhabricatorHash::weakDigest($token, $salt);
     return self::CSRF_BREACH_PREFIX.$salt.substr(
         $hash, 0, self::CSRF_TOKEN_LENGTH);
   }
@@ -431,7 +435,7 @@ final class PhabricatorUser
     for ($ii = -$csrf_window; $ii <= 1; $ii++) {
       $valid = $this->getRawCSRFToken($ii);
 
-      $digest = PhabricatorHash::digest($valid, $salt);
+      $digest = PhabricatorHash::weakDigest($valid, $salt);
       $digest = substr($digest, 0, self::CSRF_TOKEN_LENGTH);
       if (phutil_hashes_are_identical($digest, $token)) {
         return true;
@@ -455,7 +459,7 @@ final class PhabricatorUser
     $time_block = floor($epoch / $frequency);
     $vec = $vec.$key.$time_block;
 
-    return substr(PhabricatorHash::digest($vec), 0, $len);
+    return substr(PhabricatorHash::weakDigest($vec), 0, $len);
   }
 
   public function getUserProfile() {
@@ -844,6 +848,11 @@ final class PhabricatorUser
     return $this->requireCacheData($message_key);
   }
 
+  public function getRecentBadgeAwards() {
+    $badges_key = PhabricatorUserBadgesCacheType::KEY_BADGES;
+    return $this->requireCacheData($badges_key);
+  }
+
   public function getFullName() {
     if (strlen($this->getRealName())) {
       return $this->getUsername().' ('.$this->getRealName().')';
@@ -1073,7 +1082,7 @@ final class PhabricatorUser
       'UPDATE %T SET availabilityCache = %s, availabilityCacheTTL = %nd
         WHERE id = %d',
       $this->getTableName(),
-      json_encode($availability),
+      phutil_json_encode($availability),
       $ttl,
       $this->getID());
     unset($unguarded);

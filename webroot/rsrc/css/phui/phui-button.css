@@ -41,7 +41,7 @@ input[type="submit"] {
   font-weight: bold;
   font-size: {$normalfontsize};
   display: inline-block;
-  padding: 3px 12px 4px;
+  padding: 4px 16px 5px;
   text-align: center;
   white-space: nowrap;
   border-radius: 3px;
@@ -235,6 +235,19 @@ a.policy-control .caret {
   float: right;
 }
 
+a.policy-control .phui-button-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.device-phone a.button.policy-control {
+  display: block;
+  float: none;
+  width: auto;
+}
+
 .caret {
   display: inline-block;
   width: 0;
@@ -272,7 +285,7 @@ a.policy-control .caret {
 
 .dropdown .caret {
   margin-top: 7px;
-  margin-left: 6px;
+  margin-right: -4px;
 }
 
 .small.dropdown .caret {
@@ -283,32 +296,6 @@ a.policy-control .caret {
   border-top-color: #000;
 }
 
-.phabricator-action-view-submenu .caret-right {
-  float: right;
-  margin-top: 4px;
-  margin-right: 6px;
-  border-left-color: {$alphablue};
-}
-
-.phabricator-action-view-submenu .caret {
-  float: right;
-  margin-top: 5px;
-  margin-right: 4px;
-  border-top: 7px solid {$lightgreytext};
-}
-
-.phabricator-action-list-view .phabricator-action-view-submenu.phui-submenu-open
-  .phabricator-action-view-item {
-  background-color: rgba({$alphablue}, 0.07);
-  color: {$sky};
-  border-radius: 3px;
-}
-
-.phabricator-action-list-view .phabricator-action-view-submenu.phui-submenu-open
-  .phabricator-action-view-item .phui-icon-view {
-    color: {$sky};
-}
-
 /* Icons */
 .button.has-icon {
   position: relative;
@@ -317,8 +304,8 @@ a.policy-control .caret {
 .button .phui-icon-view {
   display: inline-block;
   position: absolute;
-  top: 6px;
-  left: 10px;
+  top: 7px;
+  left: 12px;
 }
 
 .button.icon-last .phui-icon-view {

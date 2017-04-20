@@ -31,6 +31,7 @@ final class PhabricatorUserCardView extends AphrontTagView {
   protected function getTagAttributes() {
     $classes = array();
     $classes[] = 'project-card-view';
+    $classes[] = 'people-card-view';
 
     if ($this->profile->getIsDisabled()) {
       $classes[] = 'project-card-disabled';
@@ -67,7 +68,7 @@ final class PhabricatorUserCardView extends AphrontTagView {
     } else if (!$user->getIsEmailVerified()) {
       $tag_icon = 'fa-envelope';
       $tag_title = pht('Email Not Verified');
-      $tag_shade = PHUITagView::COLOR_RED;
+      $tag_shade = PHUITagView::COLOR_VIOLET;
     } else if ($user->getIsAdmin()) {
       $tag_icon = 'fa-star';
       $tag_title = pht('Administrator');
@@ -120,6 +121,7 @@ final class PhabricatorUserCardView extends AphrontTagView {
       'a',
       array(
         'href' => $href,
+        'class' => 'project-card-image-href',
       ),
       $image);
 

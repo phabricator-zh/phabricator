@@ -20,7 +20,6 @@ final class ConpherenceViewController extends
       ->setViewer($user)
       ->withIDs(array($conpherence_id))
       ->needProfileImage(true)
-      ->needParticipantCache(true)
       ->needTransactions(true)
       ->setTransactionLimit($this->getMainQueryLimit());
 
@@ -119,11 +118,6 @@ final class ConpherenceViewController extends
       return id(new AphrontAjaxResponse())->setContent($content);
     }
 
-    $can_join = PhabricatorPolicyFilter::hasCapability(
-        $user,
-        $conpherence,
-        PhabricatorPolicyCapability::CAN_JOIN);
-
     $layout = id(new ConpherenceLayoutView())
       ->setUser($user)
       ->setBaseURI($this->getApplicationURI())
@@ -151,14 +145,8 @@ final class ConpherenceViewController extends
 
     $conpherence = $this->getConpherence();
     $user = $this->getRequest()->getUser();
-    $can_join = PhabricatorPolicyFilter::hasCapability(
-      $user,
-      $conpherence,
-      PhabricatorPolicyCapability::CAN_JOIN);
+
     $participating = $conpherence->getParticipantIfExists($user->getPHID());
-    if (!$can_join && !$participating && $user->isLoggedIn()) {
-      return null;
-    }
     $draft = PhabricatorDraft::newFromUserAndKey(
       $user,
       $conpherence->getPHID());
@@ -184,6 +172,7 @@ final class ConpherenceViewController extends
           id(new PhabricatorRemarkupControl())
           ->setUser($user)
           ->setName('text')
+          ->setSendOnEnter(true)
           ->setValue($draft->getDraft()));
 
       $status_view = phutil_tag(

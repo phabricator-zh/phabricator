@@ -1,7 +1,7 @@
 <?php
 // autogenerate by tool.
-// created: 2017-04-20 22:10:42
-// done: 43.17% (6078/14078)
+// created: 2017-04-20 22:47:34
+// done: 41.9% (6014/14354)
 
 final class PhabricatorSimplifiedChineseTranslation
     extends PhutilTranslation {
@@ -93,7 +93,6 @@ return array (
   '%s accepted this commit.' => '%s 接受了这个提交。',
   '%s accepted this revision.' => '%s 接受了这个修订。',
   '%s activated %s.' => '%s 激活了 %s。',
-  '%s activated this badge.' => '%s 激活了这个徽章',
   '%s activated this key.' => '%s 激活了此密钥。',
   '%s activated this package.' => '%s 激活了此包。',
   '%s activated this panel.' => '%s 激活了此面板。',
@@ -104,8 +103,6 @@ return array (
   '%s added %d inline comment(s).' => '%s 添加%d条内嵌评论。',
   '%s added %d participant(s): %s.' => '%s 添加了 %d 个参与者: %s。',
   '%s added %d subscriber(s): %s.' => '%s 添加了 %d 个订阅人: %s。',
-  '%s added %s account member(s) to %s: %s.' => '%s 添加了 %s 个账户成员到 %s: %s。',
-  '%s added %s account member(s): %s.' => '%s 添加了 %s 个账户成员: %s。',
   '%s added %s commit(s): %s.' => '%s 添加了 %s 提交: %s',
   '%s added %s member(s) for %s: %s.' => '%s 添加了%s个成员加入%s: %s。',
   '%s added %s member(s): %s.' => '%s 添加了%s个成员: %s。',
@@ -172,7 +169,6 @@ return array (
   '%s changed the display type for this URI from "%s" to "%s".' => '%s 将展示方式从 "%s"  修改为 "%s"。',
   '%s changed the edit policy for %s.' => '%s 修改了 %s 的编辑策略。',
   '%s changed the edit policy from "%s" to "%s".' => '%s 将编辑策略从『%s』修改为『%s』。',
-  '%s changed the edit policy of this room from "%s" to "%s".' => '%s 将这个聊天室的编辑策略从 『%s』 改为 『%s』。',
   '%s changed the end date for %s from %s to %s.' => '%s 将 %s 的截止日期从 %s 改为 %s。',
   '%s changed the end date for this event from %s to %s.' => '%s 将这个活动的截止日期从 %s 改为 %s。',
   '%s changed the event icon from %s to %s.' => '%s 将这个活动的图标从 %s 改为 %s。',
@@ -180,7 +176,6 @@ return array (
   '%s changed the import path from "%s" to "%s".' => '%s 将导入路径从 『%s』 改为 『%s』。',
   '%s changed the join policy for %s.' => '%s 修改了 %s 的加入策略。',
   '%s changed the join policy from "%s" to "%s".' => '%s 将加入策略从 『%s』 改为 『%s』。',
-  '%s changed the join policy of this room from "%s" to "%s".' => '%s 将这个聊天室的加入策略从 『%s』 改为 『%s』。',
   '%s changed the name of %s from %s to %s.' => '%s 将 %s 的名字从 %s 改为 %s。',
   '%s changed the name of the URL from %s to %s.' => '%s 将这个网址的名字从 %s 改为 %s。',
   '%s changed the name of this package from %s to %s.' => '%s 将这个包的名字从 %s 改为 %s。',
@@ -202,7 +197,6 @@ return array (
   '%s changed the title of this paste from untitled to %s.' => '%s 将此 paste 的标题从未命名改为 %s。',
   '%s changed the visibility for %s.' => '%s 修改了 %s 的可见性。',
   '%s changed the visibility from "%s" to "%s".' => '%s 将可见性从： %s， 修改为： %s。',
-  '%s changed the visibility of this room from "%s" to "%s".' => '%s 将聊天室可见性从： %s， 修改为： %s。',
   '%s changed this URI from "%s" to "%s".' => '%s 将此网址从『%s』 改为 『%s』。',
   '%s changed this event to repeat forever.' => '%s 将此活动改为一直重复。',
   '%s changed this event to repeat until %s.' => '%s 将此活动改为一直重复，直到 %s。',
@@ -252,7 +246,6 @@ return array (
   '%s created dashboard %s.' => '%s 新建了控制台 %s 。',
   '%s created dashboard panel %s.' => '%s 新建了控制面板 %s 。',
   '%s created subtask %s.' => '%s  新建了子任务 %s 。',
-  '%s created the room %s.' => '%s 新建了聊天室 %s 。',
   '%s created this OAuth application.' => '%s 新建了这个 OAuth 程序。',
   '%s created this URL.' => '%s 新建了这个 URL 。',
   '%s created this account.' => '%s 新建了这个账号。',
@@ -310,8 +303,6 @@ return array (
   '%s declined this event.' => '%s 已拒绝了此活动。',
   '%s deleted %s (again?).' => '%s 删除了 %s (再次?)。',
   '%s deleted %s.' => '%s 删除了 %s。',
-  '%s deleted the room name "%s".' => '%s 删除了房间名 "%s"。',
-  '%s deleted the room topic "%s"' => '%s 删除了房间话题 "%s"。',
   '%s deleted this document.' => '%s 删除了这个文档。',
   '%s disabled %s.' => '%s 关闭了 %s。',
   '%s disabled auto login.' => '%s 关闭了自动登录。',
@@ -348,7 +339,6 @@ return array (
   '%s edited the description of %s' => '%s 编辑了 %s 的描述信息',
   '%s edited the description of %s.' => '%s 编辑了 %s 的描述信息。',
   '%s edited the document content.' => '%s 编辑了此文档的内容。',
-  '%s edited the end date of %s.' => '%s 修改 %s 的截止时间。',
   '%s edited the task description.' => '%s 编辑了任务描述。',
   '%s edited this %s.' => '%s 编辑了此 %s。',
   '%s edited this configuration entry.' => '%s 编辑了此配置项。',
@@ -384,7 +374,6 @@ return array (
   '%s must be an integer.' => '%s 必须是整数。',
   '%s must be configured!' => '%s 必须配置！',
   '%s must implement %s.' => '%s 必须实现 %s。',
-  '%s named this room "%s".' => '%s 给此聊天室取名为：%s',
   '%s published %s.' => '%s 发布了 %s。',
   '%s published the blog %s.' => '%s 发布了博客 %s.',
   '%s published this blog.' => '%s 发布了此博客。',
@@ -430,8 +419,6 @@ return array (
   '%s set the image for %s to %s.' => '%s 设置 %s 的图片为： %s。',
   '%s set the short name of this repository to "%s".' => '%s 设置了此仓库的短名字为 "%s"。',
   '%s set the subtitle for %s.' => '%s 设置了 %s 的副标题。',
-  '%s set the topic of %s to "%s".' => '%s 设置 %s 的话题为："%s"。',
-  '%s set the topic of this room to "%s".' => '%s 设置此聊天室的话题为：%s。',
   '%s set the username for this credential to "%s".' => '%s 设置此凭证的用户名为 "%s" 。',
   '%s set this blog\'s header image to %s.' => '%s 设置此博客的头图为: %s',
   '%s set this blog\'s profile image to %s.' => '%s 设置此博客的简介图标为：%s。',
@@ -454,12 +441,9 @@ return array (
   '%s updated the blog\'s parent domain to "%s".' => '%s 更新了博客的父域名为 "%s".',
   '%s updated the blog\'s parent site to "%s".' => '%s 更新博客的父站点为 "%s".',
   '%s updated the blog\'s subtitle to "%s".' => '%s 更新此博客的副标题为 "%s".',
-  '%s updated the contact information for this merchant.' => '%s 更新了此商家的联系信息。',
   '%s updated the description for %s.' => '%s 更新了 %s 的描述信息。',
   '%s updated the description for this credential.' => '%s 更新此凭证的描述。',
-  '%s updated the description for this merchant.' => '%s 更新了此商家的描述信息。',
   '%s updated the description for this poll.' => '%s 更新了此投票的描述信息。',
-  '%s updated the description of %s.' => '%s 更新了 %s 的描述信息。',
   '%s updated the description of this repository.' => '%s 更新了此仓库的描述信息。',
   '%s updated the image for %s from %s to %s.' => '%s 将 %s 的图片从 %s 修改为 %s.',
   '%s updated the parent domain for %s.' => '%s 更新了%s 的父域名。',
@@ -473,7 +457,6 @@ return array (
   '%s updated the title for %s from %s to untitled.' => '%s 将 %s 的标题从 %s 更新为未命名。',
   '%s updated the title for %s from untitled to %s.' => '%s 将 %s 的标题从未命名更新为 %s。',
   '%s updated their profile' => '%s 更新了它的资料',
-  '%s updated this countdown to end on %s.' => '%s 将此倒计时的截止时间改为 %s 。',
   '%s updated this object.' => '%s 更新了此对象。',
   '%s updated this project\'s image from %s to %s.' => '%s 将此项目图片由 %s 更新为 %s。',
   '%s updated this revision to %s.' => '%s 将此修订更新为 %s。',
@@ -672,13 +655,10 @@ return array (
   'Add Payment Provider' => '添加付款提成程序',
   'Add Property' => '添加属性',
   'Add Provider' => '添加提供商',
-  'Add Recipents' => '添加收件人',
   'Add Recipient' => '添加收件人',
   'Add Recipients' => '添加收件人',
-  'Add Reviewers' => '添加审核人',
   'Add Step' => '添加步骤',
   'Add Stripe Payments Account' => '添加 Stripe 付款账户',
-  'Add Subscribers' => '添加订阅者',
   'Add WePay Payments Account' => '添加 WePay 付款账户',
   'Add __--master-data__ to the __mysqldump__ command, generating a CHANGE MASTER statement in the output.' => '为 __mysqldump_ 命令添加 __--master-data__ 参数，在输出中生成 CHANGE MASTER 语句。',
   'Add a Comment' => '发表评论',
@@ -737,7 +717,6 @@ return array (
   'Administrators can always view all activity.' => '管理员可以随时查看所有活动。',
   'Administrators can take this action.' => '管理员可以执行此操作。',
   'Administrators have greater access to edit these accounts.' => '管理员有更大的权限编辑这些帐户。',
-  'Adminstrator' => '管理员',
   'Adopt today!' => '今天通过！',
   'Advanced' => '高级',
   'Advanced Filter' => '高级过滤器',
@@ -1108,10 +1087,8 @@ return array (
   'Badge' => '徽章',
   'Badge %d' => '徽章 %d',
   'Badge long description.' => '徽章详细说明',
-  'Badge name is required.' => '徽章名称是必需的。',
   'Badge name.' => '徽章名称。',
   'Badges' => '徽章',
-  'Badges let you award and distinguish special users throughout your instance.' => '徽章可让您在自己的实例中授予和区分特殊用户。',
   'Basic Policies' => '基础策略',
   'Basics' => '基础',
   'Batch Edit Selected »' => '批量编辑 »',
@@ -1274,7 +1251,6 @@ return array (
   'By Project' => '按项目',
   'By Request' => '按请求',
   'By User' => '按用户',
-  'By default, Phabricator allows users to add multi-factor authentication to their accounts, but does not require it. By enabling this option, you can force all users to add at least one authentication factor before they can use their accounts.' => '默认情况下，Phabricator 允许用户向其帐户添加多因素身份验证，但并不是必须的。启用此选项后，您可以强制所有用户添加至少一个身份验证因素，然后他们才能使用其帐户。',
   'By default, no one can take this action.' => '默认情况下，没有人可以执行此操作。',
   'CANCELLED' => '已取消',
   'CHANGE DETAILS' => '变更详情',
@@ -1785,7 +1761,6 @@ return array (
   'Create Subtask' => '新建子任务',
   'Create Subversion Repository' => '新建 Subversion 仓库',
   'Create Task' => '新建任务',
-  'Create Task...' => '新建任务',
   'Create This Document' => '创建此文档',
   'Create URL' => '创建网址',
   'Create User' => '创建用户',
@@ -2001,7 +1976,6 @@ return array (
   'Delete Address' => '删除地址',
   'Delete Authentication Factor' => '删除验证因素',
   'Delete Build Step' => '删除构建步骤',
-  'Delete Countdown' => '删除倒计时',
   'Delete Document' => '删除文档',
   'Delete Document?' => '删除文档？',
   'Delete File' => '删除文件',
@@ -2289,8 +2263,6 @@ return array (
   'Edit Menu Item' => '编辑菜单项',
   'Edit Menu Item: %s' => '编辑菜单项: %s',
   'Edit Merchant' => '编辑商家',
-  'Edit Merchant Logo' => '编辑商家 Logo',
-  'Edit Merchant Picture' => '编辑商家图片',
   'Edit Merchant: %s' => '编辑商家: %s',
   'Edit Mock' => '编辑原型',
   'Edit Mock: %s' => '编辑原型: %s',
@@ -2392,12 +2364,7 @@ return array (
   'Editor Link' => '编辑器链接地址',
   'Edits' => '编辑',
   'Effective Rule' => '有效规则',
-  'Elastic Search host.' => 'Elastic Search 主机。',
-  'Elastic Search index.' => 'Elastic Search 索引',
-  'ElasticSearch server returned invalid JSON!' => 'ElasticSearch 服务器返回无效的 JSON!',
   'Elasticsearch Misconfigured' => 'Elasticsearch 配置错误',
-  'Elasticsearch index Incorrect' => 'Elasticsearch 索引不正确',
-  'Elasticsearch index Not Found' => 'Elasticsearch 索引未找到',
   'Elasticsearch index exists but needs correction.' => 'Elasticsearch 索引存在，但需要修正。',
   'Elasticsearch is not reachable as configured.' => '根据配置 Elasticsearch 无法访问。',
   'Email' => '邮件',
@@ -2581,7 +2548,6 @@ return array (
   'Finished' => '完成',
   'Finished collecting all the garbage.' => '完成全部的垃圾回收。',
   'First' => '首页',
-  'First Message' => '第一条消息',
   'First, download an authenticator application on your phone. Two applications which work well are **Authy** and **Google Authenticator**, but any other TOTP application should also work.' => '首先，在手机上下载验证器应用程序。两个运行良好的应用程序是 **Authy** 和 **Google Authenticator**，但任何其他 TOTP 应用程序也应该可以工作。',
   'Fix Configuration' => '修复配置',
   'Flag %s' => '标记 %s',
@@ -2589,7 +2555,6 @@ return array (
   'Flag For Later' => '稍后再看',
   'Flagged' => '已标记',
   'Flags' => '标记',
-  'Flavor text' => '描述文本',
   'Focus' => '保持专注',
   'Folder' => '文件夹',
   'For conduit, the Conduit method which was invoked.' => 'Conduit 被调用的方法',
@@ -2632,7 +2597,6 @@ return array (
   'Fullscreen' => '全屏',
   'Fullscreen Mode' => '全屏模式',
   'Fulltext Engine' => '全文引擎',
-  'Fulltext Results' => '全文结果',
   'Fully Imported' => '完全导入',
   'Fully explain why you are requesting this code be included in the next release.' => '解释清楚您为什么要在下个版本中包含这些代码。',
   'Function Quick Reference' => '函数快速参考',
@@ -2808,7 +2772,6 @@ return array (
   'Import Entire Repository' => '导入整个仓库',
   'Import Events' => '导入活动',
   'Import LDAP Users' => '导入 LDAP 用户',
-  'Import Ldap Users' => '导入 LDAP 用户',
   'Import Only' => '仅导入',
   'Import Successful' => '导入成功',
   'Import Type' => '导入类型',
@@ -2838,9 +2801,6 @@ return array (
   'Index' => '索引',
   'Index Exists' => '索引存在',
   'Index Is Sane' => '索引正确',
-  'Index does not exist, creating...' => '索引不存在，正在创建中...',
-  'Index exists but is incorrect, fixing...' => '索引存在但是不正确，修复中...',
-  'Index maintenance complete. Run `%s` to reindex documents' => '索引维护完成。运行 `%s`  重新索引文档。',
   'Indexing %d object(s) of type %s.' => '正在索引 %d 个对象（类型 %s）。',
   'Individual' => '个人',
   'Individuals' => '个人',
@@ -2849,7 +2809,6 @@ return array (
   'Initial Members' => '初始成员',
   'Initial project members.' => '项目初始成员。',
   'Initialization Error' => '初始化错误',
-  'Initialize or repair an index.' => '初始化或修复索引。',
   'Initialize storage only; do not apply patches or adjustments.' => '仅初始化存储；不应用补丁或调整。',
   'Initializing Working Copy' => '正在初始化工作副本',
   'Initiative' => '倡议',
@@ -2881,7 +2840,6 @@ return array (
   'Integration with Mailgun' => '集成 Mailgun',
   'Integration with Recaptcha' => '集成 Recaptcha',
   'Integration with SendGrid' => '集成 SendGrid',
-  'Interacting with External Build Sytems' => '与外部构建系统交互',
   'Interface' => '接口',
   'Interface %d' => '接口: %d',
   'Interface In Use' => '接口使用中',
@@ -2900,7 +2858,6 @@ return array (
   'Invoice Description' => '发票描述',
   'Invoice Footer' => '发票底部',
   'Invoice Title' => '发票标题',
-  'Invoices' => '发票',
   'Is merge commit' => '是合并提交',
   'Is newly created' => '是新创建的',
   'Issue Resolved' => '问题已解决',
@@ -3210,11 +3167,9 @@ return array (
   'Merchant %d' => '商家 %d',
   'Merchant %d %s' => '商家 %d %s',
   'Merchant Accounts' => '商家帐户',
-  'Merchant Logo' => '商家 Logo',
   'Merchant accounts can receive payments.' => '商家帐户可以接收付款。',
   'Merchant contact information.' => '商家联系信息。',
   'Merchant description.' => '商家描述。',
-  'Merchant name is required.' => '商家名称是必填项。',
   'Merchant name.' => '商家名称。',
   'Merchants' => '商家',
   'Merge Duplicates In' => '合并重复',
@@ -3475,7 +3430,6 @@ return array (
   'No flags found.' => '未找到标记内容。',
   'No image attached!' => '没有图像！',
   'No later changes' => '无后续变更',
-  'No matching commits.' => '没有匹配的提交。',
   'No merchants found.' => '找不到商家。',
   'No messages for this build target.' => '此构建目标没有消息。',
   'No messages.' => '无信息。',
@@ -3687,7 +3641,6 @@ return array (
   'Options for configuring Releeph, the release branch tool.' => '配置 Releeph 的选项，即发布分支工具。',
   'Options related to Phriction (wiki).' => '与 Phriction （百科）相关的选项。',
   'Options relating to PHD (daemons).' => '与 PHD（守护进程）相关的选项。',
-  'Options relating to Search.' => '与搜索相关的选项。',
   'Options relating to authentication.' => '与授权相关的选项。',
   'Options relating to object visibility.' => '与对象可见性相关的选项。',
   'Options relating to syntax highlighting source code.' => '与源码语法高亮相关的选项。',
@@ -3918,7 +3871,6 @@ return array (
   'Plan %d' => '方案 %d',
   'Plan %d %s' => '方案 %d %s',
   'Plan Changes' => '方案变更',
-  'Plan Changes ✘' => '方案变更 ✘',
   'Play Continuously' => '连续播放',
   'Play Once' => '播放一次',
   'Please choose a valid date.' => '请选择有效的日期。',
@@ -4222,13 +4174,11 @@ return array (
   'Received' => '已接收',
   'Receiving email addresses' => '接收邮件地址',
   'Recent Activity' => '最近活动',
-  'Recent Charges' => '最近变更',
   'Recent Commits' => '最近提交',
   'Recent Orders' => '最近订单',
   'Recent Posts' => '最新文章',
   'Recent Questions' => '最新问题',
   'Recent Similar Revisions' => '最新相似修订',
-  'Recent Subscriptions' => '最新订阅',
   'Recently Closed' => '最近关闭',
   'Recently Completed Tasks (Last 15m)' => '最近完成的任务（最近5分钟）',
   'Recently Means' => '最近平均值',
@@ -4505,7 +4455,6 @@ return array (
   'Room Participants' => '聊天室参与者',
   'Room Picture' => '聊天室图片',
   'Room Preferences' => '聊天室偏好设置',
-  'Room title is required.' => '聊天室名称必填。',
   'Rooms' => '聊天室',
   'Route outbound email.' => '路由出站电子邮件。',
   'Routing Rules' => '路由规则',
@@ -5090,7 +5039,6 @@ return array (
   'The PID of the server process.' => '服务端进程的 PID。',
   'The URI of the staging repository.' => '暂存区仓库的 URI 。',
   'The URI to clone or checkout the repository from.' => '克隆或检出仓库的 URI 。',
-  'The alias can be no longer than 64 characters.' => '别名不能超过64个字符。',
   'The alias for the URL.' => '网址的别名',
   'The author of a poll can always view and edit it.' => '投票的作者可以随时查看和编辑它。',
   'The author of a revision can not be a reviewer.' => '修订作者不能作为审核人。',
@@ -5174,7 +5122,6 @@ return array (
   'This URI does not have an associated credential.' => '此网址没有关联凭证。',
   'This URI will be hidden from users.' => '用户无法看到此网址。',
   'This URI will be shown to users as a clone URI.' => '此网址将作为克隆地址显示给用户。',
-  'This account has no unpaid invoices.' => '此账户有未支付的发票。',
   'This action has no effect.' => '这个操作没有效果。',
   'This answer has been hidden.' => '此回答已被隐藏。',
   'This application also requested additional unrecognized permissions. These permissions may have existed in an older version of Phabricator, or may be from a future version of Phabricator. They will not be granted.' => '此应用程序还请求了其他无法识别的权限。 这些权限可能存在于较早版本的 Phabricator 中，或者可能来自 Phabricator 的未来版本。他们不会被授予。',
@@ -5217,7 +5164,6 @@ return array (
   'This daemon has not reported a status update recently (within %s). It may have exited abruptly. After %s, it will be presumed dead.' => '此守护程序最近未报告状态更新（在%s内）。 它可能突然退出。 %s之后，它将被推定为死亡。',
   'This daemon has not reported its status recently. It may have exited uncleanly.' => '这个守护进程最近没有报告它的状态。 它可能已经退出了。',
   'This daemon is running normally and reported a status update recently (within %s).' => '此守护程序正常运行，并且最近（在%s内）报告状态更新。',
-  'This daemon is running normally and reported a status update recently (within %s). However, it encountered an error while doing work and is waiting a little while (%s) to resume processing. After encountering an error, daemons wait before resuming work to avoid overloading services.' => '此守护程序正常运行，并且最近（在%s内）报告状态更新。 但是，它在执行工作时遇到错误，并等待一段时间（%s）恢复处理。 遇到错误后，守护进程在恢复工作之前等待，以避免服务超载。',
   'This daemon is running.' => '这个守护进程正在运行。',
   'This daemon is shutting down gracefully.' => '这个守护进程正在优雅地关闭。',
   'This daemon is shutting down.' => '这个守护进程正在关闭。',
@@ -5531,7 +5477,6 @@ return array (
   'URI where Phabricator is installed.' => 'Phabricator 安装的网址。',
   'URIs' => '网址',
   'URL' => '网址',
-  'URL DESCRIPTION ' => '网址描述',
   'URL DETAIL' => '网址详情',
   'URL Shortener' => '短网址生成',
   'URL long description.' => '网址长描述',
@@ -5691,7 +5636,6 @@ return array (
   'Upload a File' => '上传文件',
   'Upload a chunk of file data to the server.' => '将一个文件数据块上传到服务器。',
   'Upload a file from a host to Phabricator.' => '将文件从主机上传到 Phabricator。',
-  'Upload a file to the server using content hash.' => '使用内容哈希将文件上传到服务器。',
   'Upload a file to the server.' => '将文件上传到服务器。',
   'Upload failed: unknown error (%s).' => '上传失败：未知错误（%s)',
   'Upload sets of images for review with revision history and inline comments.' => '上传图片集以供审查，留下修订历史和行内评论。',
@@ -5754,7 +5698,6 @@ return array (
   'User aborted workflow.' => '用户中止了工作流。',
   'User account is not permitted to use the API.' => '用户账户不允许使用此 API。',
   'User does not belong to any projects.' => '用户不属于任何项目。',
-  'User does not have any badges.' => '用户没有任何徽章。',
   'User does not own email!' => '用户没有自己的邮箱。',
   'User has already been created!' => '用户已创建！',
   'User has no primary email address!' => '用户没有主邮箱！',
@@ -5834,7 +5777,6 @@ return array (
   'View All' => '查看全部',
   'View All Merchants' => '查看所有商家',
   'View All Orders' => '查看所有订单',
-  'View All Subscriptions' => '查看所有订阅',
   'View Dashboard' => '查看面板',
   'View Edit History' => '查看编辑历史',
   'View File' => '查看文件',
@@ -5847,7 +5789,6 @@ return array (
   'View Live' => '在线查看',
   'View More...' => '查看更多...',
   'View Options' => '查看选项',
-  'View Orders' => '查看订单',
   'View Policy' => '查看策略',
   'View Push Logs' => '查看推送日志',
   'View Raw Event' => '查看原始事件',
@@ -5860,7 +5801,6 @@ return array (
   'View Signatures' => '查看签名',
   'View Snapshot' => '查看快照',
   'View Standalone' => '独立查看',
-  'View Subscriptions' => '查看订阅',
   'View Task' => '查看任务',
   'View Transforms' => '查看转换',
   'View Unified' => '单列查看',
@@ -6129,7 +6069,6 @@ return array (
   'does not exist' => '不存在',
   'does not match regexp' => '不匹配正则',
   'does not match:' => '不匹配:',
-  'done.' => '完成。',
   'every time' => '每次',
   'exists' => '存在',
   'include all of' => '包括所有',
@@ -6296,21 +6235,6 @@ https://github.com/settings/applications/new
 
 创建应用程序后，将 **Client ID** 和 **Client Secret** 复制到上面的字段中。
  ',
-  'Condolences on forgetting your password. You can use this link to reset it:
-
-  %s
-
-After you set a new password, consider writing it down on a sticky note and attaching it to your monitor so you don\'t forget again! Choosing a very short, easy-to-remember password like "cat" or "1234" might also help.
-
-Best Wishes,
-Phabricator' => '忘记密码并不是什么大事。可以使用下面的链接进行重置:
-
-%s
-
-设置新密码后，请考虑将其粘贴在便签上并将其附加到显示器，以便不要再次忘记！ 选择一个非常简单易记的密码，如“cat”或“1234”也可能有所帮助。
-
-祝好，
-Phabricator',
   'After completing this build step Harbormaster can continue the build normally, or it can pause the build and wait for a message. If you are using this build step to trigger some work in an external system, you may want to have Phabricator wait for that system to perform the work and report results back.
 
 If you select **Continue Build Normally**, the build plan will proceed once this step finishes.
@@ -6463,14 +6387,6 @@ Specify a list of dictionaries. Each dictionary describes a footer item. These k
 |------------------------|----------------
 | 启用  | `回复: [Differential] [Accepted] D123: Example Revision`
 | 关闭 | `[Differential] [Accepted] D123: Example Revision`',
-  'Customize the logo image and text which appears in the main site header:
-
-  - **Logo Image**: Upload a new 80 x 80px image to replace the Phabricator logo in the site header.
-
-  - **Wordmark**: Choose new text to display next to the logo. By default, the header displays //Phabricator//.' => '自定义主网站标题中显示的 Logo 图片和文字：
-
-  - **Logo Image**: 上传一个新的 80x80 像素图片以替换网站标题中的 Phabricator 图片。
-  - **Wordmark**: 选择 Logo 旁边显示的新文字。 默认情况下，标题显示 //Phabricator//。',
   'If the web server responds to both HTTP and HTTPS requests but you want users to connect with only HTTPS, you can set this to `true` to make Phabricator redirect HTTP requests to HTTPS.
 
 Normally, you should just configure your server not to accept HTTP traffic, but this setting may be useful if you originally used HTTP and have now switched to HTTPS but don\'t want to break old links, or if your webserver sits behind a load balancer which terminates HTTPS connections and you can not reasonably configure more granular behavior there.
@@ -6557,29 +6473,6 @@ These preferences **only** apply to objects you are connected to (for example, R
 如果某个更新发生了多项更改（例如，向某个任务添加CC，关闭该更改并添加评论），您将会受到每条变更的通知。
 
 这些首选项仅适用于您连接的对象（例如，您是审阅者的修订版本或抄送您的任务）。 要在创建其他对象时接收电子邮件警报，请配置[[ /herald/ | Herald 规则]]。',
-  'Welcome to Phabricator!
-
-%s (%s) has created an account for you.
-
-  Username: %s
-
-To login to Phabricator, follow this link and set a password:
-
-  %s
-
-After you have set a password, you can login in the future by going here:
-
-  %s' => '欢迎来到 Phabricator ！
-
-%s (%s) 已为您创建了一个账号。
-
-    用户名: %s
-
-要登录到 Phabricator，请点击此链接并设置密码：
-
-设置密码后，以后可以通过此链接登录。
-
-%s',
   'With **Vary Subjects** enabled, most mail subject lines will include a brief description of their content, like `[Closed]` for a notification about someone closing a task.
 
 | Setting              | Example Mail Subject

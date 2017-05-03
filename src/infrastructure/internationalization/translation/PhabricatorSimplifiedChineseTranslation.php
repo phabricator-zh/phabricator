@@ -1,7 +1,7 @@
 <?php
 // autogenerate by tool.
-// created: 2017-05-03 16:14:27
-// done: 43.17% (6196/14354)
+// created: 2017-05-03 16:15:58
+// done: 43.15% (6194/14354)
 
 final class PhabricatorSimplifiedChineseTranslation
     extends PhutilTranslation {
@@ -4537,7 +4537,6 @@ return array (
   'Review the repository operation queue.' => '查看仓库操作队列。',
   'Reviewer "%s" is not a valid object.' => '审核人 "%s" 不是一个有效的对象。',
   'Reviewer "%s" must be a user, a package, or a project.' => '审核人 "%s" 必须是用户、包或项目。',
-  'Reviewers' => '审查人',
   'Reviewers for this revision.' => '此修订的审查人',
   'Reviewers: %s' => '审查人: %s',
   'Revision' => '修订',
@@ -5063,7 +5062,6 @@ return array (
   'Subtypes' => '子类型',
   'Success! Automation is configured properly and Drydock can operate on %s.' => '成功！自动化配置正确并且 Drydock 可以在 %s 执行操作。',
   'Successfully added %s' => '成功添加 %s',
-  'Summary' => '概要',
   'Summary of: %s' => '%s 的概要',
   'Sun' => '周日',
   'Sunday' => '周日',

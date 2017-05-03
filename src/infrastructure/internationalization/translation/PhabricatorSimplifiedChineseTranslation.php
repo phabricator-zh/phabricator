@@ -1,7 +1,7 @@
 <?php
 // autogenerate by tool.
-// created: 2017-05-02 10:05:39
-// done: 43.16% (6195/14354)
+// created: 2017-05-03 16:14:27
+// done: 43.17% (6196/14354)
 
 final class PhabricatorSimplifiedChineseTranslation
     extends PhutilTranslation {
@@ -116,6 +116,7 @@ return array (
   '%s added %s project(s) to %s: %s.' => '%s 添加了%s个项目到%s:%s。',
   '%s added %s project(s): %s.' => '%s 加入到 %s 个项目: %s 中去。',
   '%s added %s reviewer(s): %s.' => '%s 添加%s个审查人: %s。',
+  '%s added %s revision(s): %s.' => '%s 添加了%s个修订: %s。',
   '%s added %s subtask(s) for %s: %s.' => '%s 添加了 %s 个子任务于 %s : %s。',
   '%s added %s subtask(s): %s.' => '%s 添加了%s个子任务: %s。',
   '%s added %s task(s): %s.' => '%s 添加了 %s 个任务: %s。',
@@ -2087,7 +2088,6 @@ return array (
   'Differential Diff' => 'Differential 对比',
   'Differential Diffs' => 'Differential 对比',
   'Differential Parse Cache' => 'Differential 解析缓存',
-  'Differential Revision' => 'Differential 修订',
   'Differential Revisions' => 'Differential 修订',
   'Differential is a **code review application** which allows engineers to review, discuss and approve changes to software.' => 'Differential 是一个 **代码审查程序**，可以让工程师审查、讨论和批准对软件的修改。',
   'Differential reviewers' => 'Differential 审查人',
@@ -4418,6 +4418,7 @@ return array (
   'Repository Servers' => '仓库服务器',
   'Repository URI' => '仓库地址',
   'Repository URIs' => '仓库地址',
+  'Repository Unconfigured' => '仓库未配置',
   'Repository description.' => '仓库简介',
   'Repository projects' => '仓库项目',
   'Request' => '请求',
@@ -4534,8 +4535,6 @@ return array (
   'Review the diff for correctness. When you are satisfied, either **create a new revision** or **update an existing revision**.' => '确认下对比内容的正确性。如果没有问题，请选择 **创建新修订** 或 **更新已有修订**。',
   'Review the documentation describing how to import or observe an existing repository.' => '查看描述如何导入或查看现有存储库的文档。',
   'Review the repository operation queue.' => '查看仓库操作队列。',
-  'Reviewed By' => '审核人',
-  'Reviewer' => '审核人',
   'Reviewer "%s" is not a valid object.' => '审核人 "%s" 不是一个有效的对象。',
   'Reviewer "%s" must be a user, a package, or a project.' => '审核人 "%s" 必须是用户、包或项目。',
   'Reviewers' => '审查人',
@@ -4646,6 +4645,7 @@ return array (
   'Save Draft' => '保存草稿',
   'Save Image' => '保存图片',
   'Save Panel' => '保存',
+  'Save Parent Revisions' => '保存父修订',
   'Save Parent Tasks' => '保存父级任务',
   'Save Paths' => '添加路径',
   'Save Policies' => '保存策略',
@@ -6047,6 +6047,7 @@ return array (
   'When all of these conditions are met:' => '当所有条件满足时:',
   'When any of these conditions are met:' => '当任一条件满足时:',
   'When mail is sent to members of this project, you will no longer receive a copy.' => '当邮件发送给此项目的成员时，您将不会再收到。',
+  'When this diff was generated, the repository was not configured with a staging area, so the change was not pushed to staging. Changes must be pushed to staging before they can be landed from the web.' => '此 diff 生成时，仓库还没有配置暂存区，所以此变更无法推送到暂存区。只有推送到暂存区的变更才能从网页应用。',
   'When viewing a revision or commit, you can enable a sidebar showing affected files. When this option is enabled, press {nav %s} to show or hide the sidebar.' => '查看修订或提交时，可以启用显示受影响文件的边栏。 启用此选项时，按f可显示或隐藏侧边栏。',
   'When you are ready, %s.' => '当你准备好，继续 %s。',
   'Whitelists editor protocols for "Open in Editor".' => '"在编辑其中打开" 功能的编辑器协议白名单。',

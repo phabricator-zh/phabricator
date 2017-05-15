@@ -284,7 +284,6 @@ abstract class PhabricatorApplication
     throw new PhutilMethodNotImplementedException();
   }
 
-
 /* -(  Fact Integration  )--------------------------------------------------- */
 
 
@@ -643,7 +642,7 @@ abstract class PhabricatorApplication
 
 
   public function getApplicationTransactionEditor() {
-    return new PhutilMethodNotImplementedException(pht('Coming Soon!'));
+    return new PhabricatorApplicationEditor();
   }
 
   public function getApplicationTransactionObject() {
